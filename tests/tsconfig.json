@@ -1,0 +1,27 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@space-rock/jsonrpc-types": ["../packages/types/src/index.ts"],
+      "@space-rock/jsonrpc-types/*": ["../packages/types/src/*"],
+      "@space-rock/jsonrpc-client": ["../packages/client/src/index.ts"],
+      "@space-rock/jsonrpc-client/*": ["../packages/client/src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.test.ts", "**/*.test-d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

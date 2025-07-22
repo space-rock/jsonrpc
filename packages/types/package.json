@@ -1,0 +1,63 @@
+{
+  "name": "@space-rock/jsonrpc-types",
+  "version": "0.2.1",
+  "description": "TypeScript types for NEAR Protocol JSON RPC client",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./mappings": {
+      "types": "./dist/mappings.d.ts",
+      "import": "./dist/mappings.js",
+      "require": "./dist/mappings.cjs"
+    },
+    "./schemas": {
+      "types": "./dist/schemas.d.ts",
+      "import": "./dist/schemas.js",
+      "require": "./dist/schemas.cjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "near",
+    "jsonrpc",
+    "types",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/@near-js/jsonrpc-types.git",
+    "directory": "packages/types"
+  },
+  "homepage": "https://github.com/@near-js/jsonrpc-types#readme",
+  "bugs": {
+    "url": "https://github.com/@near-js/jsonrpc-types/issues"
+  },
+  "dependencies": {
+    "zod": "~3.25.67"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

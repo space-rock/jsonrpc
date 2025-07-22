@@ -1,0 +1,189 @@
+name: Release Please & Publish
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release-please.outputs.releases_created }}
+      paths_released: ${{ steps.release-please.outputs.paths_released }}
+      release_created: ${{ steps.release-please.outputs.release_created }}
+      # Package-specific release outputs
+      types_release_created: ${{ steps.release-please.outputs['packages/types--release_created'] }}
+      client_release_created: ${{ steps.release-please.outputs['packages/client--release_created'] }}
+      types_version: ${{ steps.release-please.outputs['packages/types--version'] }}
+      client_version: ${{ steps.release-please.outputs['packages/client--version'] }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Release Please
+        id: release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  debug-outputs:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Release Please Outputs
+        run: |
+          echo "## 🔍 Release Please Debug Info" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**releases_created:** ${{ needs.release-please.outputs.releases_created }}" >> $GITHUB_STEP_SUMMARY
+          echo "**release_created:** ${{ needs.release-please.outputs.release_created }}" >> $GITHUB_STEP_SUMMARY
+          echo "**paths_released:** ${{ needs.release-please.outputs.paths_released }}" >> $GITHUB_STEP_SUMMARY
+          echo "**types_release_created:** ${{ needs.release-please.outputs.types_release_created }}" >> $GITHUB_STEP_SUMMARY
+          echo "**client_release_created:** ${{ needs.release-please.outputs.client_release_created }}" >> $GITHUB_STEP_SUMMARY
+          echo "**types_version:** ${{ needs.release-please.outputs.types_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**client_version:** ${{ needs.release-please.outputs.client_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Also log to console for Actions logs
+          echo "releases_created: ${{ needs.release-please.outputs.releases_created }}"
+          echo "release_created: ${{ needs.release-please.outputs.release_created }}"
+          echo "paths_released: ${{ needs.release-please.outputs.paths_released }}"
+          echo "types_release_created: ${{ needs.release-please.outputs.types_release_created }}"
+          echo "client_release_created: ${{ needs.release-please.outputs.client_release_created }}"
+          echo "types_version: ${{ needs.release-please.outputs.types_version }}"
+          echo "client_version: ${{ needs.release-please.outputs.client_version }}"
+
+  build-and-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Verify build outputs
+        run: |
+          echo "Checking build outputs..."
+          ls -la packages/types/dist/ || echo "types dist not found"
+          ls -la packages/client/dist/ || echo "client dist not found"
+
+      - name: Publish Types Package
+        if: ${{ needs.release-please.outputs.types_release_created == 'true' }}
+        run: |
+          cd packages/types
+
+          echo "📦 Publishing @space-rock/jsonrpc-types..."
+
+          # Verify package.json exists and has correct name
+          if [[ ! -f "package.json" ]]; then
+            echo "❌ package.json not found in packages/types"
+            exit 1
+          fi
+
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          if [[ "$PACKAGE_NAME" != "@space-rock/jsonrpc-types" ]]; then
+            echo "❌ Package name mismatch: expected @space-rock/jsonrpc-types, got $PACKAGE_NAME"
+            exit 1
+          fi
+
+          # Verify dist directory exists
+          if [[ ! -d "dist" ]]; then
+            echo "❌ dist directory not found in packages/types"
+            exit 1
+          fi
+
+          # Publish with detailed output
+          pnpm publish --access public --no-git-checks
+
+          if [[ $? -eq 0 ]]; then
+            echo "✅ Successfully published @space-rock/jsonrpc-types"
+          else
+            echo "❌ Failed to publish @space-rock/jsonrpc-types"
+            exit 1
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish Client Package
+        if: ${{ needs.release-please.outputs.client_release_created == 'true' }}
+        run: |
+          cd packages/client
+
+          echo "📦 Publishing @space-rock/jsonrpc-client..."
+
+          # Verify package.json exists and has correct name
+          if [[ ! -f "package.json" ]]; then
+            echo "❌ package.json not found in packages/client"
+            exit 1
+          fi
+
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          if [[ "$PACKAGE_NAME" != "@space-rock/jsonrpc-client" ]]; then
+            echo "❌ Package name mismatch: expected @space-rock/jsonrpc-client, got $PACKAGE_NAME"
+            exit 1
+          fi
+
+          # Verify dist directory exists
+          if [[ ! -d "dist" ]]; then
+            echo "❌ dist directory not found in packages/client"
+            exit 1
+          fi
+
+          # Publish with detailed output
+          pnpm publish --access public --no-git-checks
+
+          if [[ $? -eq 0 ]]; then
+            echo "✅ Successfully published @space-rock/jsonrpc-client"
+          else
+            echo "❌ Failed to publish @space-rock/jsonrpc-client"
+            exit 1
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish Summary
+        run: |
+          echo "## � Publishing Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Releases Created:** ${{ needs.release-please.outputs.releases_created }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ needs.release-please.outputs.types_release_created }}" == "true" ]]; then
+            echo "✅ **@space-rock/jsonrpc-types** v${{ needs.release-please.outputs.types_version }} - Published" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ **@space-rock/jsonrpc-types** - Skipped (no release)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [[ "${{ needs.release-please.outputs.client_release_created }}" == "true" ]]; then
+            echo "✅ **@space-rock/jsonrpc-client** v${{ needs.release-please.outputs.client_version }} - Published" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⏭️ **@space-rock/jsonrpc-client** - Skipped (no release)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Paths Released:** ${{ needs.release-please.outputs.paths_released }}" >> $GITHUB_STEP_SUMMARY

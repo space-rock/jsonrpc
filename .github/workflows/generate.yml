@@ -1,0 +1,110 @@
+name: Daily OpenAPI Spec Fetch
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      openapi_url:
+        description: 'URL to fetch OpenAPI spec from (optional, overrides repository variable)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  fetch-and-generate:
+    name: Fetch OpenAPI and Generate Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.12.4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine OpenAPI URL
+        id: url-config
+        run: |
+          if [[ -n "${{ inputs.openapi_url }}" ]]; then
+            echo "Using URL from workflow input"
+            OPENAPI_URL="${{ inputs.openapi_url }}"
+          elif [[ -n "${{ vars.INPUT_JSON_URL }}" ]]; then
+            echo "Using URL from repository variable"
+            OPENAPI_URL="${{ vars.INPUT_JSON_URL }}"
+          else
+            echo "::error::No OpenAPI URL provided. Please set the INPUT_JSON_URL repository variable or provide URL via workflow dispatch."
+            exit 1
+          fi
+          echo "openapi_url=${OPENAPI_URL}" >> $GITHUB_OUTPUT
+
+      - name: Save current OpenAPI spec
+        run: |
+          if [ -f codegen/openapi.json ]; then
+            cp codegen/openapi.json codegen/openapi.json.bak
+          fi
+
+      - name: Download OpenAPI spec
+        run: |
+          echo "Downloading OpenAPI spec from: ${{ steps.url-config.outputs.openapi_url }}"
+          curl -L -o codegen/openapi.json "${{ steps.url-config.outputs.openapi_url }}"
+
+      - name: Generate code
+        run: pnpm run codegen
+
+      - name: Format generated code
+        run: pnpm run format
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Git
+        if: steps.git-check.outputs.has_changes == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Pull Request
+        if: steps.git-check.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date +"%Y-%m-%d")
+          BRANCH_NAME="update-openapi-spec-${DATE}"
+
+          git checkout -b ${BRANCH_NAME}
+          git add -A
+          git commit -m "feat: update OpenAPI spec and regenerate types (${DATE})"
+          git push -u origin ${BRANCH_NAME}
+
+          gh pr create \
+            --title "feat: update OpenAPI spec and regenerate types (${DATE})" \
+            --body "This PR updates the OpenAPI spec from the upstream source and regenerates all TypeScript types, Zod schemas, and tests based on the latest spec.\n\nAutomatically created by the Daily OpenAPI Spec Fetch workflow." \
+            --base main \
+            --head ${BRANCH_NAME} \
+            --label "automated,openapi-update"

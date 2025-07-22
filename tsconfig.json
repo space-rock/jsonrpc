@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2022",
+    "useUnknownInCatchVariables": true
+  },
+  "references": [
+    {
+      "path": "./packages/types"
+    },
+    {
+      "path": "./packages/client"
+    }
+  ],
+  "exclude": [
+    "node_modules",
+    "**/dist",
+    "codegen",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

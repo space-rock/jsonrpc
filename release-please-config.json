@@ -1,0 +1,15 @@
+{
+  "packages": {
+    "packages/client": {
+      "release-type": "node",
+      "package-name": "@space-rock/jsonrpc-client"
+    },
+    "packages/types": {
+      "release-type": "node",
+      "package-name": "@space-rock/jsonrpc-types"
+    }
+  },
+  "plugins": ["node-workspace"],
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true
+}

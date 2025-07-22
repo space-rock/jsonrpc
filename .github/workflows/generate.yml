@@ -106,5 +106,4 @@ jobs:
             --title "feat: update OpenAPI spec and regenerate types (${DATE})" \
             --body "This PR updates the OpenAPI spec from the upstream source and regenerates all TypeScript types, Zod schemas, and tests based on the latest spec.\n\nAutomatically created by the Daily OpenAPI Spec Fetch workflow." \
             --base main \
-            --head ${BRANCH_NAME} \
-            --label "automated,openapi-update"
+            --head ${BRANCH_NAME}

@@ -95,7 +95,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DATE=$(date +"%Y-%m-%d")
-          BRANCH_NAME="update-openapi-spec-${DATE}"
+          TIMESTAMP=$(date +"%Y-%m-%d-%H%M%S")
+          BRANCH_NAME="update-openapi-spec-${TIMESTAMP}"
 
           git checkout -b ${BRANCH_NAME}
           git add -A

@@ -1,6 +1,6 @@
 {
   "name": "@space-rock/jsonrpc-types",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "TypeScript types for NEAR Protocol JSON RPC client",
   "type": "module",
   "main": "./dist/index.js",

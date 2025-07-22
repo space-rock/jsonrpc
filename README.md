@@ -1,46 +1,112 @@
-# @near-jsonrpc
+# @space-rock/jsonrpc
 
-A TypeScript monorepo for NEAR Protocol JSON-RPC client with automatic type generation and camelCase support.
+<div align="center">
+  <h3>
+    <strong>Type-safe, high-performance JSON-RPC client for NEAR Protocol</strong>
+  </h3>
+  <p>
+    <a href="https://github.com/@space-rock/jsonrpc-client/actions/workflows/ci-cd.yml">
+        <img src="https://github.com/@space-rock/jsonrpc-client/actions/workflows/ci-cd.yml/badge.svg" alt="CI/CD" />
+    </a>
+    <a href="https://codecov.io/gh/@space-rock/jsonrpc-client">
+      <img src="https://codecov.io/gh/@space-rock/jsonrpc-client/coverage.svg" alt="Coverage" />
+    </a>
+    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-client">
+      <img src="https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg" alt="Client npm version" />
+    </a>
+    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-client">
+      <img src="https://img.shields.io/npm/dm/@space-rock/jsonrpc-client.svg" alt="Client npm downloads" />
+    </a>
+    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-types">
+      <img src="https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg" alt="Types npm version" />
+    </a>
+    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-types">
+      <img src="https://img.shields.io/npm/dm/@space-rock/jsonrpc-types.svg" alt="Types npm downloads" />
+    </a>
+  </p>
+</div>
+
+## 🚀 Features
+
+- **🎯 Type-First Design**: TypeScript types generated directly from OpenAPI spec (not inferred from schemas)
+- **⚡ Blazing Fast Autocomplete**: Clean, responsive IntelliSense with zero runtime overhead
+- **🛡️ Runtime Validation**: Zod schema validation for request/response
+- **📦 Tree-Shakable**: Optimized builds with code splitting for both ESM and CJS
+- **🧪 98%+ Test Coverage**: Comprehensive automated testing with dynamically generated test suites
+- **🔄 Auto-Updated**: Daily synchronization with NEAR Protocol's latest OpenAPI specification
+- **🎭 Mock Generation**: Test data generation using zod-schema-faker
+- **🔌 Modular Architecture**: Separate packages for types and client implementation
+
+## 📚 Table of Contents
+
+- [Overview](#overview)
+- [Packages](#packages)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Documentation Overview](#documentation-overview)
+- [Development](#development)
+- [Code Generation](#code-generation)
+- [Testing](#testing)
+- [CI/CD](#cicd)
+- [Contributing](#contributing)
+- [Architecture](#architecture)
 
 ## Overview
 
-This project provides a fully typed TypeScript client for interacting with NEAR Protocol's JSON-RPC API. It features:
+This monorepo provides a type-safe, high-performance JSON-RPC client for interacting with NEAR Protocol nodes. It features automatic code generation from OpenAPI specifications, comprehensive type safety, and extensive test coverage.
 
-- 🚀 **Automatic Type Generation** - Types are generated directly from the OpenAPI specification
-- 🐪 **CamelCase Types** - All generated types use camelCase properties for idiomatic JavaScript/TypeScript, with automatic conversion to/from NEAR's snake_case API
-- ✅ **Runtime Validation** - Zod schemas validate all requests and responses
-- 📦 **Modular Architecture** - Separate packages for types, client, and code generation
-- 🔧 **Type Safety** - Full TypeScript support with precise request/response types for each RPC method
+## Packages
 
-## Architecture
+| Package                                         | Version                                                             | Description                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------- |
+| [@space-rock/jsonrpc-client](./packages/client) | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg) | JSON-RPC fetch client with runtime validation |
+| [@space-rock/jsonrpc-types](./packages/types)   | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg)  | TypeScript types and Zod schemas              |
 
-The monorepo consists of the following packages:
+## Quick Start
 
-### `packages/types`
+```bash
+# Install the client
+pnpm add @space-rock/jsonrpc-client
 
-Contains all TypeScript types, Zod schemas, and method mappings generated from the OpenAPI specification.
+# If you need types
+pnpm add @space-rock/jsonrpc-types
+```
 
-### `packages/client`
+```typescript
+import { createRpcClient } from '@space-rock/jsonrpc-client';
 
-The JSON-RPC client that handles requests, responses, and automatic case conversion between camelCase and snake_case.
+// Initialize client
+const client = createRpcClient('https://near.lava.build:443');
 
-### `codegen`
+// Make type-safe requests with autocomplete
+const response = await client.call({
+  id: 'dontcare',
+  jsonrpc: '2.0',
+  method: 'block',
+  params: { finality: 'final' },
+});
 
-Code generation scripts that process the OpenAPI specification to generate types, schemas, and tests.
+if ('error' in response) {
+  console.log(response.error.message);
+} else {
+  console.log(response.result.header.hash);
+}
+```
 
-## Development
+## Installation
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm 10+
+- Node.js >= 20.0.0
+- pnpm >= 10.0.0
 
 ### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/@space-rock/near-jsonrpc.git
-cd near-jsonrpc
+git clone https://github.com/@space-rock/jsonrpc-client.git
+cd jsonrpc-client
 
 # Install dependencies
 pnpm install
@@ -49,122 +115,227 @@ pnpm install
 pnpm build
 ```
 
-### Code Generation
+## Documentation Overview
 
-The types and schemas are generated from the OpenAPI specification:
+| Document                                    | Description                  |
+| ------------------------------------------- | ---------------------------- |
+| [CONTRIBUTING.md](../CONTRIBUTING.md)       | Contribution guidelines      |
+| [SETUP.md](../SETUP.md)                     | Development setup guide      |
+| [CODE_GENERATION.md](../CODE_GENERATION.md) | Code generation guide        |
+| [DEPLOYMENT.md](../DEPLOYMENT.md)           | Deployment and release guide |
 
-```bash
-# Generate types from OpenAPI spec
-cd codegen
-pnpm run generate:types
+## Development
 
-# Generate Zod schemas from types
-pnpm run generate:schemas
-
-# Generate tests
-pnpm run generate:tests
-
-# Run all generators
-pnpm run generate
-```
-
-### How Code Generation Works
-
-1. **Type Generation** (`codegen/src/types.ts`)
-   - Reads the OpenAPI specification (`codegen/openapi.json`)
-   - Generates TypeScript types with all properties converted to camelCase
-   - Creates method mappings for request/response types
-   - All generated types are immediately usable with camelCase properties
-
-2. **Schema Generation** (`codegen/src/schemas.ts`)
-   - Uses `ts-to-zod` to convert TypeScript types to Zod schemas
-   - Schemas validate camelCase data structures
-   - Provides runtime validation for requests and responses
-
-3. **Test Generation** (`codegen/src/tests.ts`)
-   - Automatically generates comprehensive test suites
-   - Creates type tests, unit tests, and integration tests
-
-### Project Structure
-
-```
-@near-jsonrpc/
-├── codegen/
-│   ├── openapi.json          # NEAR RPC OpenAPI specification
-│   └── src/
-│       ├── types.ts          # Type generation script
-│       ├── schemas.ts        # Zod schema generation
-│       └── tests.ts          # Test generation
-├── packages/
-│   ├── client/               # RPC client implementation
-│   │   └── src/
-│   │       ├── client.ts     # Main client code
-│   │       ├── utils.ts      # Case conversion utilities
-│   │       └── index.ts      # Public exports
-│   └── types/                # Generated types and schemas
-│       └── src/
-│           ├── types.ts      # TypeScript types
-│           ├── schemas.ts    # Zod schemas
-│           ├── mappings.ts   # Method mappings
-│           └── helpers.ts    # Type utilities
-```
-
-## Getting Started
-
-### Installation
+### Available Scripts
 
 ```bash
-# Install both packages
-npm install @space-rock/jsonrpc-types @space-rock/jsonrpc-client
+# Generate types, schemas, and tests from OpenAPI spec
+pnpm codegen
 
-# Or install individually
-npm install @space-rock/jsonrpc-types
-npm install @space-rock/jsonrpc-client
+# Build all packages
+pnpm build
+
+# Run tests
+pnpm test
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Type checking
+pnpm typecheck
+
+# Format code
+pnpm format
+
+# Clean build artifacts
+pnpm clean
 ```
 
-### Basic Usage
+## Code Generation
 
-```typescript
-import { createClient } from '@space-rock/jsonrpc-client';
-import type { BlockReference } from '@space-rock/jsonrpc-types';
+The project uses a sophisticated code generation pipeline to ensure type safety and maintainability:
 
-// Create a client instance
-const client = createClient('https://rpc.mainnet.near.org');
+### Generation Flow
 
-// Query blockchain data with full type safety
-const blockRef: BlockReference = { finality: 'final' };
-const block = await client.request('block', blockRef);
+1. **TypeScript Types** (`codegen/src/types.ts`)
+   - Generates TypeScript interfaces from `openapi.json`
+   - Uses `openapi-typescript` for accurate type generation
+   - Creates method-to-request/response mappings
 
-console.log('Latest block height:', block.header.height);
+2. **Zod Schemas** (`codegen/src/schemas.ts`)
+   - Generates Zod schemas from TypeScript types
+   - Uses `ts-to-zod` for schema generation
+   - Maintains runtime validation capabilities
+
+3. **Test Suites** (`codegen/src/tests.ts`)
+   - Dynamically generates comprehensive tests
+   - Uses `zod-schema-faker` for mock data generation
+   - Ensures high test coverage across all methods
+
+### Running Code Generation
+
+```bash
+# Generate all artifacts
+pnpm codegen
+
+# This runs:
+# 1. Type generation
+# 2. Schema generation
+# 3. Test generation
+# 4. Code formatting
 ```
 
-### Tree Shaking Support
+### Updating OpenAPI Specification
 
-Import only what you need for optimal bundle size:
+The project automatically fetches the latest OpenAPI specification daily:
 
-```typescript
-// Import specific types
-import type {
-  BlockResponse,
-  AccountView,
-  AccessKeyView,
-} from '@space-rock/jsonrpc-types/types';
+```bash
+# Manual trigger (requires repository access)
+# Set INPUT_JSON_URL repository variable or use workflow dispatch
 
-// Import specific utilities
-import { createClient } from '@space-rock/jsonrpc-client/client';
-import { formatError } from '@space-rock/jsonrpc-client/utils';
+# Local update
+curl -L -o codegen/openapi.json <openapi-spec-url>
+pnpm codegen
 ```
+
+## Testing
+
+### Test Strategy
+
+- **Dynamic Test Generation**: Tests are automatically generated for all RPC methods
+- **Mock Data**: Uses `zod-schema-faker` to generate valid test data
+- **Coverage Target**: Maintains >80% code coverage
+- **Validation Testing**: Tests both validated and non-validated request paths
+
+### Running Tests
+
+```bash
+# Run all tests
+pnpm test
+
+# Run with coverage report
+pnpm test:coverage
+
+# Watch mode for development
+pnpm test:watch
+
+# Run tests for specific package
+pnpm --filter @space-rock/jsonrpc-client test
+```
+
+### Coverage Reports
+
+Coverage reports are generated in the `coverage/` directory and include:
+
+- Line coverage
+- Branch coverage
+- Function coverage
+- Statement coverage
+
+## CI/CD
+
+### Continuous Integration (`ci-cd.yml`)
+
+Runs on every push and pull request:
+
+- **Code Quality**
+  - Formatting check (Prettier)
+  - Type checking (TypeScript)
+  - Linting
+- **Testing**
+  - Unit tests across all packages
+  - Coverage reporting to Codecov
+  - Coverage threshold enforcement (>80%)
+
+- **Build Verification**
+  - Package builds (ESM & CJS)
+  - Tree-shaking verification
+  - Bundle size checks
+
+- **Release Dry Run**
+  - Validates package publishing configuration
+  - Checks version consistency
+
+### Automated Updates (`generate.yml`)
+
+Daily workflow that:
+
+1. Fetches latest OpenAPI specification from NEAR Protocol
+2. Regenerates types, schemas, and tests
+3. Creates PR with updates if changes detected
+4. Runs full CI pipeline on generated code
+
+### Release Management (`publish.yml`)
+
+Uses `release-please` for automated releases:
+
+- **Version Management**: Semantic versioning based on conventional commits
+- **Changelog Generation**: Automatic changelog from commit messages
+- **Package Publishing**: Automated npm publishing
+- **GitHub Releases**: Creates GitHub releases with notes
 
 ## Contributing
 
-Contributions are welcome! Please:
+Please see our [Contributing Guide](./CONTRIBUTING.md) for details on:
+
+- Code of Conduct
+- Development workflow
+- Commit conventions
+- Pull request process
+- Code review guidelines
+
+### Quick Contribution Guide
 
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run `pnpm format && pnpm test` and `pnpm build` to ensure everything works
-5. Submit a pull request
+4. Run tests (`pnpm test`)
+5. Commit with conventional commits (`feat: add amazing feature`)
+6. Push to your fork
+7. Open a Pull Request
+
+## Architecture
+
+### Design Principles
+
+1. **Type-First Development**
+   - Types are the source of truth
+   - Runtime validation
+   - Zero runtime overhead for type information
+
+2. **Modular Design**
+   - Separate concerns (types vs. client)
+   - Tree-shakable exports
+   - Framework agnostic
+
+3. **Developer Experience**
+   - Fast autocomplete
+   - Clear error messages
+   - Comprehensive documentation
+
+### Performance Optimizations
+
+- **Code Splitting**: Separate entry points for different functionalities
+- **Tree Shaking**: Unused code elimination in production builds
+- **Lazy Loading**: Schemas loaded only when validation is enabled
+- **Bundle Optimization**: Dual ESM/CJS builds with optimized chunks
 
 ## License
 
-MIT
+MIT License - see [LICENSE](./LICENSE) for details
+
+## Links
+
+- [RPC Documentation](https://docs.near.org/api/rpc/introduction)
+- [Client Package Documentation](./packages/client/README.md)
+- [Types Package Documentation](./packages/types/README.md)
+- [NPM - Client](https://www.npmjs.com/package/@space-rock/jsonrpc-client)
+- [NPM - Types](https://www.npmjs.com/package/@space-rock/jsonrpc-types)
+- [NEAR Protocol](https://near.org)
+
+---
+
+Built with ❤️ for the NEAR community

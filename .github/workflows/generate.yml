@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   fetch-and-generate:
-    name: Fetch OpenAPI and Generate Code
+    name: Fetch OpenAPI Spec and Generate Code & Types
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +28,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 10.12.4
+          version: 10.13.1
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,18 +54,12 @@ jobs:
           fi
           echo "openapi_url=${OPENAPI_URL}" >> $GITHUB_OUTPUT
 
-      - name: Save current OpenAPI spec
-        run: |
-          if [ -f codegen/openapi.json ]; then
-            cp codegen/openapi.json codegen/openapi.json.bak
-          fi
-
       - name: Download OpenAPI spec
         run: |
           echo "Downloading OpenAPI spec from: ${{ steps.url-config.outputs.openapi_url }}"
           curl -L -o codegen/openapi.json "${{ steps.url-config.outputs.openapi_url }}"
 
-      - name: Generate code
+      - name: Generate code & types
         run: pnpm run codegen
 
       - name: Format generated code
@@ -100,11 +94,11 @@ jobs:
 
           git checkout -b ${BRANCH_NAME}
           git add -A
-          git commit -m "feat: update OpenAPI spec and regenerate types (${DATE})"
+          git commit -m "feat: update generated files from latest OpenAPI spec"
           git push -u origin ${BRANCH_NAME}
 
           gh pr create \
-            --title "feat: update OpenAPI spec and regenerate types (${DATE})" \
-            --body "This PR updates the OpenAPI spec from the upstream source and regenerates all TypeScript types, Zod schemas, and tests based on the latest spec.\n\nAutomatically created by the Daily OpenAPI Spec Fetch workflow." \
+            --title "feat: update generated files from latest OpenAPI spec" \
+            --body "This PR updates the OpenAPI specification from the upstream source and regenerates files based on OpenAPI changes." \
             --base main \
             --head ${BRANCH_NAME}

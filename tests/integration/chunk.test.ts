@@ -1,7 +1,7 @@
 /**
  * Integration tests for chunk RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-20T16:55:18.173Z
+ * Generated at: 2025-07-22T09:42:26.838Z
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';

@@ -1,7 +1,7 @@
 /**
  * Unit tests for JSON RPC mappings.
  * Tests the mapping utility functions for schema retrieval.
- * Generated at: 2025-07-20T16:55:18.178Z
+ * Generated at: 2025-07-22T09:42:26.842Z
  */
 
 import { describe, it, expect } from 'vitest';

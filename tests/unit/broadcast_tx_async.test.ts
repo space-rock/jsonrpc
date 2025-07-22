@@ -1,7 +1,7 @@
 /**
  * Unit tests for broadcast_tx_async RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-20T16:55:18.164Z
+ * Generated at: 2025-07-22T09:42:26.830Z
  */
 
 import { describe, it, expect } from 'vitest';

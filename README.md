@@ -5,8 +5,8 @@
     <strong>Type-safe, high-performance JSON-RPC client for NEAR Protocol</strong>
   </h3>
   <p>
-    <a href="https://github.com/@space-rock/jsonrpc-client/actions/workflows/ci-cd.yml">
-        <img src="https://github.com/@space-rock/jsonrpc-client/actions/workflows/ci-cd.yml/badge.svg" alt="CI/CD" />
+    <a href="https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml">
+      <img src="https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml/badge.svg" alt="CI/CD" />
     </a>
     <a href="https://codecov.io/gh/@space-rock/jsonrpc-client">
       <img src="https://codecov.io/gh/@space-rock/jsonrpc-client/coverage.svg" alt="Coverage" />

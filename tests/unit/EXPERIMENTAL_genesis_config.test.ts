@@ -1,7 +1,7 @@
 /**
  * Unit tests for EXPERIMENTAL_genesis_config RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-20T16:55:18.160Z
+ * Generated at: 2025-07-22T09:42:26.827Z
  */
 
 import { describe, it, expect } from 'vitest';

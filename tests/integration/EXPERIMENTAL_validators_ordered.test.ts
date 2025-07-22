@@ -1,7 +1,7 @@
 /**
  * Integration tests for EXPERIMENTAL_validators_ordered RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-20T16:55:18.172Z
+ * Generated at: 2025-07-22T09:42:26.837Z
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';

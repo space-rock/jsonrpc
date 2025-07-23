@@ -8,8 +8,8 @@
     <a href="https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml">
       <img src="https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml/badge.svg" alt="CI/CD" />
     </a>
-    <a href="https://codecov.io/gh/@space-rock/jsonrpc-client">
-      <img src="https://codecov.io/gh/@space-rock/jsonrpc-client/coverage.svg" alt="Coverage" />
+    <a href="https://codecov.io/github/space-rock/jsonrpc">
+      <img src="https://codecov.io/github/space-rock/jsonrpc/graph/badge.svg?token=SHQZTQA89C" alt="Coverage" />
     </a>
     <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-client">
       <img src="https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg" alt="Client npm version" />

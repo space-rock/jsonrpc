@@ -1,7 +1,6 @@
 /**
  * TypeScript type tests for JSON RPC methods.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.841Z
  */
 
 import { expectType, expectAssignable } from 'tsd';

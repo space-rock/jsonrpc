@@ -59,12 +59,6 @@ jobs:
           echo "Downloading OpenAPI spec from: ${{ steps.url-config.outputs.openapi_url }}"
           curl -L -o codegen/openapi.json "${{ steps.url-config.outputs.openapi_url }}"
 
-      - name: Generate code & types
-        run: pnpm run codegen
-
-      - name: Format generated code
-        run: pnpm run format
-
       - name: Check for changes
         id: git-check
         run: |
@@ -76,6 +70,14 @@ jobs:
             echo "Changes detected"
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Generate code & types
+        if: steps.git-check.outputs.has_changes == 'true'
+        run: pnpm run codegen
+
+      - name: Format generated code
+        if: steps.git-check.outputs.has_changes == 'true'
+        run: pnpm run format
 
       - name: Set up Git
         if: steps.git-check.outputs.has_changes == 'true'

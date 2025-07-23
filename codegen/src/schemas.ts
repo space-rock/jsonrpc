@@ -81,7 +81,6 @@ function cleanUpGeneratedZodContent(zodSchemasContent: string): string {
   const header = `/**
  * This file was auto-generated from TypeScript types using ts-to-zod.
  * Do not make direct changes to the file.
- * Generated at: ${new Date().toISOString()}
  */
 
 import { z } from 'zod';

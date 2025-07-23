@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.2.3...jsonrpc-types-v0.2.4) (2025-07-23)
+
+
+### Bug Fixes
+
+* code generation action ([#5](https://github.com/space-rock/jsonrpc/issues/5)) ([fce48fc](https://github.com/space-rock/jsonrpc/commit/fce48fc0f851e90212259d0f13b1735993d31126))
+
 ## [0.2.3](https://github.com/space-rock/json/compare/jsonrpc-types-v0.2.2...jsonrpc-types-v0.2.3) (2025-07-22)
 
 ### Features

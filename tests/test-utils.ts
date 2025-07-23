@@ -1,7 +1,7 @@
 /**
  * Test utilities for JSON RPC test generation.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.825Z
+ * Generated at: 2025-07-23T01:21:07.566Z
  */
 
 import type { RpcMethod, ApiRequest } from '@space-rock/jsonrpc-types';

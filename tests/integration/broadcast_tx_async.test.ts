@@ -1,7 +1,7 @@
 /**
  * Integration tests for broadcast_tx_async RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.837Z
+ * Generated at: 2025-07-23T01:21:07.578Z
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';

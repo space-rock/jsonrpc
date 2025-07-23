@@ -1,7 +1,7 @@
 /**
  * Unit tests for changes RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.830Z
+ * Generated at: 2025-07-23T01:21:07.571Z
  */
 
 import { describe, it, expect } from 'vitest';

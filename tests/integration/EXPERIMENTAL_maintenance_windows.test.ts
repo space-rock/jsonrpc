@@ -1,7 +1,7 @@
 /**
  * Integration tests for EXPERIMENTAL_maintenance_windows RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.836Z
+ * Generated at: 2025-07-23T01:21:07.576Z
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';

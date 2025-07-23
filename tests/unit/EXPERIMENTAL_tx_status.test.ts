@@ -1,7 +1,7 @@
 /**
  * Unit tests for EXPERIMENTAL_tx_status RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.829Z
+ * Generated at: 2025-07-23T01:21:07.570Z
  */
 
 import { describe, it, expect } from 'vitest';

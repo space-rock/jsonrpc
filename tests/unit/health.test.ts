@@ -1,7 +1,6 @@
 /**
  * Unit tests for health RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: 2025-07-22T09:42:26.831Z
  */
 
 import { describe, it, expect } from 'vitest';

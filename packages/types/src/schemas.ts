@@ -1,7 +1,6 @@
 /**
  * This file was auto-generated from TypeScript types using ts-to-zod.
  * Do not make direct changes to the file.
- * Generated at: 2025-07-22T09:42:26.113Z
  */
 
 import { z } from 'zod';

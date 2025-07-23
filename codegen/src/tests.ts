@@ -213,7 +213,6 @@ function createTestUtilitiesContent(): string {
   return `/**
  * Test utilities for JSON RPC test generation.
  * This file was auto-generated - do not edit manually.
- * Generated at: ${new Date().toISOString()}
  */
 
 import type { RpcMethod, ApiRequest } from '@space-rock/jsonrpc-types';
@@ -547,7 +546,6 @@ function createUnitTestContent(method: string): string {
   return `/**
  * Unit tests for ${method} RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: ${new Date().toISOString()}
  */
 
 import { describe, it, expect } from 'vitest';
@@ -708,7 +706,6 @@ function createIntegrationTestContent(method: string): string {
   return `/**
  * Integration tests for ${method} RPC method.
  * This file was auto-generated - do not edit manually.
- * Generated at: ${new Date().toISOString()}
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
@@ -879,7 +876,6 @@ async function generateTypeTests(
   const indexDtsContent = `/**
  * Type definitions for test files
  * This file was auto-generated - do not edit manually.
- * Generated at: ${new Date().toISOString()}
  */
 
 // Re-export all types from the main packages for testing
@@ -902,7 +898,6 @@ function createTypeTestContent(methods: string[]): string {
   return `/**
  * TypeScript type tests for JSON RPC methods.
  * This file was auto-generated - do not edit manually.
- * Generated at: ${new Date().toISOString()}
  */
 
 import { expectType, expectAssignable } from 'tsd';
@@ -999,7 +994,6 @@ async function generateClientTests(outputDir: string): Promise<void> {
   const clientTestContent = `/**
  * Unit tests for JSON RPC client package.
  * Tests the client functionality, error handling, and utility functions.
- * Generated at: ${new Date().toISOString()}
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -1403,7 +1397,6 @@ async function generateMappingTests(outputDir: string): Promise<void> {
   const mappingTestContent = `/**
  * Unit tests for JSON RPC mappings.
  * Tests the mapping utility functions for schema retrieval.
- * Generated at: ${new Date().toISOString()}
  */
 
 import { describe, it, expect } from 'vitest';

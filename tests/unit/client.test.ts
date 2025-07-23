@@ -1,7 +1,6 @@
 /**
  * Unit tests for JSON RPC client package.
  * Tests the client functionality, error handling, and utility functions.
- * Generated at: 2025-07-22T09:42:26.842Z
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';

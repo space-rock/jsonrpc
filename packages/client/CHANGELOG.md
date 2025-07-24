@@ -2,12 +2,11 @@
 
 ## [0.2.4](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.3...jsonrpc-client-v0.2.4) (2025-07-23)
 
-
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * dependencies
-    * @space-rock/jsonrpc-types bumped to 0.2.4
+- The following workspace dependencies were updated
+  - dependencies
+    - @space-rock/jsonrpc-types bumped to 0.2.4
 
 ## [0.2.3](https://github.com/space-rock/json/compare/jsonrpc-client-v0.2.2...jsonrpc-client-v0.2.3) (2025-07-22)
 

@@ -1,3 +1,5 @@
+import { ZodError } from 'zod';
+
 export function toSnakeCase(obj: unknown): unknown {
   if (obj === null || typeof obj !== 'object') return obj;
   if (Array.isArray(obj)) return obj.map(toSnakeCase);
@@ -29,4 +31,15 @@ export function toCamelCase(obj: unknown): unknown {
   }
 
   return result;
+}
+
+export function formatZodError(error: ZodError): Record<string, string> {
+  const errors: Record<string, string> = {};
+
+  error.issues.forEach(issue => {
+    const path = issue.path.join('.');
+    errors[path] = issue.message;
+  });
+
+  return errors;
 }

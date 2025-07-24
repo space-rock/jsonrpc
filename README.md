@@ -117,12 +117,12 @@ pnpm build
 
 ## Documentation Overview
 
-| Document                                    | Description                  |
-| ------------------------------------------- | ---------------------------- |
-| [CONTRIBUTING.md](../CONTRIBUTING.md)       | Contribution guidelines      |
-| [SETUP.md](../SETUP.md)                     | Development setup guide      |
-| [CODE_GENERATION.md](../CODE_GENERATION.md) | Code generation guide        |
-| [DEPLOYMENT.md](../DEPLOYMENT.md)           | Deployment and release guide |
+| Document                                   | Description                  |
+| ------------------------------------------ | ---------------------------- |
+| [CONTRIBUTING.md](./CONTRIBUTING.md)       | Contribution guidelines      |
+| [SETUP.md](./SETUP.md)                     | Development setup guide      |
+| [CODE_GENERATION.md](./CODE_GENERATION.md) | Code generation guide        |
+| [DEPLOYMENT.md](./DEPLOYMENT.md)           | Deployment and release guide |
 
 ## Development
 

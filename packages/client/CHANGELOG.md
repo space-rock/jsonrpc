@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.4...jsonrpc-client-v0.2.5) (2025-07-24)
+
+
+### Features
+
+* add request method ([#10](https://github.com/space-rock/jsonrpc/issues/10)) ([4739685](https://github.com/space-rock/jsonrpc/commit/47396854dc96e1a3d1c96a47d29122e82af6e6e7))
+
 ## [0.2.4](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.3...jsonrpc-client-v0.2.4) (2025-07-23)
 
 

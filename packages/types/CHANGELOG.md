@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.2.4...jsonrpc-types-v0.2.5) (2025-07-25)
+
+
+### Features
+
+* added example usages for all methods, fixed query method ([#12](https://github.com/space-rock/jsonrpc/issues/12)) ([b168a5c](https://github.com/space-rock/jsonrpc/commit/b168a5caa3fabc8ca7f5d55dc3a1f166530ee68c))
+
 ## [0.2.4](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.2.3...jsonrpc-types-v0.2.4) (2025-07-23)
 
 

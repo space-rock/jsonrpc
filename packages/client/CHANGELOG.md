@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.7](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.6...jsonrpc-client-v0.2.7) (2025-07-25)
+
+
+### Bug Fixes
+
+* format zod errors ([#14](https://github.com/space-rock/jsonrpc/issues/14)) ([63d838c](https://github.com/space-rock/jsonrpc/commit/63d838c50ff65ab5f00cf9a30a7e2182099603c0))
+
 ## [0.2.6](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.5...jsonrpc-client-v0.2.6) (2025-07-25)
 
 

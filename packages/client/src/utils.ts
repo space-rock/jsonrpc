@@ -36,10 +36,28 @@ export function toCamelCase(obj: unknown): unknown {
 export function formatZodError(error: ZodError): Record<string, string> {
   const errors: Record<string, string> = {};
 
-  error.issues.forEach(issue => {
-    const path = issue.path.join('.');
-    errors[path] = issue.message;
-  });
+  function processIssues(issues: any[], basePath: string[] = []) {
+    issues.forEach(issue => {
+      const fullPath = [...basePath, ...issue.path];
+      const pathString = fullPath.join('.');
+
+      if (issue.code === 'invalid_union' && issue.unionErrors) {
+        issue.unionErrors.forEach((unionError: any) => {
+          if (unionError.issues) {
+            processIssues(unionError.issues, basePath);
+          }
+        });
+
+        if (fullPath.length > 0) {
+          errors[pathString] = issue.message;
+        }
+      } else {
+        errors[pathString] = issue.message;
+      }
+    });
+  }
+
+  processIssues(error.issues);
 
   return errors;
 }

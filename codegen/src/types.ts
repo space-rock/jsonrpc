@@ -199,7 +199,10 @@ async function convertOpenAPIToTypes() {
     }
 
     // Use ts-morph to process and enhance the generated types into three separate files
-    const { map, types } = await processOpenApiTypesWithTsMorph(outputString);
+    const { map, types } = await processOpenApiTypesWithTsMorph(
+      outputString,
+      spec,
+    );
 
     await fs.writeFile(typesOutputPath, types);
     console.log(
@@ -539,6 +542,54 @@ function makeRpcErrorCauseOptional(node: Node) {
   propertiesToModify.forEach(prop => prop.setHasQuestionToken(true));
 }
 
+/**
+ * Fixes anyOf types that have properties by converting them to intersection types.
+ * This handles cases where a schema has both anyOf and properties, which should be
+ * represented as an intersection of the properties with a union of the anyOf schemas.
+ * @param originalTypeText - The original type text from openapi-typescript
+ * @param schemaName - The name of the schema being processed
+ * @param openApiSpec - The original OpenAPI specification
+ * @returns The fixed type text
+ */
+function fixAnyOfWithProperties(
+  originalTypeText: string,
+  schemaName: string,
+  openApiSpec: any,
+): string {
+  // Get the schema definition from the OpenAPI spec
+  const schemaDef = openApiSpec?.components?.schemas?.[schemaName];
+  if (!schemaDef) {
+    return originalTypeText;
+  }
+
+  // Check if this schema has both anyOf and properties
+  if (schemaDef.anyOf && schemaDef.properties && schemaDef.type === 'object') {
+    // Check if the original type is a union (which is the problem we're trying to fix)
+    if (originalTypeText.includes('|')) {
+      // Parse the union type and separate the properties from the anyOf types
+      const parts = originalTypeText.split('|').map(part => part.trim());
+
+      if (parts.length > 1) {
+        // Find the part that represents the properties (it should be the first object literal)
+        const propertiesPart = parts.find(
+          part => part.startsWith('{') && part.includes(':'),
+        );
+
+        // Get the remaining parts that represent the anyOf types
+        const anyOfParts = parts.filter(part => part !== propertiesPart);
+
+        if (propertiesPart && anyOfParts.length > 0) {
+          // Transform to intersection type
+          const anyOfUnion = anyOfParts.join(' | ');
+          return `${propertiesPart} & (${anyOfUnion})`;
+        }
+      }
+    }
+  }
+
+  return originalTypeText;
+}
+
 function applyTypePatches(originalTypeText: string): string {
   // Replace Record<string, never> with {} for empty object types
   if (originalTypeText.includes('Record<string, never>')) {
@@ -552,10 +603,12 @@ function applyTypePatches(originalTypeText: string): string {
  * Processes the OpenAPI-generated TypeScript content using ts-morph.
  * Generates both original types and camelCase variants, along with utility types.
  * @param content - The raw TypeScript content from openapi-typescript
+ * @param openApiSpec - The original OpenAPI specification
  * @returns An object containing the processed types and mappings
  */
 async function processOpenApiTypesWithTsMorph(
   content: string,
+  openApiSpec: any,
 ): Promise<{ map: string; types: string }> {
   const project = new Project({
     compilerOptions: {
@@ -610,7 +663,14 @@ async function processOpenApiTypesWithTsMorph(
       const originalTypeText = typeAliasTypeNode.getText();
 
       // Apply type patches for specific request types
-      const patchedTypeText = applyTypePatches(originalTypeText);
+      let patchedTypeText = applyTypePatches(originalTypeText);
+
+      // Fix anyOf with properties issue
+      patchedTypeText = fixAnyOfWithProperties(
+        patchedTypeText,
+        name,
+        openApiSpec,
+      );
 
       typesOutputFile.addTypeAlias({
         isExported: true,

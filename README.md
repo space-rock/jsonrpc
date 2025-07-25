@@ -79,7 +79,10 @@ import { createRpcClient } from '@space-rock/jsonrpc-client';
 // Initialize client
 const client = createRpcClient('https://near.lava.build:443');
 
-// Make type-safe requests with autocomplete
+// Use the simplified request method
+const response = await client.request('block', { finality: 'final' });
+
+// Use the full JSON-RPC call method
 const response = await client.call({
   id: 'dontcare',
   jsonrpc: '2.0',

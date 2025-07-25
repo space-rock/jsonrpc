@@ -1270,18 +1270,21 @@ export const ValidatorInfoSchema = z.object({
   accountId: AccountIdSchema,
 });
 
-export const RpcTransactionStatusRequestSchema = z.union([
-  z.object({
+export const RpcTransactionStatusRequestSchema = z
+  .object({
     waitUntil: TxExecutionStatusSchema,
-  }),
-  z.object({
-    signedTxBase64: SignedTransactionSchema,
-  }),
-  z.object({
-    senderAccountId: AccountIdSchema,
-    txHash: CryptoHashSchema,
-  }),
-]);
+  })
+  .and(
+    z.union([
+      z.object({
+        signedTxBase64: SignedTransactionSchema,
+      }),
+      z.object({
+        senderAccountId: AccountIdSchema,
+        txHash: CryptoHashSchema,
+      }),
+    ]),
+  );
 
 export const AccountCreationConfigViewSchema = z.object({
   minAllowedTopLevelAccountLength: z.number(),
@@ -2231,18 +2234,21 @@ export const RpcNetworkInfoResponseSchema = z.object({
   sentBytesPerSec: z.number(),
 });
 
-export const RpcQueryResponseSchema = z.union([
-  z.object({
+export const RpcQueryResponseSchema = z
+  .object({
     blockHash: CryptoHashSchema,
     blockHeight: z.number(),
-  }),
-  AccountViewSchema,
-  ContractCodeViewSchema,
-  ViewStateResultSchema,
-  CallResultSchema,
-  AccessKeyViewSchema,
-  AccessKeyListSchema,
-]);
+  })
+  .and(
+    z.union([
+      AccountViewSchema,
+      ContractCodeViewSchema,
+      ViewStateResultSchema,
+      CallResultSchema,
+      AccessKeyViewSchema,
+      AccessKeyListSchema,
+    ]),
+  );
 
 export const JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcErrorSchema =
   z
@@ -3367,13 +3373,16 @@ export const JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema: z.Zo
 
 export const RpcTransactionResponseSchema: z.ZodSchema<RpcTransactionResponse> =
   z.lazy(() =>
-    z.union([
-      z.object({
+    z
+      .object({
         finalExecutionStatus: TxExecutionStatusSchema,
-      }),
-      FinalExecutionOutcomeWithReceiptViewSchema,
-      FinalExecutionOutcomeViewSchema,
-    ]),
+      })
+      .and(
+        z.union([
+          FinalExecutionOutcomeWithReceiptViewSchema,
+          FinalExecutionOutcomeViewSchema,
+        ]),
+      ),
   );
 
 export const ReceiptEnumViewSchema: z.ZodSchema<ReceiptEnumView> = z.lazy(() =>

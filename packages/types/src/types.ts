@@ -3409,18 +3409,18 @@ export type RpcQueryRequest =
       /** @enum {string} */
       requestType: 'view_global_contract_code_by_account_id';
     });
-export type RpcQueryResponse =
-  | {
-      blockHash: CryptoHash;
-      /** Format: uint64 */
-      blockHeight: number;
-    }
+export type RpcQueryResponse = {
+  blockHash: CryptoHash;
+  /** Format: uint64 */
+  blockHeight: number;
+} & (
   | AccountView
   | ContractCodeView
   | ViewStateResult
   | CallResult
   | AccessKeyView
-  | AccessKeyList;
+  | AccessKeyList
+);
 export type RpcReceiptRequest = {
   receiptId: CryptoHash;
 };
@@ -3674,24 +3674,21 @@ export type RpcStatusResponse = {
   /** @description Binary version. */
   version: Version;
 };
-export type RpcTransactionResponse =
-  | {
-      finalExecutionStatus: TxExecutionStatus;
-    }
-  | FinalExecutionOutcomeWithReceiptView
-  | FinalExecutionOutcomeView;
-export type RpcTransactionStatusRequest =
-  | {
-      /** @default EXECUTED_OPTIMISTIC */
-      waitUntil: TxExecutionStatus;
-    }
+export type RpcTransactionResponse = {
+  finalExecutionStatus: TxExecutionStatus;
+} & (FinalExecutionOutcomeWithReceiptView | FinalExecutionOutcomeView);
+export type RpcTransactionStatusRequest = {
+  /** @default EXECUTED_OPTIMISTIC */
+  waitUntil: TxExecutionStatus;
+} & (
   | {
       signedTxBase64: SignedTransaction;
     }
   | {
       senderAccountId: AccountId;
       txHash: CryptoHash;
-    };
+    }
+);
 export type RpcValidatorRequest =
   | 'latest'
   | {

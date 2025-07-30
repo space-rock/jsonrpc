@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALSplitStorageInfo,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,12 +10,7 @@ export async function exampleExperimentalSplitStorageInfo() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_split_storage_info',
-      params: {},
-    });
+    const response = await EXPERIMENTALSplitStorageInfo(client, {});
 
     if ('error' in response) {
       console.error('❌ Error:', response.error.message);

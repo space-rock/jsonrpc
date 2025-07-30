@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALReceipt,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,13 +10,8 @@ export async function exampleExperimentalReceipt() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_receipt',
-      params: {
-        receiptId: '1hQdiKb1kZbs9nuGVxdzVA1oZm2ogot3mEymjC2jTCy',
-      },
+    const response = await EXPERIMENTALReceipt(client, {
+      receiptId: '1hQdiKb1kZbs9nuGVxdzVA1oZm2ogot3mEymjC2jTCy',
     });
 
     if ('error' in response) {

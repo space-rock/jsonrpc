@@ -1,4 +1,4 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { createRpcClient, validators } from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,12 +7,7 @@ export async function exampleValidators() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'validators',
-      params: 'latest',
-    });
+    const response = await validators(client, 'latest');
 
     if ('error' in response) {
       console.error('❌ Error:', response.error.message);

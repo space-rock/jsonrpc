@@ -1,4 +1,4 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { createRpcClient, status } from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,12 +7,7 @@ export async function exampleStatus() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'status',
-      params: null,
-    });
+    const response = await status(client, null);
 
     if ('error' in response) {
       console.error('❌ Error:', response.error.message);

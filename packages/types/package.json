@@ -10,28 +10,13 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./mappings": {
-      "types": "./dist/mappings.d.ts",
-      "import": "./dist/mappings.js",
-      "require": "./dist/mappings.cjs"
-    },
-    "./schemas": {
-      "types": "./dist/schemas.d.ts",
-      "import": "./dist/schemas.js",
-      "require": "./dist/schemas.cjs"
-    },
-    "./types": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/types.js",
-      "require": "./dist/types.cjs"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm clean && pnpm rollup -c",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -40,24 +25,26 @@
     "types",
     "typescript"
   ],
-  "author": "",
+  "author": "NEAR Inc",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/@near-js/jsonrpc-types.git",
+    "url": "git+https://github.com/near/jsonrpc-client-js.git",
     "directory": "packages/types"
   },
-  "homepage": "https://github.com/@near-js/jsonrpc-types#readme",
+  "homepage": "https://github.com/near/jsonrpc-client-js#readme",
   "bugs": {
-    "url": "https://github.com/@near-js/jsonrpc-types/issues"
+    "url": "https://github.com/near/jsonrpc-client-js/issues"
   },
   "dependencies": {
-    "zod": "~3.25.67"
+    "valibot": "~1.1.0",
+    "zod": "~4.0.10"
   },
   "devDependencies": {
     "typescript": "~5.8.3"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "sideEffects": false
 }

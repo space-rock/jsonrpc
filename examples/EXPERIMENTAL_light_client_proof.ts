@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALLightClientProof,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,16 +10,11 @@ export async function exampleExperimentalLightClientProof() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_light_client_proof',
-      params: {
-        lightClientHead: '',
-        receiptId: '',
-        receiverId: 'relay.tg',
-        type: 'receipt',
-      },
+    const response = await EXPERIMENTALLightClientProof(client, {
+      lightClientHead: '',
+      receiptId: '',
+      receiverId: 'relay.tg',
+      type: 'receipt',
     });
 
     if ('error' in response) {

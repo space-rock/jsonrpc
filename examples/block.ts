@@ -1,4 +1,4 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { createRpcClient, block } from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,13 +7,8 @@ export async function exampleBlock() {
 
   // Example 1: Get latest finalized block
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'block',
-      params: {
-        finality: 'final',
-      },
+    const response = await block(client, {
+      finality: 'final',
     });
 
     if ('error' in response) {
@@ -27,13 +22,8 @@ export async function exampleBlock() {
 
   // Example 2: Get block by height
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'block',
-      params: {
-        blockId: 100_000_000,
-      },
+    const response = await block(client, {
+      blockId: 100_000_000,
     });
 
     if ('error' in response) {
@@ -47,13 +37,8 @@ export async function exampleBlock() {
 
   // Example 3: Get block by hash
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'block',
-      params: {
-        blockId: 'GLCuCE2yNJWH2EfWJu7pSM8swd5qd1RG71pwV4YFbUz7',
-      },
+    const response = await block(client, {
+      blockId: 'GLCuCE2yNJWH2EfWJu7pSM8swd5qd1RG71pwV4YFbUz7',
     });
 
     if ('error' in response) {

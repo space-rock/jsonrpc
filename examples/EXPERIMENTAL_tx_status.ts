@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALTxStatus,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,15 +10,10 @@ export async function exampleExperimentalTxStatus() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_tx_status',
-      params: {
-        txHash: 'EfuaqL1ZLQbmPEFHTF7ttBB7sSCwt8SzoWqCjt2E85vV',
-        waitUntil: 'EXECUTED',
-        senderAccountId: 'sarinr.near',
-      },
+    const response = await EXPERIMENTALTxStatus(client, {
+      txHash: 'EfuaqL1ZLQbmPEFHTF7ttBB7sSCwt8SzoWqCjt2E85vV',
+      waitUntil: 'EXECUTED',
+      senderAccountId: 'sarinr.near',
     });
 
     if ('error' in response) {

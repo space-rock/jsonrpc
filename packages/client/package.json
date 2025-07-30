@@ -10,23 +10,13 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./client": {
-      "types": "./dist/client.d.ts",
-      "import": "./dist/client.js",
-      "require": "./dist/client.cjs"
-    },
-    "./utils": {
-      "types": "./dist/utils.d.ts",
-      "import": "./dist/utils.js",
-      "require": "./dist/utils.cjs"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm clean && pnpm rollup -c",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -48,7 +38,7 @@
   },
   "dependencies": {
     "@space-rock/jsonrpc-types": "workspace:^",
-    "zod": "~3.25.67"
+    "zod": "~4.0.10"
   },
   "devDependencies": {
     "@types/node": "~22.16.4",

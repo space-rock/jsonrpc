@@ -1,4 +1,4 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { createRpcClient, gasPrice } from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,13 +7,8 @@ export async function exampleGasPrice() {
 
   // Example 1: Get current gas price
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'gas_price',
-      params: {
-        blockId: null,
-      },
+    const response = await gasPrice(client, {
+      blockId: null,
     });
 
     if ('error' in response) {
@@ -27,20 +22,11 @@ export async function exampleGasPrice() {
 
   // Example 2: Get gas price at specific block
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'gas_price',
-      params: {
-        blockId: 104325446,
-      },
+    const result = await gasPrice(client, {
+      blockId: 104325446,
     });
 
-    if ('error' in response) {
-      console.error('❌ Error:', response.error.message);
-    } else {
-      console.log('✅ Success:', response.result);
-    }
+    console.log('✅ Success:', result);
   } catch (error) {
     console.error('💥 Request failed:', error);
   }

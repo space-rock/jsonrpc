@@ -1,4 +1,4 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { createRpcClient, query } from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,15 +7,10 @@ export async function exampleQuery() {
 
   // Example 1: View account information
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_account',
-        finality: 'final',
-        accountId: 'sarinr.near',
-      },
+    const response = await query(client, {
+      requestType: 'view_account',
+      finality: 'final',
+      accountId: 'sarinr.near',
     });
 
     if ('error' in response) {
@@ -29,17 +24,12 @@ export async function exampleQuery() {
 
   // Example 2: Call contract function
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'call_function',
-        finality: 'final',
-        accountId: 'wrap.near',
-        methodName: 'ft_metadata',
-        argsBase64: '',
-      },
+    const response = await query(client, {
+      requestType: 'call_function',
+      finality: 'final',
+      accountId: 'wrap.near',
+      methodName: 'ft_metadata',
+      argsBase64: '',
     });
 
     if ('error' in response) {
@@ -53,16 +43,11 @@ export async function exampleQuery() {
 
   // Example 3: View access key
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_access_key',
-        accountId: 'sarinr.near',
-        finality: 'final',
-        publicKey: 'ed25519:4C68GBMUsrbMDb64wNfXSBqSbyLRNS44C98gTpWpszHb',
-      },
+    const response = await query(client, {
+      requestType: 'view_access_key',
+      accountId: 'sarinr.near',
+      finality: 'final',
+      publicKey: 'ed25519:4C68GBMUsrbMDb64wNfXSBqSbyLRNS44C98gTpWpszHb',
     });
 
     if ('error' in response) {
@@ -76,15 +61,10 @@ export async function exampleQuery() {
 
   // Example 4: View access key list
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_access_key_list',
-        accountId: 'sarinr.near',
-        finality: 'final',
-      },
+    const response = await query(client, {
+      requestType: 'view_access_key_list',
+      accountId: 'sarinr.near',
+      finality: 'final',
     });
 
     if ('error' in response) {
@@ -98,15 +78,10 @@ export async function exampleQuery() {
 
   // Example 5: View contract code
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_code',
-        accountId: 'wrap.near',
-        finality: 'final',
-      },
+    const response = await query(client, {
+      requestType: 'view_code',
+      accountId: 'wrap.near',
+      finality: 'final',
     });
 
     if ('error' in response) {
@@ -120,15 +95,10 @@ export async function exampleQuery() {
 
   // Example 6: View global contract code
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_global_contract_code',
-        finality: 'final',
-        codeHash: '',
-      },
+    const response = await query(client, {
+      requestType: 'view_global_contract_code',
+      finality: 'final',
+      codeHash: '',
     });
 
     if ('error' in response) {
@@ -142,15 +112,10 @@ export async function exampleQuery() {
 
   // Example 7: View global contract code by account id
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_global_contract_code_by_account_id',
-        finality: 'final',
-        accountId: 'wrap.near',
-      },
+    const response = await query(client, {
+      requestType: 'view_global_contract_code_by_account_id',
+      finality: 'final',
+      accountId: 'wrap.near',
     });
 
     if ('error' in response) {
@@ -164,16 +129,11 @@ export async function exampleQuery() {
 
   // Example 8: View contract state
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'query',
-      params: {
-        requestType: 'view_state',
-        finality: 'final',
-        accountId: 'nearone.pool.near',
-        prefixBase64: '',
-      },
+    const response = await query(client, {
+      requestType: 'view_state',
+      finality: 'final',
+      accountId: 'nearone.pool.near',
+      prefixBase64: '',
     });
 
     if ('error' in response) {

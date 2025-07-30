@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import path from 'path';
+import path, { join } from 'path';
 import {
   IndexedAccessTypeNode,
   InterfaceDeclaration,
@@ -10,7 +10,6 @@ import {
   SyntaxKind,
   ts,
   TypeLiteralNode,
-  VariableDeclarationKind,
 } from 'ts-morph';
 
 /**
@@ -358,7 +357,6 @@ function extractRpcMethodInfo(
 function generateZodSchemaMappings(
   operationsInterface: InterfaceDeclaration,
   schemasType: TypeLiteralNode,
-  schemaOutputFile: SourceFile,
 ): boolean {
   const methodInfos = extractRpcMethodInfo(operationsInterface, schemasType);
 
@@ -385,55 +383,104 @@ function generateZodSchemaMappings(
     });
   });
 
-  // Add import for Zod
-  schemaOutputFile.insertImportDeclaration(0, {
-    moduleSpecifier: 'zod',
-    namedImports: [{ name: 'z' }],
+  // Note: We no longer generate methodSchemas, getRequestSchema, or getResponseSchema
+  // as these are handled by individual method files now
+  // This function is kept for potential future use but currently does minimal work
+
+  return true;
+}
+
+/**
+ * Generates individual method files for each RPC method.
+ * Each file exports a function that calls the RPC client with the appropriate schemas.
+ * @param operationsInterface - The operations interface from OpenAPI spec
+ * @param schemasType - The schemas type literal from components
+ * @param project - The ts-morph project instance
+ * @param basePath - The base path for output files
+ * @returns true if method files were generated successfully
+ */
+async function generateMethodFiles(
+  operationsInterface: InterfaceDeclaration,
+  schemasType: TypeLiteralNode,
+): Promise<boolean> {
+  const methodInfos = extractRpcMethodInfo(operationsInterface, schemasType);
+
+  if (methodInfos.length === 0) return false;
+
+  // Create a separate project for method files that saves to disk
+  const methodProject = new Project({
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ESNext,
+    },
   });
 
-  // Add schema imports
-  schemaOutputFile.insertImportDeclaration(1, {
-    moduleSpecifier: './schemas',
-    namedImports: Array.from(usedSchemas).map(schema => ({ name: schema })),
-  });
+  // Create method directory if it doesn't exist
+  const methodDir = path.join(process.cwd(), '../packages/client/src/method');
+  await fs.mkdir(methodDir, { recursive: true });
 
-  const schemaMapEntries = methodMapping
-    .sort((a, b) => a.method.localeCompare(b.method))
-    .map(
-      m =>
-        `  "${m.method}": {\n    request: ${m.requestSchema},\n    response: ${m.responseSchema},\n  }`,
-    )
-    .join(',\n');
+  for (const { method, requestSchemaName, responseSchemaName } of methodInfos) {
+    const methodFile = methodProject.createSourceFile(
+      join(methodDir, `${snakeToCamel(method)}.ts`),
+      undefined,
+      { overwrite: true },
+    );
 
-  schemaOutputFile.addVariableStatement({
-    declarationKind: VariableDeclarationKind.Const,
-    declarations: [
-      {
-        initializer: `{\n${schemaMapEntries}\n} as const`,
-        name: 'methodSchemas',
+    // Add imports
+    methodFile.addImportDeclaration({
+      moduleSpecifier: '../client',
+      namedImports: [{ name: 'RpcClient', isTypeOnly: true }],
+    });
+
+    methodFile.addImportDeclaration({
+      moduleSpecifier: '@space-rock/jsonrpc-types',
+      namedImports: [
+        { name: requestSchemaName, isTypeOnly: true },
+        { name: responseSchemaName, isTypeOnly: true },
+        { name: `${requestSchemaName}Schema` },
+        { name: `${responseSchemaName}Schema` },
+      ],
+    });
+
+    // Add the method function
+    const paramsType = `${requestSchemaName}['params']`;
+
+    methodFile.addFunction({
+      name: snakeToCamel(method),
+      isExported: true,
+      isAsync: true,
+      parameters: [
+        { name: 'client', type: 'RpcClient' },
+        { name: 'params', type: paramsType },
+      ],
+      returnType: `Promise<${responseSchemaName}>`,
+      statements: writer => {
+        writer.writeLine(
+          `return await client.call('${method}', params, ${requestSchemaName}Schema, ${responseSchemaName}Schema);`,
+        );
       },
-    ],
-    isExported: true,
-  });
+    });
 
-  // Add helper functions for schema lookup
-  schemaOutputFile.addFunction({
-    isExported: true,
-    name: 'getRequestSchema',
-    parameters: [{ name: 'method', type: 'string' }],
-    returnType: 'z.ZodSchema | undefined',
-    statements:
-      'return methodSchemas[method as keyof typeof methodSchemas]?.request;',
-  });
+    await methodFile.save();
+  }
 
-  schemaOutputFile.addFunction({
-    isExported: true,
-    name: 'getResponseSchema',
-    parameters: [{ name: 'method', type: 'string' }],
-    returnType: 'z.ZodSchema | undefined',
-    statements:
-      'return methodSchemas[method as keyof typeof methodSchemas]?.response;',
-  });
+  // Create index file for method exports
+  const indexFile = methodProject.createSourceFile(
+    join(methodDir, 'index.ts'),
+    undefined,
+    { overwrite: true },
+  );
+
+  methodInfos
+    .sort((a, b) => a.method.localeCompare(b.method))
+    .forEach(({ method }) => {
+      indexFile.addExportDeclaration({
+        moduleSpecifier: `./${snakeToCamel(method)}`,
+        namedExports: [{ name: snakeToCamel(method) }],
+      });
+    });
+
+  await indexFile.save();
 
   return true;
 }
@@ -615,7 +662,6 @@ async function processOpenApiTypesWithTsMorph(
       module: ts.ModuleKind.ESNext,
       target: ts.ScriptTarget.ESNext,
     },
-    useInMemoryFileSystem: true,
   });
 
   const initialSourceFile = project.createSourceFile('temp.ts', content);
@@ -682,17 +728,15 @@ async function processOpenApiTypesWithTsMorph(
     }
   });
 
-  // No need for CamelCase utility types since all types are generated in camelCase
-
   generateTypeScriptMethodMappings(
     operationsInterface,
     schemasType,
     mapOutputFile,
   );
-  generateZodSchemaMappings(operationsInterface, schemasType, mapOutputFile);
+  generateZodSchemaMappings(operationsInterface, schemasType);
 
-  typesOutputFile.formatText();
-  mapOutputFile.formatText();
+  // Generate method files
+  await generateMethodFiles(operationsInterface, schemasType);
 
   return {
     map: mapOutputFile.getFullText(),

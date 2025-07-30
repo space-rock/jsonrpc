@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.6](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.2.5...jsonrpc-types-v0.2.6) (2025-07-30)
+
+
+### Features
+
+* implement full tree-shaking ([#17](https://github.com/space-rock/jsonrpc/issues/17)) ([651cc84](https://github.com/space-rock/jsonrpc/commit/651cc8491515135eedf8cf66bbae8c05e954b8f3))
+
 ## [0.2.5](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.2.4...jsonrpc-types-v0.2.5) (2025-07-25)
 
 

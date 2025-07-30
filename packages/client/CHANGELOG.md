@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.8](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.7...jsonrpc-client-v0.2.8) (2025-07-30)
+
+
+### Features
+
+* implement full tree-shaking ([#17](https://github.com/space-rock/jsonrpc/issues/17)) ([651cc84](https://github.com/space-rock/jsonrpc/commit/651cc8491515135eedf8cf66bbae8c05e954b8f3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @space-rock/jsonrpc-types bumped to 0.2.6
+
 ## [0.2.7](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.6...jsonrpc-client-v0.2.7) (2025-07-25)
 
 

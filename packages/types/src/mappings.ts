@@ -26,6 +26,7 @@ import {
   JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema,
   JsonRpcRequest_for_blockSchema,
   JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema,
+  JsonRpcRequest_for_block_effectsSchema,
   JsonRpcRequest_for_broadcast_tx_asyncSchema,
   JsonRpcResponse_for_CryptoHash_and_RpcErrorSchema,
   JsonRpcRequest_for_broadcast_tx_commitSchema,
@@ -36,9 +37,11 @@ import {
   JsonRpcResponse_for_RpcClientConfigResponse_and_RpcErrorSchema,
   JsonRpcRequest_for_gas_priceSchema,
   JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema,
+  JsonRpcRequest_for_genesis_configSchema,
   JsonRpcRequest_for_healthSchema,
   JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema,
   JsonRpcRequest_for_light_client_proofSchema,
+  JsonRpcRequest_for_maintenance_windowsSchema,
   JsonRpcRequest_for_network_infoSchema,
   JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcErrorSchema,
   JsonRpcRequest_for_next_light_client_blockSchema,
@@ -79,6 +82,7 @@ import {
   JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcError,
   JsonRpcRequest_for_block,
   JsonRpcResponse_for_RpcBlockResponse_and_RpcError,
+  JsonRpcRequest_for_block_effects,
   JsonRpcRequest_for_broadcast_tx_async,
   JsonRpcResponse_for_CryptoHash_and_RpcError,
   JsonRpcRequest_for_broadcast_tx_commit,
@@ -89,9 +93,11 @@ import {
   JsonRpcResponse_for_RpcClientConfigResponse_and_RpcError,
   JsonRpcRequest_for_gas_price,
   JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError,
+  JsonRpcRequest_for_genesis_config,
   JsonRpcRequest_for_health,
   JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError,
   JsonRpcRequest_for_light_client_proof,
+  JsonRpcRequest_for_maintenance_windows,
   JsonRpcRequest_for_network_info,
   JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcError,
   JsonRpcRequest_for_next_light_client_block,
@@ -114,6 +120,10 @@ export type MethodMap = {
   block: {
     request: JsonRpcRequest_for_block;
     response: JsonRpcResponse_for_RpcBlockResponse_and_RpcError;
+  };
+  block_effects: {
+    request: JsonRpcRequest_for_block_effects;
+    response: JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcError;
   };
   broadcast_tx_async: {
     request: JsonRpcRequest_for_broadcast_tx_async;
@@ -187,6 +197,10 @@ export type MethodMap = {
     request: JsonRpcRequest_for_gas_price;
     response: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError;
   };
+  genesis_config: {
+    request: JsonRpcRequest_for_genesis_config;
+    response: JsonRpcResponse_for_GenesisConfig_and_RpcError;
+  };
   health: {
     request: JsonRpcRequest_for_health;
     response: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError;
@@ -194,6 +208,10 @@ export type MethodMap = {
   light_client_proof: {
     request: JsonRpcRequest_for_light_client_proof;
     response: JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcError;
+  };
+  maintenance_windows: {
+    request: JsonRpcRequest_for_maintenance_windows;
+    response: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcError;
   };
   network_info: {
     request: JsonRpcRequest_for_network_info;
@@ -232,6 +250,11 @@ export const methodSchemas = {
   block: {
     request: JsonRpcRequest_for_blockSchema,
     response: JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema,
+  },
+  block_effects: {
+    request: JsonRpcRequest_for_block_effectsSchema,
+    response:
+      JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErrorSchema,
   },
   broadcast_tx_async: {
     request: JsonRpcRequest_for_broadcast_tx_asyncSchema,
@@ -312,6 +335,10 @@ export const methodSchemas = {
     request: JsonRpcRequest_for_gas_priceSchema,
     response: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema,
   },
+  genesis_config: {
+    request: JsonRpcRequest_for_genesis_configSchema,
+    response: JsonRpcResponse_for_GenesisConfig_and_RpcErrorSchema,
+  },
   health: {
     request: JsonRpcRequest_for_healthSchema,
     response: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema,
@@ -320,6 +347,10 @@ export const methodSchemas = {
     request: JsonRpcRequest_for_light_client_proofSchema,
     response:
       JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErrorSchema,
+  },
+  maintenance_windows: {
+    request: JsonRpcRequest_for_maintenance_windowsSchema,
+    response: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema,
   },
   network_info: {
     request: JsonRpcRequest_for_network_infoSchema,

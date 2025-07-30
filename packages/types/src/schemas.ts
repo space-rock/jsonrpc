@@ -738,6 +738,13 @@ export const RpcGasPriceRequestSchema = z.object({
   blockId: z.union([BlockIdSchema, z.null()]).optional(),
 });
 
+export const JsonRpcRequest_for_genesis_configSchema = z.object({
+  id: z.string(),
+  jsonrpc: z.string(),
+  method: z.literal('genesis_config'),
+  params: GenesisConfigRequestSchema,
+});
+
 export const RpcHealthRequestSchema = z.null();
 
 export const JsonRpcRequest_for_light_client_proofSchema = z.object({
@@ -745,6 +752,13 @@ export const JsonRpcRequest_for_light_client_proofSchema = z.object({
   jsonrpc: z.string(),
   method: z.literal('light_client_proof'),
   params: RpcLightClientExecutionProofRequestSchema,
+});
+
+export const JsonRpcRequest_for_maintenance_windowsSchema = z.object({
+  id: z.string(),
+  jsonrpc: z.string(),
+  method: z.literal('maintenance_windows'),
+  params: RpcMaintenanceWindowsRequestSchema,
 });
 
 export const RpcNetworkInfoRequestSchema = z.null();
@@ -1701,6 +1715,13 @@ export const RpcBlockRequestSchema = z.union([
     syncCheckpoint: SyncCheckpointSchema,
   }),
 ]);
+
+export const JsonRpcRequest_for_block_effectsSchema = z.object({
+  id: z.string(),
+  jsonrpc: z.string(),
+  method: z.literal('block_effects'),
+  params: RpcStateChangesInBlockRequestSchema,
+});
 
 export const RpcSendTransactionRequestSchema = z.object({
   signedTxBase64: SignedTransactionSchema,
@@ -2749,6 +2770,7 @@ export const RpcClientConfigResponseSchema = z.object({
     .union([ChunkDistributionNetworkConfigSchema, z.null()])
     .optional(),
   chunkRequestRetryPeriod: z.array(z.number()),
+  chunkValidationThreads: z.number(),
   chunkWaitMult: z.array(z.number()),
   clientBackgroundMigrationThreads: z.number(),
   doomslugStepPeriod: z.array(z.number()),
@@ -2781,6 +2803,9 @@ export const RpcClientConfigResponseSchema = z.object({
   saveTrieChanges: z.boolean(),
   saveTxOutcomes: z.boolean(),
   skipSyncWait: z.boolean(),
+  stateRequestServerThreads: z.number(),
+  stateRequestThrottlePeriod: z.array(z.number()),
+  stateRequestsPerThrottlePeriod: z.number(),
   stateSync: StateSyncConfigSchema,
   stateSyncEnabled: z.boolean(),
   stateSyncExternalBackoff: z.array(z.number()),
@@ -2798,9 +2823,7 @@ export const RpcClientConfigResponseSchema = z.object({
   ttlAccountIdRouter: z.array(z.number()),
   txRoutingHeightHorizon: z.number(),
   version: VersionSchema,
-  viewClientNumStateRequestsPerThrottlePeriod: z.number(),
   viewClientThreads: z.number(),
-  viewClientThrottlePeriod: z.array(z.number()),
 });
 
 export const JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcErrorSchema =

@@ -1,17 +1,17 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALMaintenanceWindows,
+} from '@space-rock/jsonrpc-client';
 
-const client = createRpcClient('https://near.lava.build:443');
+const client = createRpcClient('https://neart.lava.build:443');
 
 export async function exampleExperimentalMaintenanceWindows() {
   console.log('\n=== EXPERIMENTAL_MAINTENANCE_WINDOWS Example ===');
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_maintenance_windows',
-      params: { accountId: 'flipside.pool.near' },
+    const response = await EXPERIMENTALMaintenanceWindows(client, {
+      accountId: 'flipside.pool.near',
     });
 
     if ('error' in response) {

@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALChangesInBlock,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,13 +10,8 @@ export async function exampleExperimentalChangesInBlock() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_changes_in_block',
-      params: {
-        finality: 'final',
-      },
+    const response = await EXPERIMENTALChangesInBlock(client, {
+      finality: 'final',
     });
 
     if ('error' in response) {

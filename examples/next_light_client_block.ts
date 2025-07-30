@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  nextLightClientBlock,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,13 +10,8 @@ export async function exampleNextLightClientBlock() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'next_light_client_block',
-      params: {
-        lastBlockHash: '541mW2ZjoJypo3KcHudoMi3RYs3VYBFagBYbdBQLhwFD',
-      },
+    const response = await nextLightClientBlock(client, {
+      lastBlockHash: '541mW2ZjoJypo3KcHudoMi3RYs3VYBFagBYbdBQLhwFD',
     });
 
     if ('error' in response) {

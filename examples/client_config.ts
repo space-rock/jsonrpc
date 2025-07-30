@@ -1,18 +1,13 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { createRpcClient, clientConfig } from '@space-rock/jsonrpc-client';
 
-const client = createRpcClient('https://free.rpc.fastnear.com');
+const client = createRpcClient('https://neart.lava.build:443');
 
 export async function exampleClientConfig() {
   console.log('\n=== CLIENT_CONFIG Example ===');
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'client_config',
-      params: null,
-    });
+    const response = await clientConfig(client, null);
 
     if ('error' in response) {
       console.error('❌ Error:', response.error.message);

@@ -1,17 +1,12 @@
+import { z } from 'zod/mini';
 import type {
   ApiRequest,
   ApiResponse,
   RpcMethod,
 } from '@space-rock/jsonrpc-types';
-import { getRequestSchema, getResponseSchema } from '@space-rock/jsonrpc-types';
-import { formatZodError, toCamelCase, toSnakeCase } from './utils';
+import { toCamelCase, toSnakeCase } from './utils';
 
-type JsonRpcRequest = ApiRequest<RpcMethod>;
-
-export type RpcParams<M extends RpcMethod> = Extract<
-  JsonRpcRequest,
-  { method: M }
->['params'];
+export type RpcClient = ReturnType<typeof createRpcClient>;
 
 export class ApiError extends Error {
   constructor(
@@ -25,40 +20,50 @@ export class ApiError extends Error {
   }
 }
 
-export function createRpcClient(baseUrl: string, fetchOptions?: RequestInit) {
+export interface RpcClientOptions {
+  headers?: HeadersInit;
+  signal?: AbortSignal;
+  [key: string]: any;
+}
+
+export function createRpcClient(baseUrl: string, options?: RpcClientOptions) {
   return {
     async call<M extends RpcMethod>(
-      request: Extract<JsonRpcRequest, { method: M }>,
+      method: M,
+      params: ApiRequest<M>['params'],
+      requestSchema: z.ZodMiniType<any>,
+      responseSchema: z.ZodMiniType<any>,
     ): Promise<ApiResponse<M>> {
-      const requestSchema = getRequestSchema(request.method);
+      const request = {
+        jsonrpc: '2.0' as const,
+        method,
+        params,
+        id: Math.random().toString(36).substring(7),
+      };
 
-      if (!requestSchema) {
-        throw new Error(
-          `No request schema found for method: ${request.method}`,
-        );
-      }
-
+      // Validate the request
       const validatedRequest = requestSchema.safeParse(request);
-
       if (!validatedRequest.success) {
         throw new Error(
-          `Invalid request:\n${JSON.stringify(formatZodError(validatedRequest.error), null, 2)}`,
+          `Invalid request:\n${z.prettifyError(validatedRequest.error)}`,
         );
       }
 
+      // Convert to snake_case for the API
       const snakeCaseRequest = toSnakeCase(validatedRequest.data);
 
-      const options: RequestInit = {
+      const fetchOptions: RequestInit = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...fetchOptions?.headers,
+          ...(options?.headers || {}),
         },
         body: JSON.stringify(snakeCaseRequest),
-        ...fetchOptions,
+        signal: options?.signal,
+        ...options,
       };
 
-      const response = await fetch(baseUrl, options);
+      const response = await fetch(baseUrl, fetchOptions);
 
       if (!response.ok) {
         throw new ApiError(
@@ -69,6 +74,7 @@ export function createRpcClient(baseUrl: string, fetchOptions?: RequestInit) {
 
       const data = await response.json();
 
+      // Check for JSON-RPC error
       if (data.error) {
         throw new ApiError(
           data.error.message,
@@ -78,40 +84,18 @@ export function createRpcClient(baseUrl: string, fetchOptions?: RequestInit) {
         );
       }
 
-      const responseSchema = getResponseSchema(request.method);
-
-      if (!responseSchema) {
-        throw new Error(
-          `No response schema found for method: ${request.method}`,
-        );
-      }
-
+      // Convert response to camelCase
       const camelCaseResponse = toCamelCase(data);
 
+      // Validate the response
       const validatedResponse = responseSchema.safeParse(camelCaseResponse);
-
       if (!validatedResponse.success) {
         throw new Error(
-          `Invalid response:\n${JSON.stringify(formatZodError(validatedResponse.error), null, 2)}`,
+          `Invalid response:\n${z.prettifyError(validatedResponse.error)}`,
         );
       }
 
       return validatedResponse.data as ApiResponse<M>;
-    },
-
-    async request<M extends RpcMethod>(
-      method: M,
-      params: RpcParams<M>,
-    ): Promise<ApiResponse<M>> {
-      const id = Math.random().toString(36).substring(7);
-      const request: Extract<JsonRpcRequest, { method: M }> = {
-        jsonrpc: '2.0',
-        method,
-        params,
-        id,
-      } as Extract<JsonRpcRequest, { method: M }>;
-
-      return this.call(request);
     },
   };
 }

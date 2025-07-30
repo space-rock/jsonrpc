@@ -1,4 +1,7 @@
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import {
+  createRpcClient,
+  EXPERIMENTALGenesisConfig,
+} from '@space-rock/jsonrpc-client';
 
 const client = createRpcClient('https://near.lava.build:443');
 
@@ -7,12 +10,7 @@ export async function exampleExperimentalGenesisConfig() {
 
   // Example 1: Basic usage
   try {
-    const response = await client.call({
-      id: 'dontcare',
-      jsonrpc: '2.0',
-      method: 'EXPERIMENTAL_genesis_config',
-      params: null,
-    });
+    const response = await EXPERIMENTALGenesisConfig(client, null);
 
     if ('error' in response) {
       console.error('❌ Error:', response.error.message);

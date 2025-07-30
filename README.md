@@ -43,7 +43,6 @@
 - [Packages](#packages)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Documentation Overview](#documentation-overview)
 - [Development](#development)
 - [Code Generation](#code-generation)

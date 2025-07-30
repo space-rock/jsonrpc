@@ -6,7 +6,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "isolatedModules": false
   },
   "include": ["src/**/*"],

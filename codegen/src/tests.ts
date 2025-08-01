@@ -310,7 +310,7 @@ import type { RpcMethod, ApiRequest } from '@space-rock/jsonrpc-types';
 import {
 ${schemaImports}
 } from '@space-rock/jsonrpc-types';
-import { Valimock } from 'valimock';
+import { Valimock } from '@space-rock/valimock';
 import * as v from 'valibot';
 import { fakerEN } from '@faker-js/faker';
 
@@ -454,15 +454,15 @@ export function generateDeterministicMockParams(method: RpcMethod, testId: strin
   // Generate once with deterministic faker seed
   const originalSeed = fakerEN.seed();
   fakerEN.seed(hashString(\`\${method}-\${testId}\`));
-  
+
   const data = generateMockParams(method);
   testDataCache.set(cacheKey, data);
-  
+
   // Restore original seed
   if (originalSeed) {
     fakerEN.seed(originalSeed);
   }
-  
+
   return data;
 }
 
@@ -482,15 +482,15 @@ export function generateDeterministicMockResponse(method: RpcMethod, testId: str
   // Generate once with deterministic faker seed
   const originalSeed = fakerEN.seed();
   fakerEN.seed(hashString(\`\${method}-\${testId}\`));
-  
+
   const data = generateMockResponse(method);
   testDataCache.set(cacheKey, data);
-  
+
   // Restore original seed
   if (originalSeed) {
     fakerEN.seed(originalSeed);
   }
-  
+
   return data;
 }
 
@@ -1142,10 +1142,10 @@ describe('RPC Client', () => {
   describe('Error Handling', () => {
     it('should handle network errors', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
-      
+
       const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
-      
+
       await expect(status(client, mockParams)).rejects.toThrow('Network error');
     });
 
@@ -1161,7 +1161,7 @@ describe('RPC Client', () => {
 
       const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
-      
+
       await expect(status(client, mockParams)).rejects.toThrow(ApiError);
     });
 
@@ -1183,17 +1183,17 @@ describe('RPC Client', () => {
 
       const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
-      
+
       await expect(status(client, mockParams)).rejects.toThrow(ApiError);
     });
 
     it('should handle invalid request validation', async () => {
       const client = createRpcClient('https://api.example.com');
-      
+
       // Pass invalid parameters that will fail schema validation
       // For status method, params should be null, so passing an object should fail
       const invalidParams = { invalidField: 'this should fail validation' };
-      
+
       await expect(status(client, invalidParams as any)).rejects.toThrow('Invalid request');
     });
 
@@ -1212,7 +1212,7 @@ describe('RPC Client', () => {
 
       const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
-      
+
       await expect(status(client, mockParams)).rejects.toThrow('Invalid response');
     });
   });
@@ -1220,7 +1220,7 @@ describe('RPC Client', () => {
   describe('Request/Response Validation', () => {
     it('should validate request parameters', async () => {
       const mockResponse = generateMockResponse('status');
-      
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: vi.fn().mockResolvedValue({
@@ -1232,7 +1232,7 @@ describe('RPC Client', () => {
 
       const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
-      
+
       const result = await status(client, mockParams);
       expect(result).toBeDefined();
     });
@@ -1252,7 +1252,7 @@ describe('RPC Client', () => {
 
       const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
-      
+
       const result = await status(client, mockParams);
       expect(result).toBeDefined();
     });
@@ -1261,7 +1261,7 @@ describe('RPC Client', () => {
   describe('Custom Headers', () => {
     it('should include custom headers in requests', async () => {
       const mockResponse = generateMockResponse('status');
-      
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: vi.fn().mockResolvedValue({
@@ -1412,7 +1412,7 @@ function createClientMethodTestContent(availableMethods: string[]): string {
 
     const client = createRpcClient('https://api.example.com');
     const mockParams = generateMockParams('${method}');
-    
+
     const result = await ${camelMethod}(client, mockParams);
     expect(result).toBeDefined();
     expect(mockFetch).toHaveBeenCalledTimes(1);

@@ -1,9 +1,10 @@
-import { z } from 'zod/mini';
+import type { BaseIssue, BaseSchema } from 'valibot';
 import type {
-  ApiRequest,
+  ApiParams,
   ApiResponse,
   RpcMethod,
 } from '@space-rock/jsonrpc-types';
+import { safeParse, summarize } from 'valibot';
 import { toCamelCase, toSnakeCase } from './utils';
 
 export type RpcClient = ReturnType<typeof createRpcClient>;
@@ -30,9 +31,9 @@ export function createRpcClient(baseUrl: string, options?: RpcClientOptions) {
   return {
     async call<M extends RpcMethod>(
       method: M,
-      params: ApiRequest<M>['params'],
-      requestSchema: z.ZodMiniType<any>,
-      responseSchema: z.ZodMiniType<any>,
+      params: ApiParams<M>,
+      requestSchema: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      responseSchema: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
     ): Promise<ApiResponse<M>> {
       const request = {
         jsonrpc: '2.0' as const,
@@ -42,15 +43,15 @@ export function createRpcClient(baseUrl: string, options?: RpcClientOptions) {
       };
 
       // Validate the request
-      const validatedRequest = requestSchema.safeParse(request);
+      const validatedRequest = safeParse(requestSchema, request);
       if (!validatedRequest.success) {
         throw new Error(
-          `Invalid request:\n${z.prettifyError(validatedRequest.error)}`,
+          `Invalid request:\n${summarize(validatedRequest.issues)}`,
         );
       }
 
       // Convert to snake_case for the API
-      const snakeCaseRequest = toSnakeCase(validatedRequest.data);
+      const snakeCaseRequest = toSnakeCase(validatedRequest.output);
 
       const fetchOptions: RequestInit = {
         method: 'POST',
@@ -88,14 +89,14 @@ export function createRpcClient(baseUrl: string, options?: RpcClientOptions) {
       const camelCaseResponse = toCamelCase(data);
 
       // Validate the response
-      const validatedResponse = responseSchema.safeParse(camelCaseResponse);
+      const validatedResponse = safeParse(responseSchema, camelCaseResponse);
       if (!validatedResponse.success) {
         throw new Error(
-          `Invalid response:\n${z.prettifyError(validatedResponse.error)}`,
+          `Invalid response:\n${summarize(validatedResponse.issues)}`,
         );
       }
 
-      return validatedResponse.data as ApiResponse<M>;
+      return validatedResponse.output as ApiResponse<M>;
     },
   };
 }

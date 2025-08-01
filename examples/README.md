@@ -9,7 +9,7 @@ This directory contains comprehensive examples for all NEAR Protocol JSON-RPC me
 pnpm install
 
 # Run a specific method example
-pnpm tsx block.ts
+pnpx tsx block.ts
 ```
 
 ## 📝 Documentation

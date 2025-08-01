@@ -4,7 +4,6 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { methodSchemas } from '@space-rock/jsonrpc-types';
 import {
   createJsonRpcRequest,
   createJsonRpcResponse,
@@ -22,12 +21,6 @@ describe('EXPERIMENTAL_split_storage_info - Unit Tests', () => {
   describe('Schema Validation', () => {
     it('should have valid request and response schemas', () => {
       expect(hasValidSchemas('EXPERIMENTAL_split_storage_info')).toBe(true);
-      expect(
-        methodSchemas['EXPERIMENTAL_split_storage_info']?.request,
-      ).toBeDefined();
-      expect(
-        methodSchemas['EXPERIMENTAL_split_storage_info']?.response,
-      ).toBeDefined();
     });
   });
 

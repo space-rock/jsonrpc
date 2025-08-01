@@ -416,7 +416,7 @@ async function generateMethodFiles(
   });
 
   // Create method directory if it doesn't exist
-  const methodDir = path.join(process.cwd(), '../packages/client/src/method');
+  const methodDir = path.join(process.cwd(), '../packages/client/src/methods');
   await fs.mkdir(methodDir, { recursive: true });
 
   for (const { method, requestSchemaName, responseSchemaName } of methodInfos) {
@@ -428,35 +428,38 @@ async function generateMethodFiles(
 
     // Add imports
     methodFile.addImportDeclaration({
-      moduleSpecifier: '../client',
-      namedImports: [{ name: 'RpcClient', isTypeOnly: true }],
+      moduleSpecifier: '@space-rock/jsonrpc-types',
+      namedImports: ['ApiParams', 'ApiResponse'],
+      isTypeOnly: true,
     });
 
     methodFile.addImportDeclaration({
       moduleSpecifier: '@space-rock/jsonrpc-types',
       namedImports: [
-        { name: requestSchemaName, isTypeOnly: true },
-        { name: responseSchemaName, isTypeOnly: true },
         { name: `${requestSchemaName}Schema` },
         { name: `${responseSchemaName}Schema` },
       ],
     });
 
-    // Add the method function
-    const paramsType = `${requestSchemaName}['params']`;
+    methodFile.addImportDeclaration({
+      moduleSpecifier: '../client',
+      namedImports: ['RpcClient'],
+      isTypeOnly: true,
+    });
 
+    // Add the method function
     methodFile.addFunction({
       name: snakeToCamel(method),
       isExported: true,
       isAsync: true,
       parameters: [
         { name: 'client', type: 'RpcClient' },
-        { name: 'params', type: paramsType },
+        { name: 'params', type: `ApiParams<'${method}'>` },
       ],
-      returnType: `Promise<${responseSchemaName}>`,
+      returnType: `Promise<ApiResponse<'${method}'>>`,
       statements: writer => {
         writer.writeLine(
-          `return await client.call('${method}', params, ${requestSchemaName}Schema, ${responseSchemaName}Schema);`,
+          `return client.call('${method}', params, ${requestSchemaName}Schema, ${responseSchemaName}Schema);`,
         );
       },
     });
@@ -522,9 +525,10 @@ function generateTypeScriptMethodMappings(
   });
 
   // Add type imports
-  mapOutputFile.insertImportDeclaration(0, {
+  mapOutputFile.addImportDeclaration({
     moduleSpecifier: './types',
     namedImports: Array.from(usedTypes).map(type => ({ name: type })),
+    isTypeOnly: true,
   });
 
   const methodMapObjectString = methodMapping
@@ -552,6 +556,13 @@ function generateTypeScriptMethodMappings(
     isExported: true,
     name: 'ApiRequest',
     type: "MethodMap[M]['request']",
+    typeParameters: [{ constraint: 'RpcMethod', name: 'M' }],
+  });
+
+  mapOutputFile.addTypeAlias({
+    isExported: true,
+    name: 'ApiParams',
+    type: "MethodMap[M]['request']['params']",
     typeParameters: [{ constraint: 'RpcMethod', name: 'M' }],
   });
 

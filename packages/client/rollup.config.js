@@ -1,9 +1,9 @@
-import path from 'path';
 import { defineConfig } from 'rollup';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import analyze from 'rollup-plugin-analyzer';
+import terser from '@rollup/plugin-terser';
 
 const entries = ['src/index.ts', 'src/client.ts', 'src/utils.ts'];
 
@@ -27,10 +27,12 @@ const createConfig = format => ({
     commonjs(),
     typescript({
       tsconfig: './tsconfig.json',
-      sourceMap: false,
+      sourceMap: true,
+      declaration: true,
+      declarationMap: true,
     }),
+    terser(),
     analyze({ summaryOnly: true }),
-    // terser()
   ],
 });
 

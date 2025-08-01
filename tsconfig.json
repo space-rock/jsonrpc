@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
@@ -28,9 +29,12 @@
       "path": "./packages/client"
     }
   ],
+  "files": [],
+  "include": ["src", "tests", "examples"],
   "exclude": [
     "node_modules",
-    "**/dist",
+    "dist",
+    "dist/**",
     "codegen",
     "**/*.test.ts",
     "**/*.spec.ts"

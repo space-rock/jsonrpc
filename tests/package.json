@@ -14,14 +14,14 @@
     "@space-rock/jsonrpc-types": "workspace:*"
   },
   "devDependencies": {
-    "@faker-js/faker": "9.7.0",
+    "@faker-js/faker": "~9.9.0",
+    "@space-rock/valimock": "^1.6.0",
     "@types/node": "~22.16.4",
     "msw": "~2.10.4",
     "tsd": "~0.32.0",
     "typescript": "~5.8.3",
-    "vitest": "~3.2.4",
-    "zod": "~3.25.67",
-    "zod-schema-faker": "~1.5.4"
+    "valibot": "~1.0.0",
+    "vitest": "~3.2.4"
   },
   "tsd": {
     "directory": ".",

@@ -22,6 +22,14 @@
       "@space-rock/jsonrpc-client/*": ["../packages/client/src/*"]
     }
   },
+  "references": [
+    {
+      "path": "../packages/types"
+    },
+    {
+      "path": "../packages/client"
+    }
+  ],
   "include": ["**/*.ts", "**/*.test.ts", "**/*.test-d.ts"],
   "exclude": ["node_modules", "dist"]
 }

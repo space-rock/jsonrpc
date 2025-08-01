@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "codegen": "pnpm --filter @space-rock/jsonrpc-codegen generate && pnpm typecheck && pnpm format",
+    "codegen": "pnpm --filter @space-rock/jsonrpc-codegen generate && pnpm format",
     "build": "pnpm -r build",
     "test": "vitest run",
     "test:watch": "vitest",

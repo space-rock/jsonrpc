@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.8...jsonrpc-client-v0.3.0) (2025-08-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace zod with valibot for validation, update tests ([#19](https://github.com/space-rock/jsonrpc/issues/19))
+
+### Features
+
+* replace zod with valibot for validation, update tests ([#19](https://github.com/space-rock/jsonrpc/issues/19)) ([ff62fe6](https://github.com/space-rock/jsonrpc/commit/ff62fe6171d9c2f9198e84f9a9d0280797d93f56))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @space-rock/jsonrpc-types bumped to 0.3.0
+
 ## [0.2.8](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.7...jsonrpc-client-v0.2.8) (2025-07-30)
 
 

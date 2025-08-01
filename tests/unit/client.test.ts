@@ -1,688 +1,281 @@
 /**
  * Unit tests for JSON RPC client package.
  * Tests the client functionality, error handling, and utility functions.
+ * This file was auto-generated - do not edit manually.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ApiError, createRpcClient } from '@space-rock/jsonrpc-client';
+import { status } from '@space-rock/jsonrpc-client/methods';
+import { toSnakeCase, toCamelCase } from '@space-rock/jsonrpc-client/utils';
 import { generateMockParams, generateMockResponse } from '../test-utils';
-import { formatZodError } from '@space-rock/jsonrpc-client/utils';
-import { ZodError } from 'zod';
 
-// Helper function to create mock schemas that support both parse and safeParse
-function createMockRequestSchema(data: any) {
-  return {
-    parse: vi.fn().mockReturnValue(data),
-    safeParse: vi.fn().mockImplementation(input => ({
-      success: true,
-      data: input, // Return the actual input instead of the mock data
-    })),
-  };
-}
+// Mock fetch globally
+const mockFetch = vi.fn();
+global.fetch = mockFetch;
 
-function createMockResponseSchema(data: any) {
-  return {
-    parse: vi.fn().mockReturnValue(data),
-    safeParse: vi.fn().mockReturnValue({
-      success: true,
-      data: data,
-    }),
-  };
-}
-
-// Mock the types package
-vi.mock('@space-rock/jsonrpc-types', async importOriginal => {
-  const actual =
-    await importOriginal<typeof import('@space-rock/jsonrpc-types')>();
-  return {
-    ...actual,
-    getRequestSchema: vi.fn(),
-    getResponseSchema: vi.fn(),
-  };
-});
-
-// Mock fetch
-global.fetch = vi.fn();
-
-describe('JSON RPC Client Package', () => {
+describe('RPC Client', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe('ApiError', () => {
-    it('should create ApiError with message only', () => {
-      const error = new ApiError('Test error');
-
-      expect(error.name).toBe('ApiError');
-      expect(error.message).toBe('Test error');
-      expect(error.status).toBeUndefined();
-      expect(error.code).toBeUndefined();
-      expect(error.data).toBeUndefined();
-    });
-
-    it('should create ApiError with all properties', () => {
-      const error = new ApiError('Test error', 500, -32603, {
-        details: 'error data',
-      });
-
-      expect(error.name).toBe('ApiError');
-      expect(error.message).toBe('Test error');
-      expect(error.status).toBe(500);
-      expect(error.code).toBe(-32603);
-      expect(error.data).toEqual({ details: 'error data' });
-    });
-
-    it('should extend Error properly', () => {
-      const error = new ApiError('Test error');
-
-      expect(error instanceof Error).toBe(true);
-      expect(error instanceof ApiError).toBe(true);
-    });
-  });
-
-  describe('formatZodError', () => {
-    it('should format single validation error', () => {
-      const zodError = new ZodError([
-        {
-          code: 'invalid_type',
-          expected: 'string',
-          received: 'undefined',
-          path: ['params', 'account_id'],
-          message: 'Required',
-        },
-      ]);
-
-      const formatted = formatZodError(zodError);
-
-      expect(formatted).toEqual({
-        'params.account_id': 'Required',
-      });
-    });
-
-    it('should format multiple validation errors', () => {
-      const zodError = new ZodError([
-        {
-          code: 'invalid_type',
-          expected: 'string',
-          received: 'undefined',
-          path: ['params', 'account_id'],
-          message: 'Required',
-        },
-        {
-          code: 'invalid_type',
-          expected: 'number',
-          received: 'string',
-          path: ['params', 'block_height'],
-          message: 'Expected number, received string',
-        },
-      ]);
-
-      const formatted = formatZodError(zodError);
-
-      expect(formatted).toEqual({
-        'params.account_id': 'Required',
-        'params.block_height': 'Expected number, received string',
-      });
-    });
-
-    it('should handle nested object validation errors', () => {
-      const zodError = new ZodError([
-        {
-          code: 'invalid_type',
-          expected: 'string',
-          received: 'undefined',
-          path: ['params', 'request', 'account_id'],
-          message: 'Required',
-        },
-        {
-          code: 'invalid_literal',
-          expected: '2.0',
-          received: '1.0',
-          path: ['jsonrpc'],
-          message: 'Invalid literal value, expected "2.0"',
-        },
-      ]);
-
-      const formatted = formatZodError(zodError);
-
-      expect(formatted).toEqual({
-        'params.request.account_id': 'Required',
-        jsonrpc: 'Invalid literal value, expected "2.0"',
-      });
-    });
-
-    it('should handle array index validation errors', () => {
-      const zodError = new ZodError([
-        {
-          code: 'invalid_type',
-          expected: 'string',
-          received: 'number',
-          path: ['params', 'keys', 0],
-          message: 'Expected string, received number',
-        },
-        {
-          code: 'too_small',
-          minimum: 1,
-          type: 'array',
-          inclusive: true,
-          path: ['params', 'keys'],
-          message: 'Array must contain at least 1 element(s)',
-        },
-      ]);
-
-      const formatted = formatZodError(zodError);
-
-      expect(formatted).toEqual({
-        'params.keys.0': 'Expected string, received number',
-        'params.keys': 'Array must contain at least 1 element(s)',
-      });
-    });
-
-    it('should handle empty path', () => {
-      const zodError = new ZodError([
-        {
-          code: 'invalid_type',
-          expected: 'object',
-          received: 'string',
-          path: [],
-          message: 'Expected object, received string',
-        },
-      ]);
-
-      const formatted = formatZodError(zodError);
-
-      expect(formatted).toEqual({
-        '': 'Expected object, received string',
-      });
-    });
-
-    it('should handle single path element', () => {
-      const zodError = new ZodError([
-        {
-          code: 'invalid_type',
-          expected: 'string',
-          received: 'undefined',
-          path: ['method'],
-          message: 'Required',
-        },
-      ]);
-
-      const formatted = formatZodError(zodError);
-
-      expect(formatted).toEqual({
-        method: 'Required',
-      });
-    });
-  });
-
   describe('createRpcClient', () => {
-    const mockBaseUrl = 'https://rpc.testnet.near.org';
-    let client: ReturnType<typeof createRpcClient>;
-
-    beforeEach(() => {
-      client = createRpcClient(mockBaseUrl);
-    });
-
-    it('should create client with base URL', () => {
+    it('should create a client with default configuration', () => {
+      const client = createRpcClient('https://api.example.com');
       expect(client).toBeDefined();
       expect(typeof client.call).toBe('function');
     });
 
-    it('should successfully make RPC call', async () => {
-      const { getRequestSchema, getResponseSchema } = await import(
-        '@space-rock/jsonrpc-types'
-      );
-
-      // Generate dynamic mock data for status method
-      const mockParams = generateMockParams('status');
-      const mockResult = generateMockResponse('status');
-
-      // Mock schema validation
-      const mockRequestSchema = createMockRequestSchema({
-        jsonrpc: '2.0',
-        method: 'status',
-        params: mockParams,
-        id: 'test',
+    it('should create a client with custom headers', () => {
+      const client = createRpcClient('https://api.example.com', {
+        headers: {
+          Authorization: 'Bearer token',
+          'Custom-Header': 'value',
+        },
       });
-      const mockResponseSchema = createMockResponseSchema({
-        jsonrpc: '2.0',
-        id: 'test',
-        result: mockResult,
-      });
-
-      vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-      vi.mocked(getResponseSchema).mockReturnValue(mockResponseSchema as any);
-
-      // Mock successful fetch
-      vi.mocked(fetch).mockResolvedValue({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            jsonrpc: '2.0',
-            id: 'test',
-            result: mockResult,
-          }),
-      } as Response);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'status' as const,
-        params: mockParams,
-        id: 'test',
-      };
-
-      const response = await client.call(request);
-
-      expect(getRequestSchema).toHaveBeenCalledWith('status');
-      expect(getResponseSchema).toHaveBeenCalledWith('status');
-      expect(mockRequestSchema.safeParse).toHaveBeenCalled();
-      expect(mockResponseSchema.safeParse).toHaveBeenCalled();
-      expect(fetch).toHaveBeenCalledWith(mockBaseUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          method: 'status',
-          params: mockParams,
-          id: 'test',
-        }),
-      });
-      expect(response).toEqual({
-        jsonrpc: '2.0',
-        id: 'test',
-        result: mockResult,
-      });
+      expect(client).toBeDefined();
     });
 
-    it('should throw error when request schema not found', async () => {
-      const { getRequestSchema } = await import('@space-rock/jsonrpc-types');
-      vi.mocked(getRequestSchema).mockReturnValue(undefined);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'invalid_method' as any,
-        params: {},
-        id: 'test',
-      };
-
-      await expect(client.call(request)).rejects.toThrow(
-        'No request schema found for method: invalid_method',
-      );
+    it('should create a client with custom signal', () => {
+      const controller = new AbortController();
+      const client = createRpcClient('https://api.example.com', {
+        signal: controller.signal,
+      });
+      expect(client).toBeDefined();
     });
+  });
 
-    it('should throw error when response schema not found', async () => {
-      const { getRequestSchema, getResponseSchema } = await import(
-        '@space-rock/jsonrpc-types'
-      );
+  describe('Error Handling', () => {
+    it('should handle network errors', async () => {
+      mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-      // Generate dynamic mock data for status method
+      const client = createRpcClient('https://api.example.com');
       const mockParams = generateMockParams('status');
 
-      const mockRequestSchema = createMockRequestSchema({
-        jsonrpc: '2.0',
-        method: 'status',
-        params: mockParams,
-        id: 'test',
-      });
-
-      vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-      vi.mocked(getResponseSchema).mockReturnValue(undefined);
-
-      vi.mocked(fetch).mockResolvedValue({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            jsonrpc: '2.0',
-            id: 'test',
-            result: { chainId: 'testnet' },
-          }),
-      } as Response);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'status' as const,
-        params: mockParams,
-        id: 'test',
-      };
-
-      await expect(client.call(request)).rejects.toThrow(
-        'No response schema found for method: status',
-      );
+      await expect(status(client, mockParams)).rejects.toThrow('Network error');
     });
 
-    it('should throw ApiError for HTTP errors', async () => {
-      const { getRequestSchema } = await import('@space-rock/jsonrpc-types');
-
-      // Generate dynamic mock data for status method
-      const mockParams = generateMockParams('status');
-
-      const mockRequestSchema = createMockRequestSchema({
-        jsonrpc: '2.0',
-        method: 'status',
-        params: mockParams,
-        id: 'test',
-      });
-
-      vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-
-      vi.mocked(fetch).mockResolvedValue({
+    it('should handle HTTP errors', async () => {
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
         statusText: 'Internal Server Error',
-      } as Response);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'status' as const,
-        params: mockParams,
-        id: 'test',
-      };
-
-      await expect(client.call(request)).rejects.toThrow(ApiError);
-      try {
-        await client.call(request);
-      } catch (error) {
-        expect(error).toBeInstanceOf(ApiError);
-        if (error instanceof ApiError) {
-          expect(error.message).toBe('HTTP 500: Internal Server Error');
-          expect(error.status).toBe(500);
-        }
-      }
-    });
-
-    it('should throw ApiError for RPC errors', async () => {
-      const { getRequestSchema } = await import('@space-rock/jsonrpc-types');
-
-      // Generate dynamic mock data for status method
-      const mockParams = generateMockParams('status');
-
-      const mockRequestSchema = createMockRequestSchema({
-        jsonrpc: '2.0',
-        method: 'status',
-        params: mockParams,
-        id: 'test',
+        json: vi.fn().mockResolvedValue({
+          error: { code: -32603, message: 'Internal error' },
+        }),
       });
 
-      vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
+      const client = createRpcClient('https://api.example.com');
+      const mockParams = generateMockParams('status');
 
-      vi.mocked(fetch).mockResolvedValue({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            jsonrpc: '2.0',
-            id: 'test',
-            error: {
-              code: -32602,
-              message: 'Invalid params',
-              data: { details: 'Parameter validation failed' },
-            },
-          }),
-      } as Response);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'status' as const,
-        params: mockParams,
-        id: 'test',
-      };
-
-      await expect(client.call(request)).rejects.toThrow(ApiError);
-      try {
-        await client.call(request);
-      } catch (error) {
-        expect(error).toBeInstanceOf(ApiError);
-        if (error instanceof ApiError) {
-          expect(error.message).toBe('Invalid params');
-          expect(error.code).toBe(-32602);
-          expect(error.data).toEqual({
-            details: 'Parameter validation failed',
-          });
-        }
-      }
+      await expect(status(client, mockParams)).rejects.toThrow(ApiError);
     });
 
-    it('should use custom fetch options', async () => {
-      const customClient = createRpcClient(mockBaseUrl, {
-        headers: { Authorization: 'Bearer token' },
-        timeout: 5000,
-      } as any);
+    it('should handle RPC errors', async () => {
+      const errorResponse = {
+        jsonrpc: '2.0',
+        id: 'test-id',
+        error: {
+          code: -32602,
+          message: 'Invalid params',
+          data: 'Additional error info',
+        },
+      };
 
-      const { getRequestSchema, getResponseSchema } = await import(
-        '@space-rock/jsonrpc-types'
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: vi.fn().mockResolvedValue(errorResponse),
+      });
+
+      const client = createRpcClient('https://api.example.com');
+      const mockParams = generateMockParams('status');
+
+      await expect(status(client, mockParams)).rejects.toThrow(ApiError);
+    });
+
+    it('should handle invalid request validation', async () => {
+      const client = createRpcClient('https://api.example.com');
+
+      // Pass invalid parameters that will fail schema validation
+      // For status method, params should be null, so passing an object should fail
+      const invalidParams = { invalidField: 'this should fail validation' };
+
+      await expect(status(client, invalidParams as any)).rejects.toThrow(
+        'Invalid request',
       );
+    });
 
-      // Generate dynamic mock data for status method
-      const mockParams = generateMockParams('status');
-      const mockResult = generateMockResponse('status');
-
-      const mockRequestSchema = createMockRequestSchema({
+    it('should handle invalid response validation', async () => {
+      // Mock a response that doesn't match the schema
+      const invalidResponse = {
         jsonrpc: '2.0',
-        method: 'status',
-        params: mockParams,
-        id: 'test',
-      });
-      const mockResponseSchema = createMockResponseSchema({
-        jsonrpc: '2.0',
-        id: 'test',
-        result: mockResult,
-      });
-
-      vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-      vi.mocked(getResponseSchema).mockReturnValue(mockResponseSchema as any);
-
-      vi.mocked(fetch).mockResolvedValue({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            jsonrpc: '2.0',
-            id: 'test',
-            result: mockResult,
-          }),
-      } as Response);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'status' as const,
-        params: mockParams,
-        id: 'test',
+        id: 'test-id',
+        result: 'invalid-result-format', // This should fail validation for status method
       };
 
-      await customClient.call(request);
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: vi.fn().mockResolvedValue(invalidResponse),
+      });
 
-      expect(fetch).toHaveBeenCalledWith(
-        mockBaseUrl,
+      const client = createRpcClient('https://api.example.com');
+      const mockParams = generateMockParams('status');
+
+      await expect(status(client, mockParams)).rejects.toThrow(
+        'Invalid response',
+      );
+    });
+  });
+
+  describe('Request/Response Validation', () => {
+    it('should validate request parameters', async () => {
+      const mockResponse = generateMockResponse('status');
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: vi.fn().mockResolvedValue({
+          jsonrpc: '2.0',
+          id: 'test-id',
+          result: mockResponse,
+        }),
+      });
+
+      const client = createRpcClient('https://api.example.com');
+      const mockParams = generateMockParams('status');
+
+      const result = await status(client, mockParams);
+      expect(result).toBeDefined();
+    });
+
+    it('should validate response data', async () => {
+      const mockResult = generateMockResponse('status');
+      const mockResponse = {
+        jsonrpc: '2.0',
+        id: 'test-id',
+        result: mockResult,
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: vi.fn().mockResolvedValue(mockResponse),
+      });
+
+      const client = createRpcClient('https://api.example.com');
+      const mockParams = generateMockParams('status');
+
+      const result = await status(client, mockParams);
+      expect(result).toBeDefined();
+    });
+  });
+
+  describe('Custom Headers', () => {
+    it('should include custom headers in requests', async () => {
+      const mockResponse = generateMockResponse('status');
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: vi.fn().mockResolvedValue({
+          jsonrpc: '2.0',
+          id: 'test-id',
+          result: mockResponse,
+        }),
+      });
+
+      const client = createRpcClient('https://api.example.com', {
+        headers: {
+          Authorization: 'Bearer test-token',
+          'X-Custom-Header': 'test-value',
+        },
+      });
+
+      const mockParams = generateMockParams('status');
+      await status(client, mockParams);
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.example.com',
         expect.objectContaining({
-          method: 'POST',
           headers: expect.objectContaining({
-            Authorization: 'Bearer token',
+            Authorization: 'Bearer test-token',
+            'X-Custom-Header': 'test-value',
           }),
-          body: JSON.stringify({
-            jsonrpc: '2.0',
-            method: 'status',
-            params: mockParams,
-            id: 'test',
-          }),
-          timeout: 5000,
         }),
       );
     });
+  });
+});
 
-    it('should handle case conversion properly', async () => {
-      const { getRequestSchema, getResponseSchema } = await import(
-        '@space-rock/jsonrpc-types'
-      );
-
-      // Generate dynamic mock data for status method
-      const mockParams = generateMockParams('status');
-      const mockResult = generateMockResponse('status');
-
-      const mockRequestSchema = createMockRequestSchema({
-        jsonrpc: '2.0',
-        method: 'status',
-        params: mockParams,
-        id: 'test',
-      });
-      const mockResponseSchema = createMockResponseSchema({
-        jsonrpc: '2.0',
-        id: 'test',
-        result: mockResult,
-      });
-
-      vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-      vi.mocked(getResponseSchema).mockReturnValue(mockResponseSchema as any);
-
-      vi.mocked(fetch).mockResolvedValue({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            jsonrpc: '2.0',
-            id: 'test',
-            result: mockResult,
-          }),
-      } as Response);
-
-      const request = {
-        jsonrpc: '2.0' as const,
-        method: 'status' as const,
-        params: mockParams,
-        id: 'test',
+describe('Utility Functions', () => {
+  describe('toSnakeCase', () => {
+    it('should convert camelCase to snake_case', () => {
+      const input = { testKey: 'value', anotherKey: { nestedKey: 'nested' } };
+      const expected = {
+        test_key: 'value',
+        another_key: { nested_key: 'nested' },
       };
-
-      const response = await client.call(request);
-
-      // Verify response structure
-      expect(response).toEqual({
-        jsonrpc: '2.0',
-        id: 'test',
-        result: mockResult,
-      });
+      expect(toSnakeCase(input)).toEqual(expected);
     });
 
-    describe('request method', () => {
-      it('should successfully make RPC request using request method', async () => {
-        const { getRequestSchema, getResponseSchema } = await import(
-          '@space-rock/jsonrpc-types'
-        );
-
-        // Generate dynamic mock data for status method
-        const mockParams = generateMockParams('status');
-        const mockResult = generateMockResponse('status');
-
-        const mockRequestSchema = createMockRequestSchema({
-          jsonrpc: '2.0',
-          method: 'status',
-          params: mockParams,
-          id: expect.any(String),
-        });
-        const mockResponseSchema = createMockResponseSchema({
-          jsonrpc: '2.0',
-          id: expect.any(String),
-          result: mockResult,
-        });
-
-        vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-        vi.mocked(getResponseSchema).mockReturnValue(mockResponseSchema as any);
-
-        vi.mocked(fetch).mockResolvedValue({
-          ok: true,
-          json: () =>
-            Promise.resolve({
-              jsonrpc: '2.0',
-              id: expect.any(String),
-              result: mockResult,
-            }),
-        } as Response);
-
-        const response = await client.request('status', mockParams);
-
-        expect(getRequestSchema).toHaveBeenCalledWith('status');
-        expect(getResponseSchema).toHaveBeenCalledWith('status');
-        expect(mockRequestSchema.safeParse).toHaveBeenCalled();
-        expect(mockResponseSchema.safeParse).toHaveBeenCalled();
-        expect(fetch).toHaveBeenCalledWith(
-          mockBaseUrl,
-          expect.objectContaining({
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: expect.stringContaining('"method":"status"'),
-          }),
-        );
-        expect(response).toEqual({
-          jsonrpc: '2.0',
-          id: expect.any(String),
-          result: mockResult,
-        });
-      });
-
-      it('should generate random id when using request method', async () => {
-        const { getRequestSchema, getResponseSchema } = await import(
-          '@space-rock/jsonrpc-types'
-        );
-
-        // Generate dynamic mock data for status method
-        const mockParams = generateMockParams('status');
-        const mockResult = generateMockResponse('status');
-
-        const mockRequestSchema = createMockRequestSchema({
-          jsonrpc: '2.0',
-          method: 'status',
-          params: mockParams,
-          id: expect.any(String),
-        });
-        const mockResponseSchema = createMockResponseSchema({
-          jsonrpc: '2.0',
-          id: expect.any(String),
-          result: mockResult,
-        });
-
-        vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-        vi.mocked(getResponseSchema).mockReturnValue(mockResponseSchema as any);
-
-        vi.mocked(fetch).mockResolvedValue({
-          ok: true,
-          json: () =>
-            Promise.resolve({
-              jsonrpc: '2.0',
-              id: expect.any(String),
-              result: mockResult,
-            }),
-        } as Response);
-
-        await client.request('status', mockParams);
-
-        const fetchCall = vi.mocked(fetch).mock.calls[0];
-        const requestBody = JSON.parse(fetchCall![1]?.body as string);
-
-        expect(typeof requestBody.id).toBe('string');
-        expect(requestBody.id).toMatch(/^[a-z0-9]+$/);
-        expect(requestBody.id.length).toBeGreaterThan(0);
-      });
-
-      it('should handle errors properly in request method', async () => {
-        const { getRequestSchema } = await import('@space-rock/jsonrpc-types');
-
-        // Generate dynamic mock data for status method
-        const mockParams = generateMockParams('status');
-
-        const mockRequestSchema = createMockRequestSchema({
-          jsonrpc: '2.0',
-          method: 'status',
-          params: mockParams,
-          id: 'test',
-        });
-
-        vi.mocked(getRequestSchema).mockReturnValue(mockRequestSchema as any);
-
-        vi.mocked(fetch).mockResolvedValue({
-          ok: false,
-          status: 500,
-          statusText: 'Internal Server Error',
-        } as Response);
-
-        await expect(client.request('status', mockParams)).rejects.toThrow(
-          ApiError,
-        );
-      });
+    it('should handle arrays', () => {
+      const input = [{ testKey: 'value' }, { anotherKey: 'value2' }];
+      const expected = [{ test_key: 'value' }, { another_key: 'value2' }];
+      expect(toSnakeCase(input)).toEqual(expected);
     });
+
+    it('should handle primitive values', () => {
+      expect(toSnakeCase('string')).toBe('string');
+      expect(toSnakeCase(123)).toBe(123);
+      expect(toSnakeCase(null)).toBe(null);
+      expect(toSnakeCase(true)).toBe(true);
+    });
+  });
+
+  describe('toCamelCase', () => {
+    it('should convert snake_case to camelCase', () => {
+      const input = {
+        test_key: 'value',
+        another_key: { nested_key: 'nested' },
+      };
+      const expected = {
+        testKey: 'value',
+        anotherKey: { nestedKey: 'nested' },
+      };
+      expect(toCamelCase(input)).toEqual(expected);
+    });
+
+    it('should handle arrays', () => {
+      const input = [{ test_key: 'value' }, { another_key: 'value2' }];
+      const expected = [{ testKey: 'value' }, { anotherKey: 'value2' }];
+      expect(toCamelCase(input)).toEqual(expected);
+    });
+
+    it('should handle primitive values', () => {
+      expect(toCamelCase('string')).toBe('string');
+      expect(toCamelCase(123)).toBe(123);
+      expect(toCamelCase(null)).toBe(null);
+      expect(toCamelCase(true)).toBe(true);
+    });
+  });
+});
+
+describe('ApiError', () => {
+  it('should create ApiError with correct properties', () => {
+    const error = new ApiError(
+      'Test error message',
+      500,
+      -32602,
+      'Additional data',
+    );
+
+    expect(error).toBeInstanceOf(Error);
+    expect(error).toBeInstanceOf(ApiError);
+    expect(error.message).toBe('Test error message');
+    expect(error.status).toBe(500);
+    expect(error.code).toBe(-32602);
+    expect(error.data).toBe('Additional data');
+  });
+
+  it('should have correct name property', () => {
+    const error = new ApiError('Test error');
+    expect(error.name).toBe('ApiError');
   });
 });

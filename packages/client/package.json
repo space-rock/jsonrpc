@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm rollup -c",
+    "build": "rollup -c",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@space-rock/jsonrpc-types": "workspace:^",
-    "zod": "~4.0.10"
+    "valibot": "~1.1.0"
   },
   "devDependencies": {
     "@types/node": "~22.16.4",

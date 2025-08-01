@@ -4,7 +4,6 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { methodSchemas } from '@space-rock/jsonrpc-types';
 import {
   createJsonRpcRequest,
   createJsonRpcResponse,
@@ -22,8 +21,6 @@ describe('client_config - Unit Tests', () => {
   describe('Schema Validation', () => {
     it('should have valid request and response schemas', () => {
       expect(hasValidSchemas('client_config')).toBe(true);
-      expect(methodSchemas['client_config']?.request).toBeDefined();
-      expect(methodSchemas['client_config']?.response).toBeDefined();
     });
   });
 

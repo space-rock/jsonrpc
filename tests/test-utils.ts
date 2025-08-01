@@ -4,25 +4,195 @@
  */
 
 import type { RpcMethod, ApiRequest } from '@space-rock/jsonrpc-types';
-import { fake, install, setFaker } from 'zod-schema-faker';
-import { methodSchemas } from '@space-rock/jsonrpc-types';
-import { z } from 'zod';
-import { fakerEN, FakerError } from '@faker-js/faker';
+import {
+  JsonRpcRequest_for_EXPERIMENTAL_changesSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_changes_in_blockSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_congestion_levelSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_genesis_configSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proofSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_light_client_proofSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_maintenance_windowsSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_protocol_configSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_receiptSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_split_storage_infoSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema,
+  JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema,
+  JsonRpcRequest_for_blockSchema,
+  JsonRpcRequest_for_broadcast_tx_asyncSchema,
+  JsonRpcRequest_for_broadcast_tx_commitSchema,
+  JsonRpcRequest_for_changesSchema,
+  JsonRpcRequest_for_chunkSchema,
+  JsonRpcRequest_for_client_configSchema,
+  JsonRpcRequest_for_gas_priceSchema,
+  JsonRpcRequest_for_healthSchema,
+  JsonRpcRequest_for_light_client_proofSchema,
+  JsonRpcRequest_for_network_infoSchema,
+  JsonRpcRequest_for_next_light_client_blockSchema,
+  JsonRpcRequest_for_querySchema,
+  JsonRpcRequest_for_send_txSchema,
+  JsonRpcRequest_for_statusSchema,
+  JsonRpcRequest_for_txSchema,
+  JsonRpcRequest_for_validatorsSchema,
+  JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema,
+  JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema,
+  JsonRpcResponse_for_CryptoHash_and_RpcErrorSchema,
+  JsonRpcResponse_for_GenesisConfig_and_RpcErrorSchema,
+  JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcChunkResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcClientConfigResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcQueryResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcReceiptResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcStatusResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  JsonRpcResponse_for_RpcValidatorResponse_and_RpcErrorSchema,
+} from '@space-rock/jsonrpc-types';
+import { Valimock } from '@space-rock/valimock';
+import * as v from 'valibot';
+import { fakerEN } from '@faker-js/faker';
 
-// Custom faker instance
-const customFaker = fakerEN;
-
-// Override arrayElement
-customFaker.helpers.arrayElement = function <T>(array: readonly T[]) {
-  if (!array || array.length === 0) {
-    throw new FakerError('Array is empty');
-  }
-
-  return array[0] as T;
+// Override fakerEN's arrayElement to be deterministic for testing
+fakerEN.helpers.arrayElement = function <T>(array: ReadonlyArray<T>): T {
+  return array[0]!;
 };
 
-// Set custom faker
-setFaker(customFaker);
+// Create valimock instance with custom faker
+const valimock = new Valimock({ faker: fakerEN });
+
+// Schema registry for runtime access
+const schemaRegistry = {
+  EXPERIMENTAL_changes: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_changesSchema,
+    response:
+      JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_changes_in_block: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_changes_in_blockSchema,
+    response:
+      JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_congestion_level: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_congestion_levelSchema,
+    response: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_genesis_config: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_genesis_configSchema,
+    response: JsonRpcResponse_for_GenesisConfig_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_light_client_block_proof: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proofSchema,
+    response:
+      JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_light_client_proof: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_light_client_proofSchema,
+    response:
+      JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_maintenance_windows: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_maintenance_windowsSchema,
+    response: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_protocol_config: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_protocol_configSchema,
+    response: JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_receipt: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_receiptSchema,
+    response: JsonRpcResponse_for_RpcReceiptResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_split_storage_info: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_split_storage_infoSchema,
+    response:
+      JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_tx_status: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema,
+    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  },
+  EXPERIMENTAL_validators_ordered: {
+    request: JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema,
+    response:
+      JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema,
+  },
+  block: {
+    request: JsonRpcRequest_for_blockSchema,
+    response: JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema,
+  },
+  broadcast_tx_async: {
+    request: JsonRpcRequest_for_broadcast_tx_asyncSchema,
+    response: JsonRpcResponse_for_CryptoHash_and_RpcErrorSchema,
+  },
+  broadcast_tx_commit: {
+    request: JsonRpcRequest_for_broadcast_tx_commitSchema,
+    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  },
+  changes: {
+    request: JsonRpcRequest_for_changesSchema,
+    response:
+      JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSchema,
+  },
+  chunk: {
+    request: JsonRpcRequest_for_chunkSchema,
+    response: JsonRpcResponse_for_RpcChunkResponse_and_RpcErrorSchema,
+  },
+  client_config: {
+    request: JsonRpcRequest_for_client_configSchema,
+    response: JsonRpcResponse_for_RpcClientConfigResponse_and_RpcErrorSchema,
+  },
+  gas_price: {
+    request: JsonRpcRequest_for_gas_priceSchema,
+    response: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema,
+  },
+  health: {
+    request: JsonRpcRequest_for_healthSchema,
+    response: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema,
+  },
+  light_client_proof: {
+    request: JsonRpcRequest_for_light_client_proofSchema,
+    response:
+      JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErrorSchema,
+  },
+  network_info: {
+    request: JsonRpcRequest_for_network_infoSchema,
+    response: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcErrorSchema,
+  },
+  next_light_client_block: {
+    request: JsonRpcRequest_for_next_light_client_blockSchema,
+    response:
+      JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcErrorSchema,
+  },
+  query: {
+    request: JsonRpcRequest_for_querySchema,
+    response: JsonRpcResponse_for_RpcQueryResponse_and_RpcErrorSchema,
+  },
+  send_tx: {
+    request: JsonRpcRequest_for_send_txSchema,
+    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  },
+  status: {
+    request: JsonRpcRequest_for_statusSchema,
+    response: JsonRpcResponse_for_RpcStatusResponse_and_RpcErrorSchema,
+  },
+  tx: {
+    request: JsonRpcRequest_for_txSchema,
+    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  },
+  validators: {
+    request: JsonRpcRequest_for_validatorsSchema,
+    response: JsonRpcResponse_for_RpcValidatorResponse_and_RpcErrorSchema,
+  },
+} as const;
 
 /**
  * Creates a mock JSON RPC request for testing.
@@ -85,50 +255,34 @@ export function createJsonRpcError(
 }
 
 /**
- * Generates mock parameters based on the RPC method using schema faker.
+ * Generates mock parameters based on the RPC method using Valimock.
  * @param method - The RPC method name
- * @param seed - Optional seed for deterministic generation
  * @returns Mock parameters appropriate for the method
  */
-export function generateMockParams(method: RpcMethod, seed?: number): any {
-  const requestSchema = methodSchemas[method]?.request;
+export function generateMockParams(method: RpcMethod): any {
+  const requestSchema = schemaRegistry[method]?.request;
   if (!requestSchema) {
     throw new Error(`No request schema found for method: ${method}`);
   }
 
-  // Set seed for deterministic generation if provided
-  if (seed !== undefined) {
-    customFaker.seed(seed);
-  }
-
-  // Register fakers
-  install();
   // Generate a full request and extract just the params
-  const fullRequest = fake(requestSchema);
+  const fullRequest = valimock.mock(requestSchema);
   return fullRequest.params;
 }
 
 /**
- * Generates mock response data based on the RPC method using schema faker.
+ * Generates mock response data based on the RPC method using Valimock.
  * @param method - The RPC method name
- * @param seed - Optional seed for deterministic generation
  * @returns Mock response data appropriate for the method
  */
-export function generateMockResponse(method: RpcMethod, seed?: number): any {
-  const responseSchema = methodSchemas[method]?.response;
+export function generateMockResponse(method: RpcMethod): any {
+  const responseSchema = schemaRegistry[method]?.response;
   if (!responseSchema) {
     throw new Error(`No response schema found for method: ${method}`);
   }
 
-  // Set seed for deterministic generation if provided
-  if (seed !== undefined) {
-    customFaker.seed(seed);
-  }
-
-  // Register fakers
-  install();
   // Generate a full response using the schema
-  const fullResponse = fake(responseSchema);
+  const fullResponse = valimock.mock(responseSchema);
   // For success responses, extract the result property
   if ('result' in fullResponse) {
     return fullResponse.result;
@@ -156,10 +310,18 @@ export function generateDeterministicMockParams(
     return testDataCache.get(cacheKey);
   }
 
-  // Generate once with a fixed seed based on method name
-  const seed = hashString(method);
-  const data = generateMockParams(method, seed);
+  // Generate once with deterministic faker seed
+  const originalSeed = fakerEN.seed();
+  fakerEN.seed(hashString(`${method}-${testId}`));
+
+  const data = generateMockParams(method);
   testDataCache.set(cacheKey, data);
+
+  // Restore original seed
+  if (originalSeed) {
+    fakerEN.seed(originalSeed);
+  }
+
   return data;
 }
 
@@ -179,10 +341,18 @@ export function generateDeterministicMockResponse(
     return testDataCache.get(cacheKey);
   }
 
-  // Generate once with a fixed seed based on method name
-  const seed = hashString(method);
-  const data = generateMockResponse(method, seed);
+  // Generate once with deterministic faker seed
+  const originalSeed = fakerEN.seed();
+  fakerEN.seed(hashString(`${method}-${testId}`));
+
+  const data = generateMockResponse(method);
   testDataCache.set(cacheKey, data);
+
+  // Restore original seed
+  if (originalSeed) {
+    fakerEN.seed(originalSeed);
+  }
+
   return data;
 }
 
@@ -208,13 +378,12 @@ function hashString(str: string): number {
  * @return True if validation is success, false otherwise
  */
 export function validateRequest(method: RpcMethod, request: any): boolean {
-  const requestSchema = methodSchemas[method]?.request;
+  const requestSchema = schemaRegistry[method]?.request;
   if (!requestSchema) {
     throw new Error(`No request schema found for method: ${method}`);
   }
 
-  const result = requestSchema.safeParse(request);
-
+  const result = v.safeParse(requestSchema, request);
   return result.success;
 }
 
@@ -225,13 +394,12 @@ export function validateRequest(method: RpcMethod, request: any): boolean {
  * @return True if validation is success, false otherwise
  */
 export function validateResponse(method: RpcMethod, response: any): boolean {
-  const responseSchema = methodSchemas[method]?.response;
+  const responseSchema = schemaRegistry[method]?.response;
   if (!responseSchema) {
     throw new Error(`No response schema found for method: ${method}`);
   }
 
-  const result = responseSchema.safeParse(response);
-
+  const result = v.safeParse(responseSchema, response);
   return result.success;
 }
 
@@ -241,7 +409,7 @@ export function validateResponse(method: RpcMethod, response: any): boolean {
  * @returns True if both schemas exist, false otherwise
  */
 export function hasValidSchemas(method: RpcMethod): boolean {
-  const schemas = methodSchemas[method];
+  const schemas = schemaRegistry[method];
   return !!(schemas?.request && schemas?.response);
 }
 
@@ -250,8 +418,8 @@ export function hasValidSchemas(method: RpcMethod): boolean {
  * @param method - The RPC method name
  * @throws Error if schema is not found
  */
-export function getRequestSchema(method: RpcMethod): z.ZodSchema {
-  const schema = methodSchemas[method]?.request;
+export function getRequestSchema(method: RpcMethod): v.GenericSchema<any> {
+  const schema = schemaRegistry[method]?.request;
   if (!schema) {
     throw new Error(`No request schema found for method: ${method}`);
   }
@@ -263,8 +431,8 @@ export function getRequestSchema(method: RpcMethod): z.ZodSchema {
  * @param method - The RPC method name
  * @throws Error if schema is not found
  */
-export function getResponseSchema(method: RpcMethod): z.ZodSchema {
-  const schema = methodSchemas[method]?.response;
+export function getResponseSchema(method: RpcMethod): v.GenericSchema<any> {
+  const schema = schemaRegistry[method]?.response;
   if (!schema) {
     throw new Error(`No response schema found for method: ${method}`);
   }

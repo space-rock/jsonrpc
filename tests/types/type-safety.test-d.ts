@@ -10,8 +10,6 @@ import type {
   ApiResponse,
   MethodMap,
 } from '@space-rock/jsonrpc-types';
-import { methodSchemas } from '@space-rock/jsonrpc-types';
-import { z } from 'zod';
 
 // Test that all methods are properly typed as RpcMethod
 expectAssignable<RpcMethod>('EXPERIMENTAL_changes');
@@ -43,92 +41,6 @@ expectAssignable<RpcMethod>('status');
 expectAssignable<RpcMethod>('tx');
 expectAssignable<RpcMethod>('validators');
 
-// Test that methodSchemas contains all methods with correct structure
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_changes'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_changes_in_block'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_congestion_level'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_genesis_config'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_light_client_block_proof'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_light_client_proof'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_maintenance_windows'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_protocol_config'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_receipt'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_split_storage_info'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_tx_status'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['EXPERIMENTAL_validators_ordered'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['block'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['broadcast_tx_async'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['broadcast_tx_commit'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['changes'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['chunk'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['client_config'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['gas_price'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['health'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['light_client_proof'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['network_info'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['next_light_client_block'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['query'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['send_tx'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['status'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['tx'],
-);
-expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
-  methodSchemas['validators'],
-);
-
 // Test request/response type inference
 
 // EXPERIMENTAL_changes type tests
@@ -144,10 +56,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['EXPERIMENTAL_changes'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['EXPERIMENTAL_changes'].response);
 }
 
 // EXPERIMENTAL_changes_in_block type tests
@@ -163,14 +71,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_changes_in_block'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_changes_in_block'].response,
-  );
 }
 
 // EXPERIMENTAL_congestion_level type tests
@@ -186,14 +86,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_congestion_level'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_congestion_level'].response,
-  );
 }
 
 // EXPERIMENTAL_genesis_config type tests
@@ -209,14 +101,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_genesis_config'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_genesis_config'].response,
-  );
 }
 
 // EXPERIMENTAL_light_client_block_proof type tests
@@ -232,14 +116,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_light_client_block_proof'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_light_client_block_proof'].response,
-  );
 }
 
 // EXPERIMENTAL_light_client_proof type tests
@@ -255,14 +131,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_light_client_proof'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_light_client_proof'].response,
-  );
 }
 
 // EXPERIMENTAL_maintenance_windows type tests
@@ -278,14 +146,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_maintenance_windows'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_maintenance_windows'].response,
-  );
 }
 
 // EXPERIMENTAL_protocol_config type tests
@@ -301,14 +161,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_protocol_config'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_protocol_config'].response,
-  );
 }
 
 // EXPERIMENTAL_receipt type tests
@@ -324,10 +176,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['EXPERIMENTAL_receipt'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['EXPERIMENTAL_receipt'].response);
 }
 
 // EXPERIMENTAL_split_storage_info type tests
@@ -343,14 +191,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_split_storage_info'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_split_storage_info'].response,
-  );
 }
 
 // EXPERIMENTAL_tx_status type tests
@@ -366,14 +206,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_tx_status'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_tx_status'].response,
-  );
 }
 
 // EXPERIMENTAL_validators_ordered type tests
@@ -389,14 +221,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_validators_ordered'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['EXPERIMENTAL_validators_ordered'].response,
-  );
 }
 
 // block type tests
@@ -412,10 +236,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['block'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['block'].response);
 }
 
 // broadcast_tx_async type tests
@@ -431,10 +251,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['broadcast_tx_async'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['broadcast_tx_async'].response);
 }
 
 // broadcast_tx_commit type tests
@@ -450,10 +266,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['broadcast_tx_commit'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['broadcast_tx_commit'].response);
 }
 
 // changes type tests
@@ -469,10 +281,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['changes'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['changes'].response);
 }
 
 // chunk type tests
@@ -488,10 +296,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['chunk'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['chunk'].response);
 }
 
 // client_config type tests
@@ -507,10 +311,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['client_config'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['client_config'].response);
 }
 
 // gas_price type tests
@@ -526,10 +326,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['gas_price'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['gas_price'].response);
 }
 
 // health type tests
@@ -545,10 +341,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['health'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['health'].response);
 }
 
 // light_client_proof type tests
@@ -564,10 +356,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['light_client_proof'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['light_client_proof'].response);
 }
 
 // network_info type tests
@@ -583,10 +371,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['network_info'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['network_info'].response);
 }
 
 // next_light_client_block type tests
@@ -602,14 +386,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['next_light_client_block'].request,
-  );
-  expectAssignable<z.ZodSchema>(
-    methodSchemas['next_light_client_block'].response,
-  );
 }
 
 // query type tests
@@ -625,10 +401,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['query'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['query'].response);
 }
 
 // send_tx type tests
@@ -644,10 +416,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['send_tx'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['send_tx'].response);
 }
 
 // status type tests
@@ -663,10 +431,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['status'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['status'].response);
 }
 
 // tx type tests
@@ -682,10 +446,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['tx'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['tx'].response);
 }
 
 // validators type tests
@@ -701,10 +461,6 @@ expectAssignable<{ request: z.ZodSchema; response: z.ZodSchema }>(
   // Test response structure
   expectType<string>({} as Res['jsonrpc']);
   expectType<string>({} as Res['id']);
-
-  // Test that schemas exist and are ZodSchemas
-  expectAssignable<z.ZodSchema>(methodSchemas['validators'].request);
-  expectAssignable<z.ZodSchema>(methodSchemas['validators'].response);
 }
 
 // Test MethodMap structure for each method

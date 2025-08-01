@@ -14,16 +14,16 @@ const __dirname = path.dirname(__filename);
 
 // Type mappings for primitive types
 const TYPE_MAPPINGS = {
-  string: 'z.string()',
-  number: 'z.number()',
-  boolean: 'z.boolean()',
-  null: 'z.null()',
-  undefined: 'z.undefined()',
-  unknown: 'z.unknown()',
-  any: 'z.any()',
-  void: 'z.void()',
-  bigint: 'z.bigint()',
-  Date: 'z.date()',
+  string: 'v.string()',
+  number: 'v.number()',
+  boolean: 'v.boolean()',
+  null: 'v.null()',
+  undefined: 'v.undefined()',
+  unknown: 'v.unknown()',
+  any: 'v.any()',
+  void: 'v.void()',
+  bigint: 'v.bigint()',
+  Date: 'v.date()',
 } as const;
 
 interface ParsedSchema {
@@ -32,15 +32,15 @@ interface ParsedSchema {
 }
 
 /**
- * Main function that generates Zod mini schemas from TypeScript types.
+ * Main function that generates Valibot schemas from TypeScript types.
  * Handles errors gracefully and exits on critical failures.
  *
- * This generator uses z.lazy() for all type references to avoid dependency resolution
- * complexities and ensure small bundle size.
+ * This generator uses v.lazy() for all type references to avoid dependency resolution
+ * complexities and ensure forward references work correctly.
  */
 async function generateSchemasMain() {
   try {
-    console.log('🚀 Generating Zod v4 mini schemas...');
+    console.log('🚀 Generating Valibot schemas...');
 
     const typesPath = path.resolve(
       __dirname,
@@ -58,10 +58,10 @@ async function generateSchemasMain() {
     await fs.writeFile(outputPath, schemasContent);
 
     console.log(
-      `✅ Successfully generated ${schemas.length} Zod mini schemas at: ${outputPath}`,
+      `✅ Successfully generated ${schemas.length} Valibot schemas at: ${outputPath}`,
     );
   } catch (error) {
-    console.error('❌ Error generating Zod mini schemas:', error);
+    console.error('❌ Error generating Valibot schemas:', error);
     process.exit(1);
   }
 }
@@ -70,7 +70,7 @@ async function generateSchemasMain() {
  * Parse TypeScript types and generate schemas.
  * Creates a TypeScript project in memory, analyzes the source file,
  * and processes each type alias and interface to generate corresponding
- * Zod mini schemas. Collects all type names first to handle references properly.
+ * Valibot schemas. Collects all type names first to handle references properly.
  *
  * @param typesContent - The content of the TypeScript types file
  * @returns Array of parsed schemas with names and definitions
@@ -157,11 +157,11 @@ function generateSchemaForType(
 /**
  * Generate interface schema definition.
  * Processes each property of the interface, determines if it's optional,
- * and generates the corresponding Zod object schema with proper property types.
+ * and generates the corresponding Valibot object schema with proper property types.
  *
  * @param interfaceDecl - The interface declaration to process
  * @param allTypeNames - Set of all type names for reference resolution
- * @returns The generated Zod object schema as a string
+ * @returns The generated Valibot object schema as a string
  */
 function generateInterfaceSchema(
   interfaceDecl: InterfaceDeclaration,
@@ -180,29 +180,29 @@ function generateInterfaceSchema(
 
     let propSchema = generateSchemaFromTypeNode(typeNode, allTypeNames);
 
-    // Use z.optional wrapper for optional properties
+    // Use v.optional wrapper for optional properties
     if (isOptional) {
-      propSchema = `z.optional(${propSchema})`;
+      propSchema = `v.optional(${propSchema})`;
     }
 
     properties.push(`  ${propName}: ${propSchema}`);
   }
 
-  return `z.object({\n${properties.join(',\n')}\n})`;
+  return `v.object({\n${properties.join(',\n')}\n})`;
 }
 
 /**
  * Generate schema from TypeScript type node.
  * Recursively processes type nodes based on their kind (primitive, array, union, etc.)
- * and generates the corresponding Zod schema. Handles complex types including unions,
+ * and generates the corresponding Valibot schema. Handles complex types including unions,
  * intersections, literals, and nested objects.
  *
  * This is the core type conversion function that maps TypeScript type syntax to
- * Zod mini schema definitions.
+ * Valibot schema definitions.
  *
  * @param typeNode - The TypeScript type node to process
  * @param allTypeNames - Set of all type names for reference resolution
- * @returns The generated Zod schema as a string
+ * @returns The generated Valibot schema as a string
  * @throws Error if an unsupported type pattern is encountered
  */
 function generateSchemaFromTypeNode(
@@ -216,7 +216,7 @@ function generateSchemaFromTypeNode(
     return TYPE_MAPPINGS[typeText as keyof typeof TYPE_MAPPINGS];
   }
 
-  // Handle custom types - always use z.lazy to avoid forward reference issues
+  // Handle custom types - always use v.lazy to avoid forward reference issues
   if (allTypeNames.has(typeText)) {
     return `${typeText}Schema`;
   }
@@ -232,7 +232,7 @@ function generateSchemaFromTypeNode(
       elementTypeNode,
       allTypeNames,
     );
-    return `z.array(${elementSchema})`;
+    return `v.array(${elementSchema})`;
   }
 
   // Handle unions
@@ -253,7 +253,7 @@ function generateSchemaFromTypeNode(
       return unionTypes[0]!;
     }
 
-    return `z.union([${unionTypes.join(', ')}])`;
+    return `v.union([${unionTypes.join(', ')}])`;
   }
 
   // Handle literal types
@@ -262,16 +262,16 @@ function generateSchemaFromTypeNode(
     const literal = literalTypeNode.getLiteral();
 
     if (literal.getKind() === SyntaxKind.StringLiteral) {
-      return `z.literal(${literal.getText()})`;
+      return `v.literal(${literal.getText()})`;
     }
     if (literal.getKind() === SyntaxKind.NumericLiteral) {
-      return `z.literal(${literal.getText()})`;
+      return `v.literal(${literal.getText()})`;
     }
     if (
       literal.getKind() === SyntaxKind.TrueKeyword ||
       literal.getKind() === SyntaxKind.FalseKeyword
     ) {
-      return `z.literal(${literal.getText()})`;
+      return `v.literal(${literal.getText()})`;
     }
   }
 
@@ -291,7 +291,7 @@ function generateSchemaFromTypeNode(
         typeArgs[0],
         allTypeNames,
       );
-      return `z.array(${elementSchema})`;
+      return `v.array(${elementSchema})`;
     }
 
     if (allTypeNames.has(typeName)) {
@@ -317,10 +317,7 @@ function generateSchemaFromTypeNode(
       return intersectionTypes[0]!;
     }
 
-    return `z.intersection(${intersectionTypes[0]}, ${intersectionTypes[1]})${intersectionTypes
-      .slice(2)
-      .map(t => `.and(${t})`)
-      .join('')}`;
+    return `v.intersect([${intersectionTypes.join(', ')}])`;
   }
 
   // Handle parenthesized types
@@ -350,14 +347,14 @@ function generateSchemaFromTypeNode(
         let propSchema = generateSchemaFromTypeNode(propType, allTypeNames);
 
         if (isOptional) {
-          propSchema = `z.optional(${propSchema})`;
+          propSchema = `v.optional(${propSchema})`;
         }
 
         properties.push(`  ${propName}: ${propSchema}`);
       }
     }
 
-    return `z.object({\n${properties.join(',\n')}\n})`;
+    return `v.object({\n${properties.join(',\n')}\n})`;
   }
 
   // If we can't handle it, fail instead of using fallbacks
@@ -387,7 +384,7 @@ function shouldSkipType(typeName: string): boolean {
 /**
  * Generate the complete schemas file content.
  * Creates a standardized file header and formats all the schema
- * definitions with proper imports and exports. Uses z.lazy for
+ * definitions with proper imports and exports. Uses v.lazy for
  * all schema definitions to handle circular references gracefully.
  *
  * @param schemas - Array of parsed schemas with names and definitions
@@ -398,16 +395,15 @@ function generateSchemasFileContent(schemas: ParsedSchema[]): string {
  * This file was auto-generated from TypeScript types.
  * Do not make direct changes to the file.
  */
-
-import { z } from 'zod/mini';
+import * as v from 'valibot';
 import type * as t from './types'
 
 `;
 
-  // Generate schema definitions using the ts-to-zod pattern without type annotations
+  // Generate schema definitions using v.lazy pattern with proper type annotations
   const schemaDefinitions = schemas
     .map(schema => {
-      return `export const ${schema.name}Schema: z.ZodMiniType<t.${schema.name}> = /* @__PURE__ */ z.lazy(\n  () => ${schema.definition},\n);`;
+      return `export const ${schema.name}Schema: v.GenericSchema<t.${schema.name}> = v.lazy(\n  () => ${schema.definition},\n);`;
     })
     .join('\n\n');
 

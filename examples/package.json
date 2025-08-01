@@ -1,26 +1,13 @@
 {
   "name": "@space-rock/jsonrpc-examples",
-  "version": "0.1.0",
-  "description": "Example usage for NEAR Protocol JSON-RPC methods",
-  "private": true,
+  "version": "0.0.0",
+  "description": "JSON RPC fetch client examples",
   "type": "module",
-  "scripts": {
-    "start": "tsx index.ts",
-    "dev": "tsx --watch index.ts"
-  },
-  "keywords": [
-    "near",
-    "jsonrpc",
-    "examples",
-    "rpc"
-  ],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "@space-rock/jsonrpc-client": "workspace:*"
+    "@space-rock/jsonrpc-client": "workspace:^"
   },
   "devDependencies": {
-    "tsx": "~4.20.3",
+    "@types/node": "~22.16.4",
     "typescript": "~5.8.3"
   }
 }

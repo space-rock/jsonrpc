@@ -4,7 +4,6 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { methodSchemas } from '@space-rock/jsonrpc-types';
 import {
   createJsonRpcRequest,
   createJsonRpcResponse,
@@ -24,12 +23,6 @@ describe('EXPERIMENTAL_light_client_block_proof - Unit Tests', () => {
       expect(hasValidSchemas('EXPERIMENTAL_light_client_block_proof')).toBe(
         true,
       );
-      expect(
-        methodSchemas['EXPERIMENTAL_light_client_block_proof']?.request,
-      ).toBeDefined();
-      expect(
-        methodSchemas['EXPERIMENTAL_light_client_block_proof']?.response,
-      ).toBeDefined();
     });
   });
 

@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm rollup -c",
+    "build": "rollup -c",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -37,8 +37,7 @@
     "url": "https://github.com/near/jsonrpc-client-js/issues"
   },
   "dependencies": {
-    "valibot": "~1.1.0",
-    "zod": "~4.0.10"
+    "valibot": "~1.1.0"
   },
   "devDependencies": {
     "typescript": "~5.8.3"

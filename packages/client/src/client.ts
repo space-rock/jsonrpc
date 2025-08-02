@@ -4,8 +4,8 @@ import type {
   ApiResponse,
   RpcMethod,
 } from '@space-rock/jsonrpc-types';
-import { safeParse, summarize } from 'valibot';
-import { toCamelCase, toSnakeCase } from './utils';
+import { safeParse } from 'valibot';
+import { formatError, toCamelCase, toSnakeCase } from './utils';
 
 export type RpcClient = ReturnType<typeof createRpcClient>;
 
@@ -21,50 +21,58 @@ export class ApiError extends Error {
   }
 }
 
-export interface RpcClientOptions {
-  headers?: HeadersInit;
-  signal?: AbortSignal;
-  [key: string]: any;
+export interface RequestOptions extends RequestInit {
+  disableValidation?: boolean;
 }
 
-export function createRpcClient(baseUrl: string, options?: RpcClientOptions) {
+export function createRpcClient(baseUrl: string, options: RequestOptions = {}) {
   return {
     async call<M extends RpcMethod>(
       method: M,
       params: ApiParams<M>,
       requestSchema: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
       responseSchema: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
+      callOptions?: RequestOptions,
     ): Promise<ApiResponse<M>> {
-      const request = {
+      // Merge options: callOptions override createRpcClient options
+      const mergedOptions = { ...options, ...callOptions };
+      let { disableValidation = false, ...fetchOptions } = mergedOptions;
+
+      let request = {
         jsonrpc: '2.0' as const,
         method,
         params,
         id: Math.random().toString(36).substring(7),
       };
 
-      // Validate the request
-      const validatedRequest = safeParse(requestSchema, request);
-      if (!validatedRequest.success) {
-        throw new Error(
-          `Invalid request:\n${summarize(validatedRequest.issues)}`,
-        );
+      // Validate the request if validation is enabled
+      let snakeCaseRequest: unknown;
+      if (!disableValidation) {
+        const validatedRequest = safeParse(requestSchema, request);
+
+        if (!validatedRequest.success) {
+          throw new Error(
+            `Invalid request:\n${JSON.stringify(formatError(validatedRequest), null, 2)}`,
+          );
+        }
+
+        // Convert to snake_case for the API
+        snakeCaseRequest = toSnakeCase(validatedRequest.output);
+      } else {
+        // Skip validation and convert directly
+        snakeCaseRequest = toSnakeCase(request);
       }
 
-      // Convert to snake_case for the API
-      const snakeCaseRequest = toSnakeCase(validatedRequest.output);
-
-      const fetchOptions: RequestInit = {
+      const response = await fetch(baseUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(options?.headers || {}),
+          ...(fetchOptions?.headers || {}),
         },
         body: JSON.stringify(snakeCaseRequest),
-        signal: options?.signal,
-        ...options,
-      };
-
-      const response = await fetch(baseUrl, fetchOptions);
+        signal: fetchOptions?.signal,
+        ...fetchOptions,
+      });
 
       if (!response.ok) {
         throw new ApiError(
@@ -88,15 +96,21 @@ export function createRpcClient(baseUrl: string, options?: RpcClientOptions) {
       // Convert response to camelCase
       const camelCaseResponse = toCamelCase(data);
 
-      // Validate the response
-      const validatedResponse = safeParse(responseSchema, camelCaseResponse);
-      if (!validatedResponse.success) {
-        throw new Error(
-          `Invalid response:\n${summarize(validatedResponse.issues)}`,
-        );
-      }
+      // Validate the response if validation is enabled
+      if (!disableValidation) {
+        const validatedResponse = safeParse(responseSchema, camelCaseResponse);
 
-      return validatedResponse.output as ApiResponse<M>;
+        if (!validatedResponse.success) {
+          throw new Error(
+            `Invalid response:\n${JSON.stringify(formatError(validatedResponse), null, 2)}`,
+          );
+        }
+
+        return validatedResponse.output as ApiResponse<M>;
+      } else {
+        // Skip validation and return response directly
+        return camelCaseResponse as ApiResponse<M>;
+      }
     },
   };
 }

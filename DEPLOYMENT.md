@@ -456,7 +456,7 @@ npm install . --no-save
 
 ### Dependencies
 
-- chore(deps): update zod to 3.25.67
+- chore(deps): update valibot to 1.0.10
 
 **Full Changelog**: https://github.com/...
 ```

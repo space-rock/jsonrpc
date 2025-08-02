@@ -30,11 +30,11 @@
 
 - **🎯 Type-First Design**: TypeScript types generated directly from OpenAPI spec (not inferred from schemas)
 - **⚡ Blazing Fast Autocomplete**: Clean, responsive IntelliSense with zero runtime overhead
-- **🛡️ Runtime Validation**: Zod schema validation for request/response
+- **🛡️ Runtime Validation**: Valibot schema validation for request/response
 - **📦 Tree-Shakable**: Optimized builds with code splitting for both ESM and CJS
 - **🧪 98%+ Test Coverage**: Comprehensive automated testing with dynamically generated test suites
 - **🔄 Auto-Updated**: Daily synchronization with NEAR Protocol's latest OpenAPI specification
-- **🎭 Mock Generation**: Test data generation using zod-schema-faker
+- **🎭 Mock Generation**: Test data generation using valimock
 - **🔌 Modular Architecture**: Separate packages for types and client implementation
 
 ## 📚 Table of Contents
@@ -60,7 +60,7 @@ This monorepo provides a type-safe, high-performance JSON-RPC client for interac
 | Package                                         | Version                                                             | Description                                   |
 | ----------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------- |
 | [@space-rock/jsonrpc-client](./packages/client) | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg) | JSON-RPC fetch client with runtime validation |
-| [@space-rock/jsonrpc-types](./packages/types)   | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg)  | TypeScript types and Zod schemas              |
+| [@space-rock/jsonrpc-types](./packages/types)   | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg)  | TypeScript types and Valibot schemas              |
 
 ## Quick Start
 
@@ -73,21 +73,13 @@ pnpm add @space-rock/jsonrpc-types
 ```
 
 ```typescript
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { block, createRpcClient } from '@space-rock/jsonrpc-client';
 
 // Initialize client
 const client = createRpcClient('https://near.lava.build:443');
 
-// Use the simplified request method
-const response = await client.request('block', { finality: 'final' });
-
-// Use the full JSON-RPC call method
-const response = await client.call({
-  id: 'dontcare',
-  jsonrpc: '2.0',
-  method: 'block',
-  params: { finality: 'final' },
-});
+// Make block method request
+const response = await block(client, { finality: 'final' });
 
 if ('error' in response) {
   console.log(response.error.message);
@@ -167,14 +159,13 @@ The project uses a sophisticated code generation pipeline to ensure type safety 
    - Uses `openapi-typescript` for accurate type generation
    - Creates method-to-request/response mappings
 
-2. **Zod Schemas** (`codegen/src/schemas.ts`)
-   - Generates Zod schemas from TypeScript types
-   - Uses `ts-to-zod` for schema generation
+2. **Valibot Schemas** (`codegen/src/schemas.ts`)
+   - Generates Valibot schemas from TypeScript types
    - Maintains runtime validation capabilities
 
 3. **Test Suites** (`codegen/src/tests.ts`)
    - Dynamically generates comprehensive tests
-   - Uses `zod-schema-faker` for mock data generation
+   - Uses `valimock` for mock data generation
    - Ensures high test coverage across all methods
 
 ### Running Code Generation
@@ -208,7 +199,7 @@ pnpm codegen
 ### Test Strategy
 
 - **Dynamic Test Generation**: Tests are automatically generated for all RPC methods
-- **Mock Data**: Uses `zod-schema-faker` to generate valid test data
+- **Mock Data**: Uses `valimock` to generate valid test data
 - **Coverage Target**: Maintains >80% code coverage
 - **Validation Testing**: Tests both validated and non-validated request paths
 

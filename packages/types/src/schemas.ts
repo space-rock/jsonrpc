@@ -2692,240 +2692,104 @@ export const RpcProtocolConfigResponseSchema: v.GenericSchema<t.RpcProtocolConfi
     }),
   );
 
+export const RpcQueryBlockParamsSchema: v.GenericSchema<t.RpcQueryBlockParams> =
+  v.lazy(() =>
+    v.union([
+      v.object({
+        blockId: BlockIdSchema,
+      }),
+      v.object({
+        finality: FinalitySchema,
+      }),
+      v.object({
+        syncCheckpoint: SyncCheckpointSchema,
+      }),
+    ]),
+  );
+
+export const RpcQueryViewAccountSchema: v.GenericSchema<t.RpcQueryViewAccount> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      requestType: v.literal('view_account'),
+    }),
+  );
+
+export const RpcQueryViewCodeSchema: v.GenericSchema<t.RpcQueryViewCode> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      requestType: v.literal('view_code'),
+    }),
+  );
+
+export const RpcQueryViewStateSchema: v.GenericSchema<t.RpcQueryViewState> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      includeProof: v.optional(v.boolean()),
+      prefixBase64: StoreKeySchema,
+      requestType: v.literal('view_state'),
+    }),
+  );
+
+export const RpcQueryViewAccessKeySchema: v.GenericSchema<t.RpcQueryViewAccessKey> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      publicKey: PublicKeySchema,
+      requestType: v.literal('view_access_key'),
+    }),
+  );
+
+export const RpcQueryViewAccessKeyListSchema: v.GenericSchema<t.RpcQueryViewAccessKeyList> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      requestType: v.literal('view_access_key_list'),
+    }),
+  );
+
+export const RpcQueryCallFunctionSchema: v.GenericSchema<t.RpcQueryCallFunction> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      argsBase64: FunctionArgsSchema,
+      methodName: v.string(),
+      requestType: v.literal('call_function'),
+    }),
+  );
+
+export const RpcQueryViewGlobalContractCodeSchema: v.GenericSchema<t.RpcQueryViewGlobalContractCode> =
+  v.lazy(() =>
+    v.object({
+      codeHash: CryptoHashSchema,
+      requestType: v.literal('view_global_contract_code'),
+    }),
+  );
+
+export const RpcQueryViewGlobalContractCodeByAccountIdSchema: v.GenericSchema<t.RpcQueryViewGlobalContractCodeByAccountId> =
+  v.lazy(() =>
+    v.object({
+      accountId: AccountIdSchema,
+      requestType: v.literal('view_global_contract_code_by_account_id'),
+    }),
+  );
+
 export const RpcQueryRequestSchema: v.GenericSchema<t.RpcQueryRequest> = v.lazy(
   () =>
-    v.union([
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_account'),
-        }),
+    v.intersect([
+      v.union([
+        RpcQueryViewAccountSchema,
+        RpcQueryViewCodeSchema,
+        RpcQueryViewStateSchema,
+        RpcQueryViewAccessKeySchema,
+        RpcQueryViewAccessKeyListSchema,
+        RpcQueryCallFunctionSchema,
+        RpcQueryViewGlobalContractCodeSchema,
+        RpcQueryViewGlobalContractCodeByAccountIdSchema,
       ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_code'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          includeProof: v.optional(v.boolean()),
-          prefixBase64: StoreKeySchema,
-          requestType: v.literal('view_state'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          publicKey: PublicKeySchema,
-          requestType: v.literal('view_access_key'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_access_key_list'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          argsBase64: FunctionArgsSchema,
-          methodName: v.string(),
-          requestType: v.literal('call_function'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          codeHash: CryptoHashSchema,
-          requestType: v.literal('view_global_contract_code'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_global_contract_code_by_account_id'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_account'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_code'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          includeProof: v.optional(v.boolean()),
-          prefixBase64: StoreKeySchema,
-          requestType: v.literal('view_state'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          publicKey: PublicKeySchema,
-          requestType: v.literal('view_access_key'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_access_key_list'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          argsBase64: FunctionArgsSchema,
-          methodName: v.string(),
-          requestType: v.literal('call_function'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          codeHash: CryptoHashSchema,
-          requestType: v.literal('view_global_contract_code'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_global_contract_code_by_account_id'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_account'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_code'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          includeProof: v.optional(v.boolean()),
-          prefixBase64: StoreKeySchema,
-          requestType: v.literal('view_state'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          publicKey: PublicKeySchema,
-          requestType: v.literal('view_access_key'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_access_key_list'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          argsBase64: FunctionArgsSchema,
-          methodName: v.string(),
-          requestType: v.literal('call_function'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          codeHash: CryptoHashSchema,
-          requestType: v.literal('view_global_contract_code'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountId: AccountIdSchema,
-          requestType: v.literal('view_global_contract_code_by_account_id'),
-        }),
-      ]),
+      RpcQueryBlockParamsSchema,
     ]),
 );
 
@@ -3004,201 +2868,91 @@ export const RpcSplitStorageInfoResponseSchema: v.GenericSchema<t.RpcSplitStorag
     }),
   );
 
-export const RpcStateChangesInBlockByTypeRequestSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeRequest> =
+export const RpcStateChangesBlockParamsSchema: v.GenericSchema<t.RpcStateChangesBlockParams> =
   v.lazy(() =>
     v.union([
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('account_changes'),
-        }),
+      v.object({
+        blockId: BlockIdSchema,
+      }),
+      v.object({
+        finality: FinalitySchema,
+      }),
+      v.object({
+        syncCheckpoint: SyncCheckpointSchema,
+      }),
+    ]),
+  );
+
+export const RpcStateChangesInBlockByTypeAccountChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeAccountChanges> =
+  v.lazy(() =>
+    v.object({
+      accountIds: v.array(AccountIdSchema),
+      changesType: v.literal('account_changes'),
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeSingleAccessKeyChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeSingleAccessKeyChanges> =
+  v.lazy(() =>
+    v.object({
+      changesType: v.literal('single_access_key_changes'),
+      keys: v.array(AccountWithPublicKeySchema),
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeSingleGasKeyChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeSingleGasKeyChanges> =
+  v.lazy(() =>
+    v.object({
+      changesType: v.literal('single_gas_key_changes'),
+      keys: v.array(AccountWithPublicKeySchema),
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeAllAccessKeyChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeAllAccessKeyChanges> =
+  v.lazy(() =>
+    v.object({
+      accountIds: v.array(AccountIdSchema),
+      changesType: v.literal('all_access_key_changes'),
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeAllGasKeyChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeAllGasKeyChanges> =
+  v.lazy(() =>
+    v.object({
+      accountIds: v.array(AccountIdSchema),
+      changesType: v.literal('all_gas_key_changes'),
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeContractCodeChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeContractCodeChanges> =
+  v.lazy(() =>
+    v.object({
+      accountIds: v.array(AccountIdSchema),
+      changesType: v.literal('contract_code_changes'),
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeDataChangesSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeDataChanges> =
+  v.lazy(() =>
+    v.object({
+      accountIds: v.array(AccountIdSchema),
+      changesType: v.literal('data_changes'),
+      keyPrefixBase64: StoreKeySchema,
+    }),
+  );
+
+export const RpcStateChangesInBlockByTypeRequestSchema: v.GenericSchema<t.RpcStateChangesInBlockByTypeRequest> =
+  v.lazy(() =>
+    v.intersect([
+      v.union([
+        RpcStateChangesInBlockByTypeAccountChangesSchema,
+        RpcStateChangesInBlockByTypeSingleAccessKeyChangesSchema,
+        RpcStateChangesInBlockByTypeSingleGasKeyChangesSchema,
+        RpcStateChangesInBlockByTypeAllAccessKeyChangesSchema,
+        RpcStateChangesInBlockByTypeAllGasKeyChangesSchema,
+        RpcStateChangesInBlockByTypeContractCodeChangesSchema,
+        RpcStateChangesInBlockByTypeDataChangesSchema,
       ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          changesType: v.literal('single_access_key_changes'),
-          keys: v.array(AccountWithPublicKeySchema),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          changesType: v.literal('single_gas_key_changes'),
-          keys: v.array(AccountWithPublicKeySchema),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('all_access_key_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('all_gas_key_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('contract_code_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          blockId: BlockIdSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('data_changes'),
-          keyPrefixBase64: StoreKeySchema,
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('account_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          changesType: v.literal('single_access_key_changes'),
-          keys: v.array(AccountWithPublicKeySchema),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          changesType: v.literal('single_gas_key_changes'),
-          keys: v.array(AccountWithPublicKeySchema),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('all_access_key_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('all_gas_key_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('contract_code_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          finality: FinalitySchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('data_changes'),
-          keyPrefixBase64: StoreKeySchema,
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('account_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          changesType: v.literal('single_access_key_changes'),
-          keys: v.array(AccountWithPublicKeySchema),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          changesType: v.literal('single_gas_key_changes'),
-          keys: v.array(AccountWithPublicKeySchema),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('all_access_key_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('all_gas_key_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('contract_code_changes'),
-        }),
-      ]),
-      v.intersect([
-        v.object({
-          syncCheckpoint: SyncCheckpointSchema,
-        }),
-        v.object({
-          accountIds: v.array(AccountIdSchema),
-          changesType: v.literal('data_changes'),
-          keyPrefixBase64: StoreKeySchema,
-        }),
-      ]),
+      RpcStateChangesBlockParamsSchema,
     ]),
   );
 

@@ -147,10 +147,238 @@ interface RpcMethodInfo {
 }
 
 /**
- * Main function that converts OpenAPI specification to TypeScript types.
- * Generates both original snake_case types and camelCase variants,
- * along with method mappings and schema validation functions.
+ * Creates a discriminated union for block parameter types by adding never types
+ * to ensure mutual exclusivity between union members.
  */
+function createDiscriminatedUnionForBlockParams(unionTypeNode: Node): string {
+  if (!Node.isUnionTypeNode(unionTypeNode)) {
+    return unionTypeNode.getText();
+  }
+
+  const unionMembers = unionTypeNode.getTypeNodes();
+  const discriminatedMembers: string[] = [];
+
+  // Properties that can be present in block param types
+  const allProps = ['finality', 'blockId', 'syncCheckpoint'];
+
+  for (const member of unionMembers) {
+    if (Node.isTypeLiteral(member)) {
+      const properties = member.getProperties();
+      const presentProps = new Set<string>();
+      const memberProps: string[] = [];
+
+      // Collect existing properties
+      for (const prop of properties) {
+        const propName = prop.getName();
+        presentProps.add(propName);
+
+        // Get the property signature text and clean it up
+        let propText = prop.getText();
+        // Remove trailing semicolon if present to avoid double semicolons
+        propText = propText.replace(/;\s*$/, '');
+        memberProps.push(propText);
+      }
+
+      // Add never types for missing properties
+      for (const prop of allProps) {
+        if (!presentProps.has(prop)) {
+          memberProps.push(`${prop}?: never`);
+        }
+      }
+
+      // Create the discriminated member with proper formatting
+      const memberText = `{\n      ${memberProps.join(';\n      ')};\n    }`;
+      discriminatedMembers.push(memberText);
+    }
+  }
+
+  return discriminatedMembers.join('\n    | ');
+}
+
+function postProcessTypes(typesContent: string): string {
+  // Create a temporary project to work with the types
+  const tempProject = new Project({
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ESNext,
+    },
+  });
+
+  const sourceFile = tempProject.createSourceFile('temp.ts', typesContent);
+
+  // List of types to restructure
+  const typesToRestructure = [
+    'RpcQueryRequest',
+    'RpcStateChangesInBlockByTypeRequest',
+  ];
+
+  // List of block param types that need discriminated union treatment
+  const blockParamTypesToDiscriminate = [
+    'RpcQueryBlockParams',
+    'RpcStateChangesBlockParams',
+  ];
+
+  for (const typeName of typesToRestructure) {
+    const typeAlias = sourceFile.getTypeAlias(typeName);
+    if (typeAlias) {
+      const typeNode = typeAlias.getTypeNode();
+      if (typeNode) {
+        if (Node.isUnionTypeNode(typeNode)) {
+          const { helperTypes, mainTypeText } = restructureUnionTypeWithTsMorph(
+            typeName,
+            typeNode,
+          );
+
+          if (helperTypes.length > 0) {
+            // Insert helper types before the main type
+            const insertIndex = typeAlias.getStart();
+            const helperTypesText = helperTypes.join('\n') + '\n\n';
+
+            // Insert the helper types
+            sourceFile.insertText(insertIndex, helperTypesText);
+
+            // Find the type alias again after insertion (the reference may have changed)
+            const updatedTypeAlias = sourceFile.getTypeAlias(typeName);
+            if (updatedTypeAlias) {
+              // Update the main type
+              updatedTypeAlias.setType(mainTypeText);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Process block parameter types that need discriminated union treatment
+  for (const typeName of blockParamTypesToDiscriminate) {
+    const typeAlias = sourceFile.getTypeAlias(typeName);
+    if (typeAlias) {
+      const typeNode = typeAlias.getTypeNode();
+      if (typeNode && Node.isUnionTypeNode(typeNode)) {
+        const discriminatedTypeText =
+          createDiscriminatedUnionForBlockParams(typeNode);
+        typeAlias.setType(discriminatedTypeText);
+      }
+    }
+  }
+
+  return sourceFile.getFullText();
+}
+
+function restructureUnionTypeWithTsMorph(
+  typeName: string,
+  unionTypeNode: Node,
+): { helperTypes: string[]; mainTypeText: string } {
+  if (!Node.isUnionTypeNode(unionTypeNode)) {
+    return { helperTypes: [], mainTypeText: unionTypeNode.getText() };
+  }
+
+  const unionMembers = unionTypeNode.getTypeNodes();
+  const blockParamTypes = new Set<string>();
+  const requestTypeGroups = new Map<string, string>();
+
+  // Analyze each union member
+  for (const member of unionMembers) {
+    let actualMember = member;
+
+    // Handle parenthesized types
+    if (Node.isParenthesizedTypeNode(member)) {
+      actualMember = member.getTypeNode();
+    }
+
+    if (!Node.isIntersectionTypeNode(actualMember)) {
+      continue;
+    }
+
+    const intersectionTypes = actualMember.getTypeNodes();
+    let blockParamNode: Node | undefined;
+    let requestParamNode: Node | undefined;
+
+    // Find block param and request param nodes
+    for (const intersectionType of intersectionTypes) {
+      if (Node.isTypeLiteral(intersectionType)) {
+        const properties = intersectionType.getProperties();
+        const hasBlockId = properties.some(p => p.getName() === 'blockId');
+        const hasFinality = properties.some(p => p.getName() === 'finality');
+        const hasSyncCheckpoint = properties.some(
+          p => p.getName() === 'syncCheckpoint',
+        );
+        const hasRequestType = properties.some(
+          p => p.getName() === 'requestType',
+        );
+        const hasChangesType = properties.some(
+          p => p.getName() === 'changesType',
+        );
+
+        if (hasBlockId || hasFinality || hasSyncCheckpoint) {
+          blockParamNode = intersectionType;
+        } else if (hasRequestType || hasChangesType) {
+          requestParamNode = intersectionType;
+        }
+      }
+    }
+
+    if (blockParamNode && requestParamNode) {
+      blockParamTypes.add(blockParamNode.getText());
+
+      // Extract request/changes type value
+      const requestParamText = requestParamNode.getText();
+      const typeMatch = requestParamText.match(
+        /(?:requestType|changesType):\s*['"]([^'"]+)['"]/,
+      );
+
+      if (typeMatch && typeMatch[1]) {
+        const typeValue = typeMatch[1];
+        if (!requestTypeGroups.has(typeValue)) {
+          requestTypeGroups.set(typeValue, requestParamText);
+        }
+      }
+    }
+  }
+
+  // If we can't restructure, return original
+  if (blockParamTypes.size === 0 || requestTypeGroups.size === 0) {
+    return { helperTypes: [], mainTypeText: unionTypeNode.getText() };
+  }
+
+  // Generate helper types
+  const helperTypes: string[] = [];
+  const requestParamTypeNames: string[] = [];
+
+  // Generate block params type
+  const blockParamsTypeName =
+    typeName === 'RpcQueryRequest'
+      ? 'RpcQueryBlockParams'
+      : 'RpcStateChangesBlockParams';
+
+  const blockParamsUnion = Array.from(blockParamTypes).join(' | ');
+  helperTypes.push(`export type ${blockParamsTypeName} = ${blockParamsUnion};`);
+
+  // Generate individual request parameter types with updated naming
+  for (const [typeValue, requestParamText] of requestTypeGroups) {
+    const pascalName = typeValue
+      .split('_')
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('');
+
+    let helperTypeName: string;
+    if (typeName === 'RpcQueryRequest') {
+      helperTypeName = `RpcQuery${pascalName}`;
+    } else {
+      helperTypeName = `RpcStateChangesInBlockByType${pascalName}`;
+    }
+
+    helperTypes.push(`export type ${helperTypeName} = ${requestParamText};`);
+    requestParamTypeNames.push(helperTypeName);
+  }
+
+  // Generate main type
+  const requestParamsUnion = requestParamTypeNames.join(' | ');
+  const mainTypeText = `(${requestParamsUnion}) & ${blockParamsTypeName}`;
+
+  return { helperTypes, mainTypeText };
+}
+
 async function convertOpenAPIToTypes() {
   try {
     const { default: openapiTS } = await import('openapi-typescript');
@@ -203,7 +431,10 @@ async function convertOpenAPIToTypes() {
       spec,
     );
 
-    await fs.writeFile(typesOutputPath, types);
+    // Post-process specific types to improve type hints
+    const processedTypes = postProcessTypes(types);
+
+    await fs.writeFile(typesOutputPath, processedTypes);
     console.log(
       `✅ Successfully generated schema types at: ${typesOutputPath}`,
     );
@@ -346,7 +577,7 @@ function extractRpcMethodInfo(
 }
 
 /**
- * Generates Zod schema mappings for RPC methods.
+ * Generates Valibot schema mappings for RPC methods.
  * Creates a methodSchemas object that maps method names to their request/response schemas,
  * along with helper functions for schema retrieval.
  * @param operationsInterface - The operations interface from OpenAPI spec
@@ -354,7 +585,7 @@ function extractRpcMethodInfo(
  * @param schemaOutputFile - The output file to write schema mappings to
  * @returns true if mappings were generated successfully
  */
-function generateZodSchemaMappings(
+function generateValibotSchemaMappings(
   operationsInterface: InterfaceDeclaration,
   schemasType: TypeLiteralNode,
 ): boolean {
@@ -443,7 +674,7 @@ async function generateMethodFiles(
 
     methodFile.addImportDeclaration({
       moduleSpecifier: '../client',
-      namedImports: ['RpcClient'],
+      namedImports: ['RequestOptions', 'RpcClient'],
       isTypeOnly: true,
     });
 
@@ -455,11 +686,12 @@ async function generateMethodFiles(
       parameters: [
         { name: 'client', type: 'RpcClient' },
         { name: 'params', type: `ApiParams<'${method}'>` },
+        { name: 'options', type: 'RequestOptions', hasQuestionToken: true },
       ],
       returnType: `Promise<ApiResponse<'${method}'>>`,
       statements: writer => {
         writer.writeLine(
-          `return client.call('${method}', params, ${requestSchemaName}Schema, ${responseSchemaName}Schema);`,
+          `return client.call('${method}', params, ${requestSchemaName}Schema, ${responseSchemaName}Schema, options);`,
         );
       },
     });
@@ -744,7 +976,7 @@ async function processOpenApiTypesWithTsMorph(
     schemasType,
     mapOutputFile,
   );
-  generateZodSchemaMappings(operationsInterface, schemasType);
+  generateValibotSchemaMappings(operationsInterface, schemasType);
 
   // Generate method files
   await generateMethodFiles(operationsInterface, schemasType);

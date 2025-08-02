@@ -15,13 +15,13 @@ pnpm add @space-rock/jsonrpc-client
 ## Quick Start
 
 ```typescript
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { block, createRpcClient } from '@space-rock/jsonrpc-client';
 
 // Initialize client
 const client = createRpcClient('https://near.lava.build:443');
 
 // Make type-safe requests with autocomplete
-const response = await client.request('block', { finality: 'final' });
+const response = await block(client, { finality: 'final' });
 
 if ('error' in response) {
   console.log(response.error.message);
@@ -33,18 +33,13 @@ if ('error' in response) {
 ## Advanced Usage
 
 ```typescript
-import { createRpcClient } from '@space-rock/jsonrpc-client';
+import { block, createRpcClient } from '@space-rock/jsonrpc-client';
 
 // Basic initialization
 const client = createRpcClient('https://near.lava.build:443');
 
 // Use the full JSON-RPC call method
-const response = await client.call({
-  id: 'dontcare',
-  jsonrpc: '2.0',
-  method: 'block',
-  params: { finality: 'final' },
-});
+const response = await block(client, { finality: 'final' });
 
 // Initialize with custom headers
 const client = createRpcClient('https://near.lava.build:443', {
@@ -67,7 +62,7 @@ const client = createRpcClient('https://near.lava.build:443', {
 setTimeout(() => controller.abort(), 10000);
 
 try {
-  const response = await client.request('block', { finality: 'final' });
+  const response = await block(client, { finality: 'final' });
 } catch (error) {
   if (error.name === 'AbortError') {
     console.log('Request was aborted');

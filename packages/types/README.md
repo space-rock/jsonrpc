@@ -1,6 +1,6 @@
 # @space-rock/jsonrpc-types
 
-TypeScript types and Zod schemas for NEAR Protocol JSON-RPC API, automatically generated from the official OpenAPI specification.
+TypeScript types and Valibot schemas for NEAR Protocol JSON-RPC API, automatically generated from the official OpenAPI specification.
 
 ## Installation
 
@@ -27,9 +27,16 @@ const blockRef: BlockReference = {
 };
 
 // Types for specific methods
-import type { ApiRequest, ApiResponse } from '@space-rock/jsonrpc-types';
+import type {
+  ApiParams,
+  ApiRequest,
+  ApiResponse,
+} from '@space-rock/jsonrpc-types';
 
-// Request type for a method
+// Request params type for a method
+type BlockParams = ApiParams<'block'>;
+
+// Full request type for a method
 type BlockRequest = ApiRequest<'block'>;
 
 // Response type for a method
@@ -41,22 +48,16 @@ type BlockResponse = ApiResponse<'block'>;
 The types package is designed to work seamlessly with the client:
 
 ```typescript
-import { createRpcClient } from '@space-rock/jsonrpc-client';
-import type { ApiRequest, ApiResponse } from '@space-rock/jsonrpc-types';
+import { block, createRpcClient } from '@space-rock/jsonrpc-client';
+import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 
 // Initialize client
 const client = createRpcClient('https://near.lava.build:443');
 
-// Types are automatically inferred
-const request: ApiRequest<'block'> = {
-  id: 'dontcare',
-  jsonrpc: '2.0',
-  method: 'block',
-  params: { finality: 'final' },
-};
+const params: ApiParams<'block'> = { finality: 'final' };
 
 // Types are automatically inferred
-const response: ApiResponse<'block'> = await client.call(request);
+const response: ApiResponse<'block'> = await block(client, params);
 
 if ('error' in response) {
   console.log(response.error.message);

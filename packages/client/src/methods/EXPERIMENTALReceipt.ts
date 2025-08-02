@@ -3,16 +3,18 @@ import {
   JsonRpcRequest_for_EXPERIMENTAL_receiptSchema,
   JsonRpcResponse_for_RpcReceiptResponse_and_RpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
-import type { RpcClient } from '../client';
+import type { RequestOptions, RpcClient } from '../client';
 
 export async function EXPERIMENTALReceipt(
   client: RpcClient,
   params: ApiParams<'EXPERIMENTAL_receipt'>,
+  options?: RequestOptions,
 ): Promise<ApiResponse<'EXPERIMENTAL_receipt'>> {
   return client.call(
     'EXPERIMENTAL_receipt',
     params,
     JsonRpcRequest_for_EXPERIMENTAL_receiptSchema,
     JsonRpcResponse_for_RpcReceiptResponse_and_RpcErrorSchema,
+    options,
   );
 }

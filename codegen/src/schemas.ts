@@ -211,6 +211,13 @@ function generateSchemaFromTypeNode(
 ): string {
   const typeText = typeNode.getText().trim();
 
+  // Handle never type - used in discriminated unions, should not have a schema
+  if (typeNode.getKind() === SyntaxKind.NeverKeyword) {
+    // Never types are used in discriminated unions and should be ignored
+    // They represent impossible states and don't need validation
+    throw new Error('Never type encountered - this should not be processed');
+  }
+
   // Handle primitive types
   if (typeText in TYPE_MAPPINGS) {
     return TYPE_MAPPINGS[typeText as keyof typeof TYPE_MAPPINGS];
@@ -341,6 +348,12 @@ function generateSchemaFromTypeNode(
           throw new Error(
             `Property has invalid structure: ${member.getText()}`,
           );
+        }
+
+        // Skip properties with never type - they're used for discriminated unions
+        // and should not be included in validation schemas
+        if (propType.getKind() === SyntaxKind.NeverKeyword) {
+          continue;
         }
 
         const isOptional = member.hasQuestionToken();

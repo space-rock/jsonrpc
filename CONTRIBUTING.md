@@ -66,12 +66,12 @@ Thank you for your interest in contributing to @space-rock/jsonrpc! This documen
 @space-rock/
 ├── packages/
 │   ├── client/          # JSON-RPC client implementation
-│   └── types/           # TypeScript types and Zod schemas
+│   └── types/           # TypeScript types and Valibot schemas
 ├── codegen/             # Code generation scripts
 │   ├── openapi.json     # OpenAPI specification
 │   └── src/
 │       ├── types.ts     # TypeScript type generator
-│       ├── schemas.ts   # Zod schema generator
+│       ├── schemas.ts   # Valibot schema generator
 │       └── tests.ts     # Test generator
 ├── tests/               # Generated test suites
 ├── scripts/             # Build and utility scripts

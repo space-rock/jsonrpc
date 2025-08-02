@@ -1,6 +1,6 @@
 # Code Generation Guide
 
-This guide explains the code generation system used in @space-rock/jsonrpc, which automatically generates TypeScript types, Zod schemas, and tests from the NEAR Protocol OpenAPI specification.
+This guide explains the code generation system used in @space-rock/jsonrpc, which automatically generates TypeScript types, Valibot schemas, and tests from the NEAR Protocol OpenAPI specification.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ This guide explains the code generation system used in @space-rock/jsonrpc, whic
 The code generation system provides:
 
 - **Type Safety**: TypeScript types generated directly from OpenAPI spec
-- **Runtime Validation**: Zod schemas for all types
+- **Runtime Validation**: Valibot schemas for all types
 - **Comprehensive Testing**: Automatically generated test suites
 - **Always Up-to-Date**: Daily synchronization with NEAR Protocol
 
@@ -35,7 +35,7 @@ codegen/
 ├── openapi.json         # Input: OpenAPI specification
 ├── src/
 │   ├── types.ts        # Generates TypeScript types
-│   ├── schemas.ts      # Generates Zod schemas
+│   ├── schemas.ts      # Generates Valibot schemas
 │   ├── tests.ts        # Generates test suites
 │   └── validate.ts     # Validates generated code
 ├── package.json
@@ -45,7 +45,7 @@ codegen/
 
 packages/types/src/
 ├── types.ts            # TypeScript interfaces and types
-├── schemas.ts          # Zod validation schemas
+├── schemas.ts          # Valibot validation schemas
 ├── mappings.ts         # Method-to-type mappings
 ├── helpers.ts          # Utility types
 └── index.ts            # Public exports
@@ -71,11 +71,10 @@ Generates TypeScript types from OpenAPI specification:
 
 ### 2. Schema Generation (`codegen/src/schemas.ts`)
 
-Generates Zod schemas from TypeScript types:
+Generates Valibot schemas from TypeScript types:
 
 **Features:**
 
-- Uses `ts-to-zod` for schema generation
 - Maintains type safety between types and schemas
 - Handles complex type relationships
 - Generates schema mappings for each method
@@ -86,7 +85,7 @@ Generates comprehensive test suites:
 
 **Features:**
 
-- Uses `zod-mock` for test data generation
+- Uses `valimock` for test data generation
 - Creates validation tests for each schema
 - Generates integration tests for client methods
 - Ensures >98% code coverage

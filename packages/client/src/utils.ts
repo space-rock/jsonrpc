@@ -1,3 +1,5 @@
+import { BaseIssue, BaseSchema, getDotPath, SafeParseResult } from 'valibot';
+
 export function toSnakeCase(obj: unknown): unknown {
   if (obj === null || typeof obj !== 'object') return obj;
   if (Array.isArray(obj)) return obj.map(toSnakeCase);
@@ -29,4 +31,23 @@ export function toCamelCase(obj: unknown): unknown {
   }
 
   return result;
+}
+
+export function formatError(
+  result: SafeParseResult<BaseSchema<unknown, unknown, BaseIssue<unknown>>>,
+) {
+  const errors: Record<string, unknown> = {};
+
+  const getMessage = (issue: BaseIssue<unknown>) => {
+    const path = getDotPath(issue);
+
+    if (path) {
+      errors[path] = issue.message;
+    }
+
+    issue.issues?.map(getMessage);
+  };
+  result.issues!.map(getMessage);
+
+  return errors;
 }

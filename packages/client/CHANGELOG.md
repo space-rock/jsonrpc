@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.1](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.0...jsonrpc-client-v0.3.1) (2025-08-02)
+
+
+### Features
+
+* add validation options to client and methods ([#22](https://github.com/space-rock/jsonrpc/issues/22)) ([216f58d](https://github.com/space-rock/jsonrpc/commit/216f58ddc7e1959c3dd1c81fb21f1ef8176645d8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @space-rock/jsonrpc-types bumped to 0.3.1
+
 ## [0.3.0](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.2.8...jsonrpc-client-v0.3.0) (2025-08-01)
 
 

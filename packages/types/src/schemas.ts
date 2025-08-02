@@ -1523,6 +1523,16 @@ export const JsonRpcRequest_for_blockSchema: v.GenericSchema<t.JsonRpcRequest_fo
     }),
   );
 
+export const JsonRpcRequest_for_block_effectsSchema: v.GenericSchema<t.JsonRpcRequest_for_block_effects> =
+  v.lazy(() =>
+    v.object({
+      id: v.string(),
+      jsonrpc: v.string(),
+      method: v.literal('block_effects'),
+      params: RpcStateChangesInBlockRequestSchema,
+    }),
+  );
+
 export const JsonRpcRequest_for_broadcast_tx_asyncSchema: v.GenericSchema<t.JsonRpcRequest_for_broadcast_tx_async> =
   v.lazy(() =>
     v.object({
@@ -1583,6 +1593,16 @@ export const JsonRpcRequest_for_gas_priceSchema: v.GenericSchema<t.JsonRpcReques
     }),
   );
 
+export const JsonRpcRequest_for_genesis_configSchema: v.GenericSchema<t.JsonRpcRequest_for_genesis_config> =
+  v.lazy(() =>
+    v.object({
+      id: v.string(),
+      jsonrpc: v.string(),
+      method: v.literal('genesis_config'),
+      params: GenesisConfigRequestSchema,
+    }),
+  );
+
 export const JsonRpcRequest_for_healthSchema: v.GenericSchema<t.JsonRpcRequest_for_health> =
   v.lazy(() =>
     v.object({
@@ -1600,6 +1620,16 @@ export const JsonRpcRequest_for_light_client_proofSchema: v.GenericSchema<t.Json
       jsonrpc: v.string(),
       method: v.literal('light_client_proof'),
       params: RpcLightClientExecutionProofRequestSchema,
+    }),
+  );
+
+export const JsonRpcRequest_for_maintenance_windowsSchema: v.GenericSchema<t.JsonRpcRequest_for_maintenance_windows> =
+  v.lazy(() =>
+    v.object({
+      id: v.string(),
+      jsonrpc: v.string(),
+      method: v.literal('maintenance_windows'),
+      params: RpcMaintenanceWindowsRequestSchema,
     }),
   );
 
@@ -2408,6 +2438,7 @@ export const RpcClientConfigResponseSchema: v.GenericSchema<t.RpcClientConfigRes
         v.union([ChunkDistributionNetworkConfigSchema, v.null()]),
       ),
       chunkRequestRetryPeriod: v.array(v.number()),
+      chunkValidationThreads: v.number(),
       chunkWaitMult: v.array(v.number()),
       clientBackgroundMigrationThreads: v.number(),
       doomslugStepPeriod: v.array(v.number()),
@@ -2440,6 +2471,9 @@ export const RpcClientConfigResponseSchema: v.GenericSchema<t.RpcClientConfigRes
       saveTrieChanges: v.boolean(),
       saveTxOutcomes: v.boolean(),
       skipSyncWait: v.boolean(),
+      stateRequestServerThreads: v.number(),
+      stateRequestThrottlePeriod: v.array(v.number()),
+      stateRequestsPerThrottlePeriod: v.number(),
       stateSync: StateSyncConfigSchema,
       stateSyncEnabled: v.boolean(),
       stateSyncExternalBackoff: v.array(v.number()),
@@ -2457,9 +2491,7 @@ export const RpcClientConfigResponseSchema: v.GenericSchema<t.RpcClientConfigRes
       ttlAccountIdRouter: v.array(v.number()),
       txRoutingHeightHorizon: v.number(),
       version: VersionSchema,
-      viewClientNumStateRequestsPerThrottlePeriod: v.number(),
       viewClientThreads: v.number(),
-      viewClientThrottlePeriod: v.array(v.number()),
     }),
   );
 

@@ -1,4 +1,5 @@
 export { block } from './block';
+export { blockEffects } from './blockEffects';
 export { broadcastTxAsync } from './broadcastTxAsync';
 export { broadcastTxCommit } from './broadcastTxCommit';
 export { changes } from './changes';
@@ -17,8 +18,10 @@ export { EXPERIMENTALSplitStorageInfo } from './EXPERIMENTALSplitStorageInfo';
 export { EXPERIMENTALTxStatus } from './EXPERIMENTALTxStatus';
 export { EXPERIMENTALValidatorsOrdered } from './EXPERIMENTALValidatorsOrdered';
 export { gasPrice } from './gasPrice';
+export { genesisConfig } from './genesisConfig';
 export { health } from './health';
 export { lightClientProof } from './lightClientProof';
+export { maintenanceWindows } from './maintenanceWindows';
 export { networkInfo } from './networkInfo';
 export { nextLightClientBlock } from './nextLightClientBlock';
 export { query } from './query';

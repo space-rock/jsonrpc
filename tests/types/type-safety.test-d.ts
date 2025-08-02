@@ -25,14 +25,17 @@ expectAssignable<RpcMethod>('EXPERIMENTAL_split_storage_info');
 expectAssignable<RpcMethod>('EXPERIMENTAL_tx_status');
 expectAssignable<RpcMethod>('EXPERIMENTAL_validators_ordered');
 expectAssignable<RpcMethod>('block');
+expectAssignable<RpcMethod>('block_effects');
 expectAssignable<RpcMethod>('broadcast_tx_async');
 expectAssignable<RpcMethod>('broadcast_tx_commit');
 expectAssignable<RpcMethod>('changes');
 expectAssignable<RpcMethod>('chunk');
 expectAssignable<RpcMethod>('client_config');
 expectAssignable<RpcMethod>('gas_price');
+expectAssignable<RpcMethod>('genesis_config');
 expectAssignable<RpcMethod>('health');
 expectAssignable<RpcMethod>('light_client_proof');
+expectAssignable<RpcMethod>('maintenance_windows');
 expectAssignable<RpcMethod>('network_info');
 expectAssignable<RpcMethod>('next_light_client_block');
 expectAssignable<RpcMethod>('query');
@@ -238,6 +241,21 @@ expectAssignable<RpcMethod>('validators');
   expectType<string>({} as Res['id']);
 }
 
+// block_effects type tests
+{
+  type Req = ApiRequest<'block_effects'>;
+  type Res = ApiResponse<'block_effects'>;
+
+  // Test request structure
+  expectType<string>({} as Req['jsonrpc']);
+  expectType<'block_effects'>({} as Req['method']);
+  expectType<string>({} as Req['id']);
+
+  // Test response structure
+  expectType<string>({} as Res['jsonrpc']);
+  expectType<string>({} as Res['id']);
+}
+
 // broadcast_tx_async type tests
 {
   type Req = ApiRequest<'broadcast_tx_async'>;
@@ -328,6 +346,21 @@ expectAssignable<RpcMethod>('validators');
   expectType<string>({} as Res['id']);
 }
 
+// genesis_config type tests
+{
+  type Req = ApiRequest<'genesis_config'>;
+  type Res = ApiResponse<'genesis_config'>;
+
+  // Test request structure
+  expectType<string>({} as Req['jsonrpc']);
+  expectType<'genesis_config'>({} as Req['method']);
+  expectType<string>({} as Req['id']);
+
+  // Test response structure
+  expectType<string>({} as Res['jsonrpc']);
+  expectType<string>({} as Res['id']);
+}
+
 // health type tests
 {
   type Req = ApiRequest<'health'>;
@@ -351,6 +384,21 @@ expectAssignable<RpcMethod>('validators');
   // Test request structure
   expectType<string>({} as Req['jsonrpc']);
   expectType<'light_client_proof'>({} as Req['method']);
+  expectType<string>({} as Req['id']);
+
+  // Test response structure
+  expectType<string>({} as Res['jsonrpc']);
+  expectType<string>({} as Res['id']);
+}
+
+// maintenance_windows type tests
+{
+  type Req = ApiRequest<'maintenance_windows'>;
+  type Res = ApiResponse<'maintenance_windows'>;
+
+  // Test request structure
+  expectType<string>({} as Req['jsonrpc']);
+  expectType<'maintenance_windows'>({} as Req['method']);
   expectType<string>({} as Req['id']);
 
   // Test response structure
@@ -517,6 +565,10 @@ expectType<{
   response: ApiResponse<'block'>;
 }>(({} as MethodMap)['block']);
 expectType<{
+  request: ApiRequest<'block_effects'>;
+  response: ApiResponse<'block_effects'>;
+}>(({} as MethodMap)['block_effects']);
+expectType<{
   request: ApiRequest<'broadcast_tx_async'>;
   response: ApiResponse<'broadcast_tx_async'>;
 }>(({} as MethodMap)['broadcast_tx_async']);
@@ -541,6 +593,10 @@ expectType<{
   response: ApiResponse<'gas_price'>;
 }>(({} as MethodMap)['gas_price']);
 expectType<{
+  request: ApiRequest<'genesis_config'>;
+  response: ApiResponse<'genesis_config'>;
+}>(({} as MethodMap)['genesis_config']);
+expectType<{
   request: ApiRequest<'health'>;
   response: ApiResponse<'health'>;
 }>(({} as MethodMap)['health']);
@@ -548,6 +604,10 @@ expectType<{
   request: ApiRequest<'light_client_proof'>;
   response: ApiResponse<'light_client_proof'>;
 }>(({} as MethodMap)['light_client_proof']);
+expectType<{
+  request: ApiRequest<'maintenance_windows'>;
+  response: ApiResponse<'maintenance_windows'>;
+}>(({} as MethodMap)['maintenance_windows']);
 expectType<{
   request: ApiRequest<'network_info'>;
   response: ApiResponse<'network_info'>;
@@ -603,6 +663,9 @@ export type EXPERIMENTAL_tx_status_extends_RpcMethod =
 export type EXPERIMENTAL_validators_ordered_extends_RpcMethod =
   'EXPERIMENTAL_validators_ordered' extends RpcMethod ? true : never;
 export type block_extends_RpcMethod = 'block' extends RpcMethod ? true : never;
+export type block_effects_extends_RpcMethod = 'block_effects' extends RpcMethod
+  ? true
+  : never;
 export type broadcast_tx_async_extends_RpcMethod =
   'broadcast_tx_async' extends RpcMethod ? true : never;
 export type broadcast_tx_commit_extends_RpcMethod =
@@ -617,11 +680,15 @@ export type client_config_extends_RpcMethod = 'client_config' extends RpcMethod
 export type gas_price_extends_RpcMethod = 'gas_price' extends RpcMethod
   ? true
   : never;
+export type genesis_config_extends_RpcMethod =
+  'genesis_config' extends RpcMethod ? true : never;
 export type health_extends_RpcMethod = 'health' extends RpcMethod
   ? true
   : never;
 export type light_client_proof_extends_RpcMethod =
   'light_client_proof' extends RpcMethod ? true : never;
+export type maintenance_windows_extends_RpcMethod =
+  'maintenance_windows' extends RpcMethod ? true : never;
 export type network_info_extends_RpcMethod = 'network_info' extends RpcMethod
   ? true
   : never;

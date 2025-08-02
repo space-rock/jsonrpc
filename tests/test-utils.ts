@@ -18,14 +18,17 @@ import {
   JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema,
   JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema,
   JsonRpcRequest_for_blockSchema,
+  JsonRpcRequest_for_block_effectsSchema,
   JsonRpcRequest_for_broadcast_tx_asyncSchema,
   JsonRpcRequest_for_broadcast_tx_commitSchema,
   JsonRpcRequest_for_changesSchema,
   JsonRpcRequest_for_chunkSchema,
   JsonRpcRequest_for_client_configSchema,
   JsonRpcRequest_for_gas_priceSchema,
+  JsonRpcRequest_for_genesis_configSchema,
   JsonRpcRequest_for_healthSchema,
   JsonRpcRequest_for_light_client_proofSchema,
+  JsonRpcRequest_for_maintenance_windowsSchema,
   JsonRpcRequest_for_network_infoSchema,
   JsonRpcRequest_for_next_light_client_blockSchema,
   JsonRpcRequest_for_querySchema,
@@ -129,6 +132,11 @@ const schemaRegistry = {
     request: JsonRpcRequest_for_blockSchema,
     response: JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema,
   },
+  block_effects: {
+    request: JsonRpcRequest_for_block_effectsSchema,
+    response:
+      JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErrorSchema,
+  },
   broadcast_tx_async: {
     request: JsonRpcRequest_for_broadcast_tx_asyncSchema,
     response: JsonRpcResponse_for_CryptoHash_and_RpcErrorSchema,
@@ -154,6 +162,10 @@ const schemaRegistry = {
     request: JsonRpcRequest_for_gas_priceSchema,
     response: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema,
   },
+  genesis_config: {
+    request: JsonRpcRequest_for_genesis_configSchema,
+    response: JsonRpcResponse_for_GenesisConfig_and_RpcErrorSchema,
+  },
   health: {
     request: JsonRpcRequest_for_healthSchema,
     response: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema,
@@ -162,6 +174,10 @@ const schemaRegistry = {
     request: JsonRpcRequest_for_light_client_proofSchema,
     response:
       JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErrorSchema,
+  },
+  maintenance_windows: {
+    request: JsonRpcRequest_for_maintenance_windowsSchema,
+    response: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema,
   },
   network_info: {
     request: JsonRpcRequest_for_network_infoSchema,

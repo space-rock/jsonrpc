@@ -21,14 +21,17 @@ import {
   EXPERIMENTALTxStatus,
   EXPERIMENTALValidatorsOrdered,
   block,
+  blockEffects,
   broadcastTxAsync,
   broadcastTxCommit,
   changes,
   chunk,
   clientConfig,
   gasPrice,
+  genesisConfig,
   health,
   lightClientProof,
+  maintenanceWindows,
   networkInfo,
   nextLightClientBlock,
   query,
@@ -325,6 +328,27 @@ describe('Client Method Functions', () => {
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 
+  it('should call blockEffects method correctly', async () => {
+    const mockResult = generateMockResponse('block_effects');
+    const mockResponse = {
+      jsonrpc: '2.0',
+      id: 'test-id',
+      result: mockResult,
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: vi.fn().mockResolvedValue(mockResponse),
+    });
+
+    const client = createRpcClient('https://api.example.com');
+    const mockParams = generateMockParams('block_effects');
+
+    const result = await blockEffects(client, mockParams);
+    expect(result).toBeDefined();
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
   it('should call broadcastTxAsync method correctly', async () => {
     const mockResult = generateMockResponse('broadcast_tx_async');
     const mockResponse = {
@@ -451,6 +475,27 @@ describe('Client Method Functions', () => {
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 
+  it('should call genesisConfig method correctly', async () => {
+    const mockResult = generateMockResponse('genesis_config');
+    const mockResponse = {
+      jsonrpc: '2.0',
+      id: 'test-id',
+      result: mockResult,
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: vi.fn().mockResolvedValue(mockResponse),
+    });
+
+    const client = createRpcClient('https://api.example.com');
+    const mockParams = generateMockParams('genesis_config');
+
+    const result = await genesisConfig(client, mockParams);
+    expect(result).toBeDefined();
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
   it('should call health method correctly', async () => {
     const mockResult = generateMockResponse('health');
     const mockResponse = {
@@ -489,6 +534,27 @@ describe('Client Method Functions', () => {
     const mockParams = generateMockParams('light_client_proof');
 
     const result = await lightClientProof(client, mockParams);
+    expect(result).toBeDefined();
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call maintenanceWindows method correctly', async () => {
+    const mockResult = generateMockResponse('maintenance_windows');
+    const mockResponse = {
+      jsonrpc: '2.0',
+      id: 'test-id',
+      result: mockResult,
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: vi.fn().mockResolvedValue(mockResponse),
+    });
+
+    const client = createRpcClient('https://api.example.com');
+    const mockParams = generateMockParams('maintenance_windows');
+
+    const result = await maintenanceWindows(client, mockParams);
     expect(result).toBeDefined();
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });

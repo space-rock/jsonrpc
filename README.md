@@ -60,7 +60,7 @@ This monorepo provides a type-safe, high-performance JSON-RPC client for interac
 | Package                                         | Version                                                             | Description                                   |
 | ----------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------- |
 | [@space-rock/jsonrpc-client](./packages/client) | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg) | JSON-RPC fetch client with runtime validation |
-| [@space-rock/jsonrpc-types](./packages/types)   | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg)  | TypeScript types and Valibot schemas              |
+| [@space-rock/jsonrpc-types](./packages/types)   | ![npm](https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg)  | TypeScript types and Valibot schemas          |
 
 ## Quick Start
 

@@ -59,6 +59,9 @@ jobs:
           echo "Downloading OpenAPI spec from: ${{ steps.url-config.outputs.openapi_url }}"
           curl -L -o codegen/openapi.json "${{ steps.url-config.outputs.openapi_url }}"
 
+      - name: Format code
+        run: pnpm run format
+
       - name: Check for changes
         id: git-check
         run: |

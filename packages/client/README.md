@@ -68,6 +68,16 @@ try {
     console.log('Request was aborted');
   }
 }
+
+// Disable validation globally
+const client = createRpcClient('https://near.lava.build:443', {
+  disableValidation: true,
+});
+
+// Or disable validation for specific method
+const response = await block(client, { finality: 'final' }, {
+  disableValidation: true,
+});
 ```
 
 ## License

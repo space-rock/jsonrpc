@@ -24,14 +24,17 @@ import {
   JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema,
   JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema,
   JsonRpcRequest_for_blockSchema,
+  JsonRpcRequest_for_block_effectsSchema,
   JsonRpcRequest_for_broadcast_tx_asyncSchema,
   JsonRpcRequest_for_broadcast_tx_commitSchema,
   JsonRpcRequest_for_changesSchema,
   JsonRpcRequest_for_chunkSchema,
   JsonRpcRequest_for_client_configSchema,
   JsonRpcRequest_for_gas_priceSchema,
+  JsonRpcRequest_for_genesis_configSchema,
   JsonRpcRequest_for_healthSchema,
   JsonRpcRequest_for_light_client_proofSchema,
+  JsonRpcRequest_for_maintenance_windowsSchema,
   JsonRpcRequest_for_network_infoSchema,
   JsonRpcRequest_for_next_light_client_blockSchema,
   JsonRpcRequest_for_querySchema,
@@ -143,6 +146,10 @@ describe('Schema Union Coverage Tests', () => {
       schema: JsonRpcRequest_for_blockSchema,
     },
     {
+      name: 'JsonRpcRequest_for_block_effectsSchema',
+      schema: JsonRpcRequest_for_block_effectsSchema,
+    },
+    {
       name: 'JsonRpcRequest_for_broadcast_tx_asyncSchema',
       schema: JsonRpcRequest_for_broadcast_tx_asyncSchema,
     },
@@ -167,12 +174,20 @@ describe('Schema Union Coverage Tests', () => {
       schema: JsonRpcRequest_for_gas_priceSchema,
     },
     {
+      name: 'JsonRpcRequest_for_genesis_configSchema',
+      schema: JsonRpcRequest_for_genesis_configSchema,
+    },
+    {
       name: 'JsonRpcRequest_for_healthSchema',
       schema: JsonRpcRequest_for_healthSchema,
     },
     {
       name: 'JsonRpcRequest_for_light_client_proofSchema',
       schema: JsonRpcRequest_for_light_client_proofSchema,
+    },
+    {
+      name: 'JsonRpcRequest_for_maintenance_windowsSchema',
+      schema: JsonRpcRequest_for_maintenance_windowsSchema,
     },
     {
       name: 'JsonRpcRequest_for_network_infoSchema',

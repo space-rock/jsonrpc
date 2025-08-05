@@ -62,11 +62,11 @@ jobs:
       - name: Format code
         run: pnpm run format
 
-      - name: Check for changes
+      - name: Check for changes in OpenAPI spec
         id: git-check
         run: |
-          git add -A
-          if git diff --staged --quiet; then
+          git add codegen/openapi.json
+          if git diff --staged --quiet -- codegen/openapi.json; then
             echo "No changes detected"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else

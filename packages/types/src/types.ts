@@ -2479,6 +2479,11 @@ export type LimitConfig = {
    */
   maxContractSize: number;
   /**
+   * Format: uint
+   * @description If present, stores max number of elements in a single contract's table
+   */
+  maxElementsPerContractTable?: number | null;
+  /**
    * Format: uint64
    * @description If present, stores max number of functions in one contract
    */
@@ -2566,6 +2571,11 @@ export type LimitConfig = {
    *     is calculated.
    */
   maxStackHeight: number;
+  /**
+   * Format: uint32
+   * @description If present, stores max number of tables declared globally in one contract
+   */
+  maxTablesPerContract?: number | null;
   /**
    * Format: uint64
    * @description Maximum total length in bytes of all log messages.
@@ -2676,7 +2686,9 @@ export type PrepareError =
   | 'Instantiate'
   | 'Memory'
   | 'TooManyFunctions'
-  | 'TooManyLocals';
+  | 'TooManyLocals'
+  | 'TooManyTables'
+  | 'TooManyTableElements';
 export type PublicKey = string;
 export type Range_of_uint64 = {
   /** Format: uint64 */

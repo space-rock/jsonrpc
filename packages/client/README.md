@@ -75,9 +75,13 @@ const client = createRpcClient('https://near.lava.build:443', {
 });
 
 // Or disable validation for specific method
-const response = await block(client, { finality: 'final' }, {
-  disableValidation: true,
-});
+const response = await block(
+  client,
+  { finality: 'final' },
+  {
+    disableValidation: true,
+  },
+);
 ```
 
 ## License

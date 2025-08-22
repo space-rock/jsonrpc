@@ -2142,6 +2142,7 @@ export const LimitConfigSchema: v.GenericSchema<t.LimitConfig> = v.lazy(() =>
     maxActionsPerReceipt: v.number(),
     maxArgumentsLength: v.number(),
     maxContractSize: v.number(),
+    maxElementsPerContractTable: v.optional(v.union([v.number(), v.null()])),
     maxFunctionsNumberPerContract: v.optional(v.union([v.number(), v.null()])),
     maxGasBurnt: v.number(),
     maxLengthMethodName: v.number(),
@@ -2158,6 +2159,7 @@ export const LimitConfigSchema: v.GenericSchema<t.LimitConfig> = v.lazy(() =>
     maxReceiptSize: v.number(),
     maxRegisterSize: v.number(),
     maxStackHeight: v.number(),
+    maxTablesPerContract: v.optional(v.union([v.number(), v.null()])),
     maxTotalLogLength: v.number(),
     maxTotalPrepaidGas: v.number(),
     maxTransactionSize: v.number(),
@@ -2271,6 +2273,8 @@ export const PrepareErrorSchema: v.GenericSchema<t.PrepareError> = v.lazy(() =>
     v.literal('Memory'),
     v.literal('TooManyFunctions'),
     v.literal('TooManyLocals'),
+    v.literal('TooManyTables'),
+    v.literal('TooManyTableElements'),
   ]),
 );
 

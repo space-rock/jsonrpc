@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.3.2...jsonrpc-types-v0.3.3) (2025-08-23)
+
+
+### Features
+
+* update generated files from latest OpenAPI spec ([#31](https://github.com/space-rock/jsonrpc/issues/31)) ([14a373e](https://github.com/space-rock/jsonrpc/commit/14a373ee3b31d9740c322a538f339e0ee9180691))
+
 ## [0.3.2](https://github.com/space-rock/jsonrpc/compare/jsonrpc-types-v0.3.1...jsonrpc-types-v0.3.2) (2025-08-03)
 
 

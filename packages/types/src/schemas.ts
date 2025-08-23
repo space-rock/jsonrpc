@@ -121,44 +121,6 @@ export const AccountWithPublicKeySchema: v.GenericSchema<t.AccountWithPublicKey>
     }),
   );
 
-export const ActionSchema: v.GenericSchema<t.Action> = v.lazy(() =>
-  v.union([
-    v.object({
-      CreateAccount: CreateAccountActionSchema,
-    }),
-    v.object({
-      DeployContract: DeployContractActionSchema,
-    }),
-    v.object({
-      FunctionCall: FunctionCallActionSchema,
-    }),
-    v.object({
-      Transfer: TransferActionSchema,
-    }),
-    v.object({
-      Stake: StakeActionSchema,
-    }),
-    v.object({
-      AddKey: AddKeyActionSchema,
-    }),
-    v.object({
-      DeleteKey: DeleteKeyActionSchema,
-    }),
-    v.object({
-      DeleteAccount: DeleteAccountActionSchema,
-    }),
-    v.object({
-      Delegate: SignedDelegateActionSchema,
-    }),
-    v.object({
-      DeployGlobalContract: DeployGlobalContractActionSchema,
-    }),
-    v.object({
-      UseGlobalContract: UseGlobalContractActionSchema,
-    }),
-  ]),
-);
-
 export const ActionCreationConfigViewSchema: v.GenericSchema<t.ActionCreationConfigView> =
   v.lazy(() =>
     v.object({
@@ -2142,6 +2104,7 @@ export const LimitConfigSchema: v.GenericSchema<t.LimitConfig> = v.lazy(() =>
     maxActionsPerReceipt: v.number(),
     maxArgumentsLength: v.number(),
     maxContractSize: v.number(),
+    maxElementsPerContractTable: v.optional(v.union([v.number(), v.null()])),
     maxFunctionsNumberPerContract: v.optional(v.union([v.number(), v.null()])),
     maxGasBurnt: v.number(),
     maxLengthMethodName: v.number(),
@@ -2158,6 +2121,7 @@ export const LimitConfigSchema: v.GenericSchema<t.LimitConfig> = v.lazy(() =>
     maxReceiptSize: v.number(),
     maxRegisterSize: v.number(),
     maxStackHeight: v.number(),
+    maxTablesPerContract: v.optional(v.union([v.number(), v.null()])),
     maxTotalLogLength: v.number(),
     maxTotalPrepaidGas: v.number(),
     maxTransactionSize: v.number(),
@@ -2234,7 +2198,40 @@ export const NextEpochValidatorInfoSchema: v.GenericSchema<t.NextEpochValidatorI
   );
 
 export const NonDelegateActionSchema: v.GenericSchema<t.NonDelegateAction> =
-  v.lazy(() => ActionSchema);
+  v.lazy(() =>
+    v.union([
+      v.object({
+        CreateAccount: CreateAccountActionSchema,
+      }),
+      v.object({
+        DeployContract: DeployContractActionSchema,
+      }),
+      v.object({
+        FunctionCall: FunctionCallActionSchema,
+      }),
+      v.object({
+        Transfer: TransferActionSchema,
+      }),
+      v.object({
+        Stake: StakeActionSchema,
+      }),
+      v.object({
+        AddKey: AddKeyActionSchema,
+      }),
+      v.object({
+        DeleteKey: DeleteKeyActionSchema,
+      }),
+      v.object({
+        DeleteAccount: DeleteAccountActionSchema,
+      }),
+      v.object({
+        DeployGlobalContract: DeployGlobalContractActionSchema,
+      }),
+      v.object({
+        UseGlobalContract: UseGlobalContractActionSchema,
+      }),
+    ]),
+  );
 
 export const PeerIdSchema: v.GenericSchema<t.PeerId> = v.lazy(
   () => PublicKeySchema,
@@ -2271,6 +2268,8 @@ export const PrepareErrorSchema: v.GenericSchema<t.PrepareError> = v.lazy(() =>
     v.literal('Memory'),
     v.literal('TooManyFunctions'),
     v.literal('TooManyLocals'),
+    v.literal('TooManyTables'),
+    v.literal('TooManyTableElements'),
   ]),
 );
 

@@ -2273,6 +2273,9 @@ export const PrepareErrorSchema: v.GenericSchema<t.PrepareError> = v.lazy(() =>
   ]),
 );
 
+export const ProtocolVersionCheckConfigSchema: v.GenericSchema<t.ProtocolVersionCheckConfig> =
+  v.lazy(() => v.union([v.literal('Next'), v.literal('NextNext')]));
+
 export const PublicKeySchema: v.GenericSchema<t.PublicKey> = v.lazy(() =>
   v.string(),
 );
@@ -2463,6 +2466,7 @@ export const RpcClientConfigResponseSchema: v.GenericSchema<t.RpcClientConfigRes
       orphanStateWitnessPoolSize: v.number(),
       produceChunkAddTransactionsTimeLimit: v.string(),
       produceEmptyBlocks: v.boolean(),
+      protocolVersionCheck: ProtocolVersionCheckConfigSchema,
       reshardingConfig: MutableConfigValueSchema,
       rpcAddr: v.optional(v.union([v.string(), v.null()])),
       saveInvalidWitnesses: v.boolean(),

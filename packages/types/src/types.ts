@@ -2685,6 +2685,7 @@ export type PrepareError =
   | 'TooManyLocals'
   | 'TooManyTables'
   | 'TooManyTableElements';
+export type ProtocolVersionCheckConfig = 'Next' | 'NextNext';
 export type PublicKey = string;
 export type Range_of_uint64 = {
   /** Format: uint64 */
@@ -2926,6 +2927,9 @@ export type RpcClientConfigResponse = {
   produceChunkAddTransactionsTimeLimit: string;
   /** @description Produce empty blocks, use `false` for testing. */
   produceEmptyBlocks: boolean;
+  /** @description Determines whether client should exit if the protocol version is not supported
+   *     for the next or next next epoch. */
+  protocolVersionCheck: ProtocolVersionCheckConfig;
   reshardingConfig: MutableConfigValue;
   /** @description Listening rpc port for status. */
   rpcAddr?: string | null;

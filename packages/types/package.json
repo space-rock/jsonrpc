@@ -4,20 +4,17 @@
   "description": "TypeScript types for NEAR Protocol JSON RPC client",
   "type": "module",
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "clean": "rm -rf dist"
+    "build": "tsdown"
   },
   "keywords": [
     "near",
@@ -29,12 +26,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/near/jsonrpc-client-js.git",
+    "url": "git+https://github.com/space-rock/jsonrpc.git",
     "directory": "packages/types"
   },
-  "homepage": "https://github.com/near/jsonrpc-client-js#readme",
+  "homepage": "https://github.com/space-rock/jsonrpc#readme",
   "bugs": {
-    "url": "https://github.com/near/jsonrpc-client-js/issues"
+    "url": "https://github.com/space-rock/jsonrpc/issues"
   },
   "dependencies": {
     "valibot": "~1.1.0"
@@ -44,6 +41,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "sideEffects": false
+  }
 }

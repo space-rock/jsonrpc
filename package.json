@@ -17,17 +17,11 @@
     "release": "pnpm format:check && pnpm type-check && pnpm build"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-node-resolve": "~16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "~12.1.4",
     "@types/node": "~22.16.4",
     "@vitest/coverage-v8": "~3.2.4",
     "prettier": "~3.6.2",
     "rimraf": "~6.0.1",
-    "rollup": "~4.46.1",
-    "rollup-plugin-analyzer": "~4.0.0",
-    "rollup-plugin-delete": "^3.0.1",
+    "tsdown": "^0.14.2",
     "tslib": "~2.8.1",
     "typescript": "~5.8.3",
     "vitest": "~3.2.4"
@@ -36,5 +30,5 @@
     "node": ">=20.0.0",
     "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.15.1"
 }

@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.4](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.3...jsonrpc-client-v0.3.4) (2025-09-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @space-rock/jsonrpc-types bumped to 0.3.4
+
 ## [0.3.3](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.2...jsonrpc-client-v0.3.3) (2025-08-23)
 
 

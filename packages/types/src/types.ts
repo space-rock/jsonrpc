@@ -3887,6 +3887,12 @@ export type StateSyncConfig = {
   concurrency?: SyncConcurrency;
   /** @description `none` value disables state dump to external storage. */
   dump?: DumpConfig | null;
+  /**
+   * Format: int32
+   * @description Zstd compression level for state parts.
+   * @default 1
+   */
+  partsCompressionLvl: number;
   sync?: SyncConfig;
 };
 export type StatusSyncInfo = {

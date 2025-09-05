@@ -3417,6 +3417,7 @@ export const StateSyncConfigSchema: v.GenericSchema<t.StateSyncConfig> = v.lazy(
     v.object({
       concurrency: v.optional(SyncConcurrencySchema),
       dump: v.optional(v.union([DumpConfigSchema, v.null()])),
+      partsCompressionLvl: v.number(),
       sync: v.optional(SyncConfigSchema),
     }),
 );

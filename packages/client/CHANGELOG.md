@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.5](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.4...jsonrpc-client-v0.3.5) (2025-09-05)
+
+
+### Features
+
+* update generated files from latest OpenAPI spec ([#43](https://github.com/space-rock/jsonrpc/issues/43)) ([cfe7ed8](https://github.com/space-rock/jsonrpc/commit/cfe7ed8ee481887ff12c42ffbd5ca6da52e31562))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @space-rock/jsonrpc-types bumped to 0.3.5
+
 ## [0.3.4](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.3...jsonrpc-client-v0.3.4) (2025-09-02)
 
 

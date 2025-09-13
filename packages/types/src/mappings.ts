@@ -3,186 +3,186 @@
  * Do not make direct changes to the file.
  */
 import type {
-  JsonRpcRequest_for_EXPERIMENTAL_changes,
-  JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_changes_in_block,
-  JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_congestion_level,
-  JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_genesis_config,
-  JsonRpcResponse_for_GenesisConfig_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof,
-  JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_light_client_proof,
-  JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows,
-  JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_protocol_config,
-  JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_receipt,
-  JsonRpcResponse_for_RpcReceiptResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_split_storage_info,
-  JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_tx_status,
-  JsonRpcResponse_for_RpcTransactionResponse_and_RpcError,
-  JsonRpcRequest_for_EXPERIMENTAL_validators_ordered,
-  JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcError,
-  JsonRpcRequest_for_block,
-  JsonRpcResponse_for_RpcBlockResponse_and_RpcError,
-  JsonRpcRequest_for_block_effects,
-  JsonRpcRequest_for_broadcast_tx_async,
-  JsonRpcResponse_for_CryptoHash_and_RpcError,
-  JsonRpcRequest_for_broadcast_tx_commit,
-  JsonRpcRequest_for_changes,
-  JsonRpcRequest_for_chunk,
-  JsonRpcResponse_for_RpcChunkResponse_and_RpcError,
-  JsonRpcRequest_for_client_config,
-  JsonRpcResponse_for_RpcClientConfigResponse_and_RpcError,
-  JsonRpcRequest_for_gas_price,
-  JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError,
-  JsonRpcRequest_for_genesis_config,
-  JsonRpcRequest_for_health,
-  JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError,
-  JsonRpcRequest_for_light_client_proof,
-  JsonRpcRequest_for_maintenance_windows,
-  JsonRpcRequest_for_network_info,
-  JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcError,
-  JsonRpcRequest_for_next_light_client_block,
-  JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcError,
-  JsonRpcRequest_for_query,
-  JsonRpcResponse_for_RpcQueryResponse_and_RpcError,
-  JsonRpcRequest_for_send_tx,
-  JsonRpcRequest_for_status,
-  JsonRpcResponse_for_RpcStatusResponse_and_RpcError,
-  JsonRpcRequest_for_tx,
-  JsonRpcRequest_for_validators,
-  JsonRpcResponse_for_RpcValidatorResponse_and_RpcError,
+  JsonRpcRequestForExperimentalChanges,
+  JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcError,
+  JsonRpcRequestForExperimentalChangesInBlock,
+  JsonRpcResponseForRpcStateChangesInBlockByTypeResponseAndRpcError,
+  JsonRpcRequestForExperimentalCongestionLevel,
+  JsonRpcResponseForRpcCongestionLevelResponseAndRpcError,
+  JsonRpcRequestForExperimentalGenesisConfig,
+  JsonRpcResponseForGenesisConfigAndRpcError,
+  JsonRpcRequestForExperimentalLightClientBlockProof,
+  JsonRpcResponseForRpcLightClientBlockProofResponseAndRpcError,
+  JsonRpcRequestForExperimentalLightClientProof,
+  JsonRpcResponseForRpcLightClientExecutionProofResponseAndRpcError,
+  JsonRpcRequestForExperimentalMaintenanceWindows,
+  JsonRpcResponseForArrayOfRangeOfUint64AndRpcError,
+  JsonRpcRequestForExperimentalProtocolConfig,
+  JsonRpcResponseForRpcProtocolConfigResponseAndRpcError,
+  JsonRpcRequestForExperimentalReceipt,
+  JsonRpcResponseForRpcReceiptResponseAndRpcError,
+  JsonRpcRequestForExperimentalSplitStorageInfo,
+  JsonRpcResponseForRpcSplitStorageInfoResponseAndRpcError,
+  JsonRpcRequestForExperimentalTxStatus,
+  JsonRpcResponseForRpcTransactionResponseAndRpcError,
+  JsonRpcRequestForExperimentalValidatorsOrdered,
+  JsonRpcResponseForArrayOfValidatorStakeViewAndRpcError,
+  JsonRpcRequestForBlock,
+  JsonRpcResponseForRpcBlockResponseAndRpcError,
+  JsonRpcRequestForBlockEffects,
+  JsonRpcRequestForBroadcastTxAsync,
+  JsonRpcResponseForCryptoHashAndRpcError,
+  JsonRpcRequestForBroadcastTxCommit,
+  JsonRpcRequestForChanges,
+  JsonRpcRequestForChunk,
+  JsonRpcResponseForRpcChunkResponseAndRpcError,
+  JsonRpcRequestForClientConfig,
+  JsonRpcResponseForRpcClientConfigResponseAndRpcError,
+  JsonRpcRequestForGasPrice,
+  JsonRpcResponseForRpcGasPriceResponseAndRpcError,
+  JsonRpcRequestForGenesisConfig,
+  JsonRpcRequestForHealth,
+  JsonRpcResponseForNullableRpcHealthResponseAndRpcError,
+  JsonRpcRequestForLightClientProof,
+  JsonRpcRequestForMaintenanceWindows,
+  JsonRpcRequestForNetworkInfo,
+  JsonRpcResponseForRpcNetworkInfoResponseAndRpcError,
+  JsonRpcRequestForNextLightClientBlock,
+  JsonRpcResponseForRpcLightClientNextBlockResponseAndRpcError,
+  JsonRpcRequestForQuery,
+  JsonRpcResponseForRpcQueryResponseAndRpcError,
+  JsonRpcRequestForSendTx,
+  JsonRpcRequestForStatus,
+  JsonRpcResponseForRpcStatusResponseAndRpcError,
+  JsonRpcRequestForTx,
+  JsonRpcRequestForValidators,
+  JsonRpcResponseForRpcValidatorResponseAndRpcError,
 } from './types';
 
 export type MethodMap = {
   block: {
-    request: JsonRpcRequest_for_block;
-    response: JsonRpcResponse_for_RpcBlockResponse_and_RpcError;
+    request: JsonRpcRequestForBlock;
+    response: JsonRpcResponseForRpcBlockResponseAndRpcError;
   };
   block_effects: {
-    request: JsonRpcRequest_for_block_effects;
-    response: JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcError;
+    request: JsonRpcRequestForBlockEffects;
+    response: JsonRpcResponseForRpcStateChangesInBlockByTypeResponseAndRpcError;
   };
   broadcast_tx_async: {
-    request: JsonRpcRequest_for_broadcast_tx_async;
-    response: JsonRpcResponse_for_CryptoHash_and_RpcError;
+    request: JsonRpcRequestForBroadcastTxAsync;
+    response: JsonRpcResponseForCryptoHashAndRpcError;
   };
   broadcast_tx_commit: {
-    request: JsonRpcRequest_for_broadcast_tx_commit;
-    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcError;
+    request: JsonRpcRequestForBroadcastTxCommit;
+    response: JsonRpcResponseForRpcTransactionResponseAndRpcError;
   };
   changes: {
-    request: JsonRpcRequest_for_changes;
-    response: JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcError;
+    request: JsonRpcRequestForChanges;
+    response: JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcError;
   };
   chunk: {
-    request: JsonRpcRequest_for_chunk;
-    response: JsonRpcResponse_for_RpcChunkResponse_and_RpcError;
+    request: JsonRpcRequestForChunk;
+    response: JsonRpcResponseForRpcChunkResponseAndRpcError;
   };
   client_config: {
-    request: JsonRpcRequest_for_client_config;
-    response: JsonRpcResponse_for_RpcClientConfigResponse_and_RpcError;
+    request: JsonRpcRequestForClientConfig;
+    response: JsonRpcResponseForRpcClientConfigResponseAndRpcError;
   };
   EXPERIMENTAL_changes: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_changes;
-    response: JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalChanges;
+    response: JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcError;
   };
   EXPERIMENTAL_changes_in_block: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_changes_in_block;
-    response: JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalChangesInBlock;
+    response: JsonRpcResponseForRpcStateChangesInBlockByTypeResponseAndRpcError;
   };
   EXPERIMENTAL_congestion_level: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_congestion_level;
-    response: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalCongestionLevel;
+    response: JsonRpcResponseForRpcCongestionLevelResponseAndRpcError;
   };
   EXPERIMENTAL_genesis_config: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_genesis_config;
-    response: JsonRpcResponse_for_GenesisConfig_and_RpcError;
+    request: JsonRpcRequestForExperimentalGenesisConfig;
+    response: JsonRpcResponseForGenesisConfigAndRpcError;
   };
   EXPERIMENTAL_light_client_block_proof: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof;
-    response: JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalLightClientBlockProof;
+    response: JsonRpcResponseForRpcLightClientBlockProofResponseAndRpcError;
   };
   EXPERIMENTAL_light_client_proof: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_light_client_proof;
-    response: JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalLightClientProof;
+    response: JsonRpcResponseForRpcLightClientExecutionProofResponseAndRpcError;
   };
   EXPERIMENTAL_maintenance_windows: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows;
-    response: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcError;
+    request: JsonRpcRequestForExperimentalMaintenanceWindows;
+    response: JsonRpcResponseForArrayOfRangeOfUint64AndRpcError;
   };
   EXPERIMENTAL_protocol_config: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_protocol_config;
-    response: JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalProtocolConfig;
+    response: JsonRpcResponseForRpcProtocolConfigResponseAndRpcError;
   };
   EXPERIMENTAL_receipt: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_receipt;
-    response: JsonRpcResponse_for_RpcReceiptResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalReceipt;
+    response: JsonRpcResponseForRpcReceiptResponseAndRpcError;
   };
   EXPERIMENTAL_split_storage_info: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_split_storage_info;
-    response: JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalSplitStorageInfo;
+    response: JsonRpcResponseForRpcSplitStorageInfoResponseAndRpcError;
   };
   EXPERIMENTAL_tx_status: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_tx_status;
-    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcError;
+    request: JsonRpcRequestForExperimentalTxStatus;
+    response: JsonRpcResponseForRpcTransactionResponseAndRpcError;
   };
   EXPERIMENTAL_validators_ordered: {
-    request: JsonRpcRequest_for_EXPERIMENTAL_validators_ordered;
-    response: JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcError;
+    request: JsonRpcRequestForExperimentalValidatorsOrdered;
+    response: JsonRpcResponseForArrayOfValidatorStakeViewAndRpcError;
   };
   gas_price: {
-    request: JsonRpcRequest_for_gas_price;
-    response: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError;
+    request: JsonRpcRequestForGasPrice;
+    response: JsonRpcResponseForRpcGasPriceResponseAndRpcError;
   };
   genesis_config: {
-    request: JsonRpcRequest_for_genesis_config;
-    response: JsonRpcResponse_for_GenesisConfig_and_RpcError;
+    request: JsonRpcRequestForGenesisConfig;
+    response: JsonRpcResponseForGenesisConfigAndRpcError;
   };
   health: {
-    request: JsonRpcRequest_for_health;
-    response: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError;
+    request: JsonRpcRequestForHealth;
+    response: JsonRpcResponseForNullableRpcHealthResponseAndRpcError;
   };
   light_client_proof: {
-    request: JsonRpcRequest_for_light_client_proof;
-    response: JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcError;
+    request: JsonRpcRequestForLightClientProof;
+    response: JsonRpcResponseForRpcLightClientExecutionProofResponseAndRpcError;
   };
   maintenance_windows: {
-    request: JsonRpcRequest_for_maintenance_windows;
-    response: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcError;
+    request: JsonRpcRequestForMaintenanceWindows;
+    response: JsonRpcResponseForArrayOfRangeOfUint64AndRpcError;
   };
   network_info: {
-    request: JsonRpcRequest_for_network_info;
-    response: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcError;
+    request: JsonRpcRequestForNetworkInfo;
+    response: JsonRpcResponseForRpcNetworkInfoResponseAndRpcError;
   };
   next_light_client_block: {
-    request: JsonRpcRequest_for_next_light_client_block;
-    response: JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcError;
+    request: JsonRpcRequestForNextLightClientBlock;
+    response: JsonRpcResponseForRpcLightClientNextBlockResponseAndRpcError;
   };
   query: {
-    request: JsonRpcRequest_for_query;
-    response: JsonRpcResponse_for_RpcQueryResponse_and_RpcError;
+    request: JsonRpcRequestForQuery;
+    response: JsonRpcResponseForRpcQueryResponseAndRpcError;
   };
   send_tx: {
-    request: JsonRpcRequest_for_send_tx;
-    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcError;
+    request: JsonRpcRequestForSendTx;
+    response: JsonRpcResponseForRpcTransactionResponseAndRpcError;
   };
   status: {
-    request: JsonRpcRequest_for_status;
-    response: JsonRpcResponse_for_RpcStatusResponse_and_RpcError;
+    request: JsonRpcRequestForStatus;
+    response: JsonRpcResponseForRpcStatusResponseAndRpcError;
   };
   tx: {
-    request: JsonRpcRequest_for_tx;
-    response: JsonRpcResponse_for_RpcTransactionResponse_and_RpcError;
+    request: JsonRpcRequestForTx;
+    response: JsonRpcResponseForRpcTransactionResponseAndRpcError;
   };
   validators: {
-    request: JsonRpcRequest_for_validators;
-    response: JsonRpcResponse_for_RpcValidatorResponse_and_RpcError;
+    request: JsonRpcRequestForValidators;
+    response: JsonRpcResponseForRpcValidatorResponseAndRpcError;
   };
 };
 export type RpcMethod = keyof MethodMap;

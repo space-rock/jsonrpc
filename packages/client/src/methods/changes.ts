@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_changesSchema,
-  JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSchema,
+  JsonRpcRequestForChangesSchema,
+  JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function changes(
   return client.call(
     'changes',
     params,
-    JsonRpcRequest_for_changesSchema,
-    JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSchema,
+    JsonRpcRequestForChangesSchema,
+    JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcErrorSchema,
     options,
   );
 }

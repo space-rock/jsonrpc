@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema,
-  JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema,
+  JsonRpcRequestForExperimentalValidatorsOrderedSchema,
+  JsonRpcResponseForArrayOfValidatorStakeViewAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function EXPERIMENTALValidatorsOrdered(
   return client.call(
     'EXPERIMENTAL_validators_ordered',
     params,
-    JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema,
-    JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema,
+    JsonRpcRequestForExperimentalValidatorsOrderedSchema,
+    JsonRpcResponseForArrayOfValidatorStakeViewAndRpcErrorSchema,
     options,
   );
 }

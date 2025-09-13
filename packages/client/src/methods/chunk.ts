@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_chunkSchema,
-  JsonRpcResponse_for_RpcChunkResponse_and_RpcErrorSchema,
+  JsonRpcRequestForChunkSchema,
+  JsonRpcResponseForRpcChunkResponseAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function chunk(
   return client.call(
     'chunk',
     params,
-    JsonRpcRequest_for_chunkSchema,
-    JsonRpcResponse_for_RpcChunkResponse_and_RpcErrorSchema,
+    JsonRpcRequestForChunkSchema,
+    JsonRpcResponseForRpcChunkResponseAndRpcErrorSchema,
     options,
   );
 }

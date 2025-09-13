@@ -1670,235 +1670,235 @@ export type InvalidTxError =
         shardId: number;
       };
     };
-export type JsonRpcRequest_for_EXPERIMENTAL_changes = {
+export type JsonRpcRequestForExperimentalChanges = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_changes';
   params: RpcStateChangesInBlockByTypeRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_changes_in_block = {
+export type JsonRpcRequestForExperimentalChangesInBlock = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_changes_in_block';
   params: RpcStateChangesInBlockRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_congestion_level = {
+export type JsonRpcRequestForExperimentalCongestionLevel = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_congestion_level';
   params: RpcCongestionLevelRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_genesis_config = {
+export type JsonRpcRequestForExperimentalGenesisConfig = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_genesis_config';
   params: GenesisConfigRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof = {
+export type JsonRpcRequestForExperimentalLightClientBlockProof = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_light_client_block_proof';
   params: RpcLightClientBlockProofRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_light_client_proof = {
+export type JsonRpcRequestForExperimentalLightClientProof = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_light_client_proof';
   params: RpcLightClientExecutionProofRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows = {
+export type JsonRpcRequestForExperimentalMaintenanceWindows = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_maintenance_windows';
   params: RpcMaintenanceWindowsRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_protocol_config = {
+export type JsonRpcRequestForExperimentalProtocolConfig = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_protocol_config';
   params: RpcProtocolConfigRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_receipt = {
+export type JsonRpcRequestForExperimentalReceipt = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_receipt';
   params: RpcReceiptRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_split_storage_info = {
+export type JsonRpcRequestForExperimentalSplitStorageInfo = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_split_storage_info';
   params: RpcSplitStorageInfoRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_tx_status = {
+export type JsonRpcRequestForExperimentalTxStatus = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_tx_status';
   params: RpcTransactionStatusRequest;
 };
-export type JsonRpcRequest_for_EXPERIMENTAL_validators_ordered = {
+export type JsonRpcRequestForExperimentalValidatorsOrdered = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'EXPERIMENTAL_validators_ordered';
   params: RpcValidatorsOrderedRequest;
 };
-export type JsonRpcRequest_for_block = {
+export type JsonRpcRequestForBlock = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'block';
   params: RpcBlockRequest;
 };
-export type JsonRpcRequest_for_block_effects = {
+export type JsonRpcRequestForBlockEffects = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'block_effects';
   params: RpcStateChangesInBlockRequest;
 };
-export type JsonRpcRequest_for_broadcast_tx_async = {
+export type JsonRpcRequestForBroadcastTxAsync = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'broadcast_tx_async';
   params: RpcSendTransactionRequest;
 };
-export type JsonRpcRequest_for_broadcast_tx_commit = {
+export type JsonRpcRequestForBroadcastTxCommit = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'broadcast_tx_commit';
   params: RpcSendTransactionRequest;
 };
-export type JsonRpcRequest_for_changes = {
+export type JsonRpcRequestForChanges = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'changes';
   params: RpcStateChangesInBlockByTypeRequest;
 };
-export type JsonRpcRequest_for_chunk = {
+export type JsonRpcRequestForChunk = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'chunk';
   params: RpcChunkRequest;
 };
-export type JsonRpcRequest_for_client_config = {
+export type JsonRpcRequestForClientConfig = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'client_config';
   params: RpcClientConfigRequest;
 };
-export type JsonRpcRequest_for_gas_price = {
+export type JsonRpcRequestForGasPrice = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'gas_price';
   params: RpcGasPriceRequest;
 };
-export type JsonRpcRequest_for_genesis_config = {
+export type JsonRpcRequestForGenesisConfig = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'genesis_config';
   params: GenesisConfigRequest;
 };
-export type JsonRpcRequest_for_health = {
+export type JsonRpcRequestForHealth = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'health';
   params: RpcHealthRequest;
 };
-export type JsonRpcRequest_for_light_client_proof = {
+export type JsonRpcRequestForLightClientProof = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'light_client_proof';
   params: RpcLightClientExecutionProofRequest;
 };
-export type JsonRpcRequest_for_maintenance_windows = {
+export type JsonRpcRequestForMaintenanceWindows = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'maintenance_windows';
   params: RpcMaintenanceWindowsRequest;
 };
-export type JsonRpcRequest_for_network_info = {
+export type JsonRpcRequestForNetworkInfo = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'network_info';
   params: RpcNetworkInfoRequest;
 };
-export type JsonRpcRequest_for_next_light_client_block = {
+export type JsonRpcRequestForNextLightClientBlock = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'next_light_client_block';
   params: RpcLightClientNextBlockRequest;
 };
-export type JsonRpcRequest_for_query = {
+export type JsonRpcRequestForQuery = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'query';
   params: RpcQueryRequest;
 };
-export type JsonRpcRequest_for_send_tx = {
+export type JsonRpcRequestForSendTx = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'send_tx';
   params: RpcSendTransactionRequest;
 };
-export type JsonRpcRequest_for_status = {
+export type JsonRpcRequestForStatus = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'status';
   params: RpcStatusRequest;
 };
-export type JsonRpcRequest_for_tx = {
+export type JsonRpcRequestForTx = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'tx';
   params: RpcTransactionStatusRequest;
 };
-export type JsonRpcRequest_for_validators = {
+export type JsonRpcRequestForValidators = {
   id: string;
   jsonrpc: string;
   /** @enum {string} */
   method: 'validators';
   params: RpcValidatorRequest;
 };
-export type JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcError = {
+export type JsonRpcResponseForArrayOfRangeOfUint64AndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
   | {
-      result: Range_of_uint64[];
+      result: RangeOfUint64[];
     }
   | {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcError = {
+export type JsonRpcResponseForArrayOfValidatorStakeViewAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1909,7 +1909,7 @@ export type JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_CryptoHash_and_RpcError = {
+export type JsonRpcResponseForCryptoHashAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1920,7 +1920,7 @@ export type JsonRpcResponse_for_CryptoHash_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_GenesisConfig_and_RpcError = {
+export type JsonRpcResponseForGenesisConfigAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1931,7 +1931,7 @@ export type JsonRpcResponse_for_GenesisConfig_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError = {
+export type JsonRpcResponseForNullableRpcHealthResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1942,7 +1942,7 @@ export type JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcBlockResponse_and_RpcError = {
+export type JsonRpcResponseForRpcBlockResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1953,7 +1953,7 @@ export type JsonRpcResponse_for_RpcBlockResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcChunkResponse_and_RpcError = {
+export type JsonRpcResponseForRpcChunkResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1964,7 +1964,7 @@ export type JsonRpcResponse_for_RpcChunkResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcClientConfigResponse_and_RpcError = {
+export type JsonRpcResponseForRpcClientConfigResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1975,7 +1975,7 @@ export type JsonRpcResponse_for_RpcClientConfigResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcError = {
+export type JsonRpcResponseForRpcCongestionLevelResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1986,7 +1986,7 @@ export type JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError = {
+export type JsonRpcResponseForRpcGasPriceResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -1997,19 +1997,18 @@ export type JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcError =
-  {
-    id: string;
-    jsonrpc: string;
-  } & (
-    | {
-        result: RpcLightClientBlockProofResponse;
-      }
-    | {
-        error: RpcError;
-      }
-  );
-export type JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcError =
+export type JsonRpcResponseForRpcLightClientBlockProofResponseAndRpcError = {
+  id: string;
+  jsonrpc: string;
+} & (
+  | {
+      result: RpcLightClientBlockProofResponse;
+    }
+  | {
+      error: RpcError;
+    }
+);
+export type JsonRpcResponseForRpcLightClientExecutionProofResponseAndRpcError =
   {
     id: string;
     jsonrpc: string;
@@ -2021,7 +2020,7 @@ export type JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErro
         error: RpcError;
       }
   );
-export type JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcError = {
+export type JsonRpcResponseForRpcLightClientNextBlockResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2032,7 +2031,7 @@ export type JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcError = {
+export type JsonRpcResponseForRpcNetworkInfoResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2043,7 +2042,7 @@ export type JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcError = {
+export type JsonRpcResponseForRpcProtocolConfigResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2054,7 +2053,7 @@ export type JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcQueryResponse_and_RpcError = {
+export type JsonRpcResponseForRpcQueryResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2065,7 +2064,7 @@ export type JsonRpcResponse_for_RpcQueryResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcReceiptResponse_and_RpcError = {
+export type JsonRpcResponseForRpcReceiptResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2076,7 +2075,7 @@ export type JsonRpcResponse_for_RpcReceiptResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcError = {
+export type JsonRpcResponseForRpcSplitStorageInfoResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2087,7 +2086,7 @@ export type JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcError =
+export type JsonRpcResponseForRpcStateChangesInBlockByTypeResponseAndRpcError =
   {
     id: string;
     jsonrpc: string;
@@ -2099,7 +2098,7 @@ export type JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErro
         error: RpcError;
       }
   );
-export type JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcError = {
+export type JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2110,7 +2109,7 @@ export type JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcStatusResponse_and_RpcError = {
+export type JsonRpcResponseForRpcStatusResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2121,7 +2120,7 @@ export type JsonRpcResponse_for_RpcStatusResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcTransactionResponse_and_RpcError = {
+export type JsonRpcResponseForRpcTransactionResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2132,7 +2131,7 @@ export type JsonRpcResponse_for_RpcTransactionResponse_and_RpcError = {
       error: RpcError;
     }
 );
-export type JsonRpcResponse_for_RpcValidatorResponse_and_RpcError = {
+export type JsonRpcResponseForRpcValidatorResponseAndRpcError = {
   id: string;
   jsonrpc: string;
 } & (
@@ -2419,7 +2418,7 @@ export type PrepareError =
   | 'TooManyTableElements';
 export type ProtocolVersionCheckConfig = 'Next' | 'NextNext';
 export type PublicKey = string;
-export type Range_of_uint64 = {
+export type RangeOfUint64 = {
   /** Format: uint64 */
   end: number;
   /** Format: uint64 */

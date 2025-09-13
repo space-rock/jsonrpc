@@ -20,6 +20,28 @@ function snakeToCamel(str: string): string {
 }
 
 /**
+ * Converts an arbitrary schema/type name to PascalCase.
+ * - Splits on non-alphanumeric separators
+ * - Preserves mixed-case tokens (e.g., JsonRpcRequest)
+ * - Normalizes ALLCAPS tokens to Capitalized (e.g., EXPERIMENTAL -> Experimental)
+ */
+function toPascalCase(name: string): string {
+  const parts = name.split(/[^A-Za-z0-9]+/).filter(Boolean);
+  return parts
+    .map(part => {
+      if (/^[A-Z0-9]+$/.test(part)) {
+        const lower = part.toLowerCase();
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
+      }
+      if (/^[a-z0-9]+$/.test(part)) {
+        return part.charAt(0).toUpperCase() + part.slice(1);
+      }
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join('');
+}
+
+/**
  * Transforms property names in a type node from snake_case to camelCase.
  * Recursively processes nested type structures.
  */
@@ -187,7 +209,9 @@ function createDiscriminatedUnionForBlockParams(unionTypeNode: Node): string {
       }
 
       // Create the discriminated member with proper formatting
-      const memberText = `{\n      ${memberProps.join(';\n      ')};\n    }`;
+      const memberText = `{
+      ${memberProps.join(';\n      ')};
+    }`;
       discriminatedMembers.push(memberText);
     }
   }
@@ -324,7 +348,7 @@ function restructureUnionTypeWithTsMorph(
       // Extract request/changes type value
       const requestParamText = requestParamNode.getText();
       const typeMatch = requestParamText.match(
-        /(?:requestType|changesType):\s*['"]([^'"]+)['"]/,
+        /(?:requestType|changesType):\s*['"]([^'\"]+)['"]/,
       );
 
       if (typeMatch && typeMatch[1]) {
@@ -657,6 +681,9 @@ async function generateMethodFiles(
       { overwrite: true },
     );
 
+    const pascalRequest = toPascalCase(requestSchemaName);
+    const pascalResponse = toPascalCase(responseSchemaName);
+
     // Add imports
     methodFile.addImportDeclaration({
       moduleSpecifier: '@space-rock/jsonrpc-types',
@@ -667,8 +694,8 @@ async function generateMethodFiles(
     methodFile.addImportDeclaration({
       moduleSpecifier: '@space-rock/jsonrpc-types',
       namedImports: [
-        { name: `${requestSchemaName}Schema` },
-        { name: `${responseSchemaName}Schema` },
+        { name: `${pascalRequest}Schema` },
+        { name: `${pascalResponse}Schema` },
       ],
     });
 
@@ -691,7 +718,7 @@ async function generateMethodFiles(
       returnType: `Promise<ApiResponse<'${method}'>>`,
       statements: writer => {
         writer.writeLine(
-          `return client.call('${method}', params, ${requestSchemaName}Schema, ${responseSchemaName}Schema, options);`,
+          `return client.call('${method}', params, ${pascalRequest}Schema, ${pascalResponse}Schema, options);`,
         );
       },
     });
@@ -746,13 +773,16 @@ function generateTypeScriptMethodMappings(
   }[] = [];
 
   methodInfos.forEach(({ method, requestSchemaName, responseSchemaName }) => {
-    usedTypes.add(requestSchemaName);
-    usedTypes.add(responseSchemaName);
+    const request = toPascalCase(requestSchemaName);
+    const response = toPascalCase(responseSchemaName);
+
+    usedTypes.add(request);
+    usedTypes.add(response);
 
     methodMapping.push({
       method,
-      request: requestSchemaName,
-      response: responseSchemaName,
+      request,
+      response,
     });
   });
 
@@ -921,6 +951,14 @@ async function processOpenApiTypesWithTsMorph(
     throw new Error('components.schemas is not a type literal');
   }
 
+  // Build a name map from original schema names to PascalCase export names
+  const schemaNameMap = new Map<string, string>();
+  schemasType.getProperties().forEach(property => {
+    const originalName = property.getName();
+    const pascalName = toPascalCase(originalName);
+    schemaNameMap.set(originalName, pascalName);
+  });
+
   const typesOutputFile = project.createSourceFile('openapi-types.ts', '');
   const mapOutputFile = project.createSourceFile('rpc-method-map.ts', '');
 
@@ -934,6 +972,7 @@ async function processOpenApiTypesWithTsMorph(
 
   schemasType.getProperties().forEach(property => {
     const name = property.getName();
+    const exportName = schemaNameMap.get(name) ?? name;
     const typeNode = property.getTypeNode();
     if (typeNode) {
       const tempFile = project.createSourceFile(
@@ -942,7 +981,7 @@ async function processOpenApiTypesWithTsMorph(
       );
       const typeAlias = tempFile.getTypeAliasOrThrow('Temp');
 
-      transformComponentReferences(typeAlias);
+      transformComponentReferences(typeAlias, schemaNameMap);
       if (name === 'RpcError') makeRpcErrorCauseOptional(typeAlias);
 
       // Transform all property names to camelCase
@@ -963,7 +1002,7 @@ async function processOpenApiTypesWithTsMorph(
 
       typesOutputFile.addTypeAlias({
         isExported: true,
-        name,
+        name: exportName,
         type: patchedTypeText,
       });
 
@@ -990,9 +1029,14 @@ async function processOpenApiTypesWithTsMorph(
 /**
  * Transforms OpenAPI component schema references from the verbose
  * `components["schemas"]["TypeName"]` format to simple `TypeName` references.
+ * Also rewrites TypeReference nodes to use PascalCase names via the provided map.
  * @param node - The AST node containing component references to transform
+ * @param nameMap - Map from original schema names to PascalCase names
  */
-function transformComponentReferences(node: Node) {
+function transformComponentReferences(
+  node: Node,
+  nameMap: Map<string, string>,
+) {
   while (true) {
     const indexedAccess = node.getFirstDescendant(
       n =>
@@ -1003,9 +1047,26 @@ function transformComponentReferences(node: Node) {
     const match = indexedAccess
       .getText()
       .match(/components\["schemas"\]\["([^"]+)"\]/);
-    if (match && match[1]) indexedAccess.replaceWithText(match[1]);
-    else break;
+    if (match && match[1]) {
+      const original = match[1];
+      const mapped = nameMap.get(original) ?? original;
+      indexedAccess.replaceWithText(mapped);
+    } else break;
   }
+
+  // Also update plain type references that point to original names
+  node.getDescendantsOfKind(SyntaxKind.TypeReference).forEach(typeRef => {
+    const typeNameNode = typeRef.getTypeName();
+    const typeNameText = typeNameNode.getText();
+    const mapped = nameMap.get(typeNameText);
+    if (mapped && mapped !== typeNameText) {
+      const typeArgs = typeRef.getTypeArguments();
+      const argsText = typeArgs.length
+        ? `<${typeArgs.map(a => a.getText()).join(', ')}>`
+        : '';
+      typeRef.replaceWithText(`${mapped}${argsText}`);
+    }
+  });
 }
 
 // Run the conversion process

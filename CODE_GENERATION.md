@@ -223,15 +223,6 @@ ls -la codegen/openapi.json
 npx @apidevtools/swagger-cli validate codegen/openapi.json
 ```
 
-#### Type Conflicts
-
-```bash
-# Error: Duplicate identifier
-# Solution: Clean and regenerate
-rm -rf packages/types/src/*
-pnpm codegen
-```
-
 #### Schema Generation Issues
 
 ```bash

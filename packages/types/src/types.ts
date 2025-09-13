@@ -267,8 +267,7 @@ export type ActionView =
       FunctionCall: {
         args: FunctionArgs;
         deposit: string;
-        /** Format: uint64 */
-        gas: number;
+        gas: NearGas;
         methodName: string;
       };
     }
@@ -331,10 +330,8 @@ export type ActionsValidationError =
   | 'DeleteActionMustBeFinal'
   | {
       TotalPrepaidGasExceeded: {
-        /** Format: uint64 */
-        limit: number;
-        /** Format: uint64 */
-        totalPrepaidGas: number;
+        limit: NearGas;
+        totalPrepaidGas: NearGas;
       };
     }
   | {
@@ -527,10 +524,8 @@ export type ChunkHeaderView = {
   /** Format: uint64 */
   encodedLength: number;
   encodedMerkleRoot: CryptoHash;
-  /** Format: uint64 */
-  gasLimit: number;
-  /** Format: uint64 */
-  gasUsed: number;
+  gasLimit: NearGas;
+  gasUsed: NearGas;
   /** Format: uint64 */
   heightCreated: number;
   /** Format: uint64 */
@@ -563,20 +558,14 @@ export type CompilationError =
       };
     };
 export type CongestionControlConfigView = {
-  /**
-   * Format: uint64
-   * @description How much gas the chosen allowed shard can send to a 100% congested shard.
+  /** @description How much gas the chosen allowed shard can send to a 100% congested shard.
    *
-   *     See [`CongestionControlConfig`] for more details.
-   */
-  allowedShardOutgoingGas: number;
-  /**
-   * Format: uint64
-   * @description How much gas in delayed receipts of a shard is 100% incoming congestion.
+   *     See [`CongestionControlConfig`] for more details. */
+  allowedShardOutgoingGas: NearGas;
+  /** @description How much gas in delayed receipts of a shard is 100% incoming congestion.
    *
-   *     See [`CongestionControlConfig`] for more details.
-   */
-  maxCongestionIncomingGas: number;
+   *     See [`CongestionControlConfig`] for more details. */
+  maxCongestionIncomingGas: NearGas;
   /**
    * Format: uint64
    * @description How much memory space of all delayed and buffered receipts in a shard is
@@ -590,45 +579,30 @@ export type CongestionControlConfigView = {
    * @description How many missed chunks in a row in a shard is considered 100% congested.
    */
   maxCongestionMissedChunks: number;
-  /**
-   * Format: uint64
-   * @description How much gas in outgoing buffered receipts of a shard is 100% congested.
+  /** @description How much gas in outgoing buffered receipts of a shard is 100% congested.
    *
    *     Outgoing congestion contributes to overall congestion, which reduces how
-   *     much other shards are allowed to forward to this shard.
-   */
-  maxCongestionOutgoingGas: number;
-  /**
-   * Format: uint64
-   * @description The maximum amount of gas attached to receipts a shard can forward to
+   *     much other shards are allowed to forward to this shard. */
+  maxCongestionOutgoingGas: NearGas;
+  /** @description The maximum amount of gas attached to receipts a shard can forward to
    *     another shard per chunk.
    *
-   *     See [`CongestionControlConfig`] for more details.
-   */
-  maxOutgoingGas: number;
-  /**
-   * Format: uint64
-   * @description The maximum amount of gas in a chunk spent on converting new transactions to
+   *     See [`CongestionControlConfig`] for more details. */
+  maxOutgoingGas: NearGas;
+  /** @description The maximum amount of gas in a chunk spent on converting new transactions to
    *     receipts.
    *
-   *     See [`CongestionControlConfig`] for more details.
-   */
-  maxTxGas: number;
-  /**
-   * Format: uint64
-   * @description The minimum gas each shard can send to a shard that is not fully congested.
+   *     See [`CongestionControlConfig`] for more details. */
+  maxTxGas: NearGas;
+  /** @description The minimum gas each shard can send to a shard that is not fully congested.
    *
-   *     See [`CongestionControlConfig`] for more details.
-   */
-  minOutgoingGas: number;
-  /**
-   * Format: uint64
-   * @description The minimum amount of gas in a chunk spent on converting new transactions
+   *     See [`CongestionControlConfig`] for more details. */
+  minOutgoingGas: NearGas;
+  /** @description The minimum amount of gas in a chunk spent on converting new transactions
    *     to receipts, as long as the receiving shard is not congested.
    *
-   *     See [`CongestionControlConfig`] for more details.
-   */
-  minTxGas: number;
+   *     See [`CongestionControlConfig`] for more details. */
+  minTxGas: NearGas;
   /**
    * Format: uint64
    * @description Large size limit for outgoing receipts to a shard, used when it's safe
@@ -851,11 +825,8 @@ export type ExecutionOutcomeView = {
   /** @description The id of the account on which the execution happens. For transaction this is signer_id,
    *     for receipt this is receiver_id. */
   executorId: AccountId;
-  /**
-   * Format: uint64
-   * @description The amount of the gas burnt by the given transaction or receipt.
-   */
-  gasBurnt: number;
+  /** @description The amount of the gas burnt by the given transaction or receipt. */
+  gasBurnt: NearGas;
   /** @description Logs from this transaction or receipt. */
   logs: string[];
   /**
@@ -894,381 +865,160 @@ export type ExecutionStatusView =
       SuccessReceiptId: CryptoHash;
     };
 export type ExtCostsConfigView = {
-  /**
-   * Format: uint64
-   * @description Base cost for multiexp
-   */
-  altBn128G1MultiexpBase: number;
-  /**
-   * Format: uint64
-   * @description Per element cost for multiexp
-   */
-  altBn128G1MultiexpElement: number;
-  /**
-   * Format: uint64
-   * @description Base cost for sum
-   */
-  altBn128G1SumBase: number;
-  /**
-   * Format: uint64
-   * @description Per element cost for sum
-   */
-  altBn128G1SumElement: number;
-  /**
-   * Format: uint64
-   * @description Base cost for pairing check
-   */
-  altBn128PairingCheckBase: number;
-  /**
-   * Format: uint64
-   * @description Per element cost for pairing check
-   */
-  altBn128PairingCheckElement: number;
-  /**
-   * Format: uint64
-   * @description Base cost for calling a host function.
-   */
-  base: number;
-  /** Format: uint64 */
-  bls12381G1MultiexpBase: number;
-  /** Format: uint64 */
-  bls12381G1MultiexpElement: number;
-  /** Format: uint64 */
-  bls12381G2MultiexpBase: number;
-  /** Format: uint64 */
-  bls12381G2MultiexpElement: number;
-  /** Format: uint64 */
-  bls12381MapFp2ToG2Base: number;
-  /** Format: uint64 */
-  bls12381MapFp2ToG2Element: number;
-  /** Format: uint64 */
-  bls12381MapFpToG1Base: number;
-  /** Format: uint64 */
-  bls12381MapFpToG1Element: number;
-  /** Format: uint64 */
-  bls12381P1DecompressBase: number;
-  /** Format: uint64 */
-  bls12381P1DecompressElement: number;
-  /** Format: uint64 */
-  bls12381P1SumBase: number;
-  /** Format: uint64 */
-  bls12381P1SumElement: number;
-  /** Format: uint64 */
-  bls12381P2DecompressBase: number;
-  /** Format: uint64 */
-  bls12381P2DecompressElement: number;
-  /** Format: uint64 */
-  bls12381P2SumBase: number;
-  /** Format: uint64 */
-  bls12381P2SumElement: number;
-  /** Format: uint64 */
-  bls12381PairingBase: number;
-  /** Format: uint64 */
-  bls12381PairingElement: number;
-  /** Format: uint64 */
-  contractCompileBase: number;
-  /** Format: uint64 */
-  contractCompileBytes: number;
-  /**
-   * Format: uint64
-   * @description Base cost of loading a pre-compiled contract
-   */
-  contractLoadingBase: number;
-  /**
-   * Format: uint64
-   * @description Cost per byte of loading a pre-compiled contract
-   */
-  contractLoadingBytes: number;
-  /**
-   * Format: uint64
-   * @description Cost of calling ecrecover
-   */
-  ecrecoverBase: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting ed25519 base
-   */
-  ed25519VerifyBase: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting ed25519 per byte
-   */
-  ed25519VerifyByte: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting sha256 base
-   */
-  keccak256Base: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting sha256 per byte
-   */
-  keccak256Byte: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting sha256 base
-   */
-  keccak512Base: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting sha256 per byte
-   */
-  keccak512Byte: number;
-  /**
-   * Format: uint64
-   * @description Cost for calling logging.
-   */
-  logBase: number;
-  /**
-   * Format: uint64
-   * @description Cost for logging per byte
-   */
-  logByte: number;
-  /**
-   * Format: uint64
-   * @description Cost for calling `promise_and`
-   */
-  promiseAndBase: number;
-  /**
-   * Format: uint64
-   * @description Cost for calling `promise_and` for each promise
-   */
-  promiseAndPerPromise: number;
-  /**
-   * Format: uint64
-   * @description Cost for calling `promise_return`
-   */
-  promiseReturn: number;
-  /**
-   * Format: uint64
-   * @description Cost for reading trie node from memory
-   */
-  readCachedTrieNode: number;
-  /**
-   * Format: uint64
-   * @description Base cost for guest memory read
-   */
-  readMemoryBase: number;
-  /**
-   * Format: uint64
-   * @description Cost for guest memory read
-   */
-  readMemoryByte: number;
-  /**
-   * Format: uint64
-   * @description Base cost for reading from register
-   */
-  readRegisterBase: number;
-  /**
-   * Format: uint64
-   * @description Cost for reading byte from register
-   */
-  readRegisterByte: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting ripemd160 base
-   */
-  ripemd160Base: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting ripemd160 per message block
-   */
-  ripemd160Block: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting sha256 base
-   */
-  sha256Base: number;
-  /**
-   * Format: uint64
-   * @description Cost of getting sha256 per byte
-   */
-  sha256Byte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie check for key existence cost base
-   */
-  storageHasKeyBase: number;
-  /**
-   * Format: uint64
-   * @description Storage trie check for key existence per key byte
-   */
-  storageHasKeyByte: number;
-  /**
-   * Format: uint64
-   * @description Create trie range iterator cost per byte of from key.
-   */
-  storageIterCreateFromByte: number;
-  /**
-   * Format: uint64
-   * @description Create trie prefix iterator cost base
-   */
-  storageIterCreatePrefixBase: number;
-  /**
-   * Format: uint64
-   * @description Create trie prefix iterator cost per byte.
-   */
-  storageIterCreatePrefixByte: number;
-  /**
-   * Format: uint64
-   * @description Create trie range iterator cost base
-   */
-  storageIterCreateRangeBase: number;
-  /**
-   * Format: uint64
-   * @description Create trie range iterator cost per byte of to key.
-   */
-  storageIterCreateToByte: number;
-  /**
-   * Format: uint64
-   * @description Trie iterator per key base cost
-   */
-  storageIterNextBase: number;
-  /**
-   * Format: uint64
-   * @description Trie iterator next key byte cost
-   */
-  storageIterNextKeyByte: number;
-  /**
-   * Format: uint64
-   * @description Trie iterator next key byte cost
-   */
-  storageIterNextValueByte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie read key overhead base cost, when doing large reads
-   */
-  storageLargeReadOverheadBase: number;
-  /**
-   * Format: uint64
-   * @description Storage trie read key overhead  per-byte cost, when doing large reads
-   */
-  storageLargeReadOverheadByte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie read key base cost
-   */
-  storageReadBase: number;
-  /**
-   * Format: uint64
-   * @description Storage trie read key per byte cost
-   */
-  storageReadKeyByte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie read value cost per byte cost
-   */
-  storageReadValueByte: number;
-  /**
-   * Format: uint64
-   * @description Remove key from trie base cost
-   */
-  storageRemoveBase: number;
-  /**
-   * Format: uint64
-   * @description Remove key from trie per byte cost
-   */
-  storageRemoveKeyByte: number;
-  /**
-   * Format: uint64
-   * @description Remove key from trie ret value byte cost
-   */
-  storageRemoveRetValueByte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie write key base cost
-   */
-  storageWriteBase: number;
-  /**
-   * Format: uint64
-   * @description Storage trie write cost per byte of evicted value.
-   */
-  storageWriteEvictedByte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie write key per byte cost
-   */
-  storageWriteKeyByte: number;
-  /**
-   * Format: uint64
-   * @description Storage trie write value per byte cost
-   */
-  storageWriteValueByte: number;
-  /**
-   * Format: uint64
-   * @description Cost per reading trie node from DB
-   */
-  touchingTrieNode: number;
-  /**
-   * Format: uint64
-   * @description Base cost of decoding utf16. It's used for `log_utf16`.
-   */
-  utf16DecodingBase: number;
-  /**
-   * Format: uint64
-   * @description Cost per byte of decoding utf16. It's used for `log_utf16`.
-   */
-  utf16DecodingByte: number;
-  /**
-   * Format: uint64
-   * @description Base cost of decoding utf8. It's used for `log_utf8` and `panic_utf8`.
-   */
-  utf8DecodingBase: number;
-  /**
-   * Format: uint64
-   * @description Cost per byte of decoding utf8. It's used for `log_utf8` and `panic_utf8`.
-   */
-  utf8DecodingByte: number;
-  /**
-   * Format: uint64
-   * @description Cost of calling `validator_stake`.
-   */
-  validatorStakeBase: number;
-  /**
-   * Format: uint64
-   * @description Cost of calling `validator_total_stake`.
-   */
-  validatorTotalStakeBase: number;
-  /**
-   * Format: uint64
-   * @description Base cost for guest memory write
-   */
-  writeMemoryBase: number;
-  /**
-   * Format: uint64
-   * @description Cost for guest memory write per byte
-   */
-  writeMemoryByte: number;
-  /**
-   * Format: uint64
-   * @description Base cost for writing into register
-   */
-  writeRegisterBase: number;
-  /**
-   * Format: uint64
-   * @description Cost for writing byte into register
-   */
-  writeRegisterByte: number;
-  /**
-   * Format: uint64
-   * @description Base cost for creating a yield promise.
-   */
-  yieldCreateBase: number;
-  /**
-   * Format: uint64
-   * @description Per byte cost of arguments and method name.
-   */
-  yieldCreateByte: number;
-  /**
-   * Format: uint64
-   * @description Base cost for resuming a yield receipt.
-   */
-  yieldResumeBase: number;
-  /**
-   * Format: uint64
-   * @description Per byte cost of resume payload.
-   */
-  yieldResumeByte: number;
+  /** @description Base cost for multiexp */
+  altBn128G1MultiexpBase: NearGas;
+  /** @description Per element cost for multiexp */
+  altBn128G1MultiexpElement: NearGas;
+  /** @description Base cost for sum */
+  altBn128G1SumBase: NearGas;
+  /** @description Per element cost for sum */
+  altBn128G1SumElement: NearGas;
+  /** @description Base cost for pairing check */
+  altBn128PairingCheckBase: NearGas;
+  /** @description Per element cost for pairing check */
+  altBn128PairingCheckElement: NearGas;
+  /** @description Base cost for calling a host function. */
+  base: NearGas;
+  bls12381G1MultiexpBase: NearGas;
+  bls12381G1MultiexpElement: NearGas;
+  bls12381G2MultiexpBase: NearGas;
+  bls12381G2MultiexpElement: NearGas;
+  bls12381MapFp2ToG2Base: NearGas;
+  bls12381MapFp2ToG2Element: NearGas;
+  bls12381MapFpToG1Base: NearGas;
+  bls12381MapFpToG1Element: NearGas;
+  bls12381P1DecompressBase: NearGas;
+  bls12381P1DecompressElement: NearGas;
+  bls12381P1SumBase: NearGas;
+  bls12381P1SumElement: NearGas;
+  bls12381P2DecompressBase: NearGas;
+  bls12381P2DecompressElement: NearGas;
+  bls12381P2SumBase: NearGas;
+  bls12381P2SumElement: NearGas;
+  bls12381PairingBase: NearGas;
+  bls12381PairingElement: NearGas;
+  contractCompileBase: NearGas;
+  contractCompileBytes: NearGas;
+  /** @description Base cost of loading a pre-compiled contract */
+  contractLoadingBase: NearGas;
+  /** @description Cost per byte of loading a pre-compiled contract */
+  contractLoadingBytes: NearGas;
+  /** @description Cost of calling ecrecover */
+  ecrecoverBase: NearGas;
+  /** @description Cost of getting ed25519 base */
+  ed25519VerifyBase: NearGas;
+  /** @description Cost of getting ed25519 per byte */
+  ed25519VerifyByte: NearGas;
+  /** @description Cost of getting sha256 base */
+  keccak256Base: NearGas;
+  /** @description Cost of getting sha256 per byte */
+  keccak256Byte: NearGas;
+  /** @description Cost of getting sha256 base */
+  keccak512Base: NearGas;
+  /** @description Cost of getting sha256 per byte */
+  keccak512Byte: NearGas;
+  /** @description Cost for calling logging. */
+  logBase: NearGas;
+  /** @description Cost for logging per byte */
+  logByte: NearGas;
+  /** @description Cost for calling `promise_and` */
+  promiseAndBase: NearGas;
+  /** @description Cost for calling `promise_and` for each promise */
+  promiseAndPerPromise: NearGas;
+  /** @description Cost for calling `promise_return` */
+  promiseReturn: NearGas;
+  /** @description Cost for reading trie node from memory */
+  readCachedTrieNode: NearGas;
+  /** @description Base cost for guest memory read */
+  readMemoryBase: NearGas;
+  /** @description Cost for guest memory read */
+  readMemoryByte: NearGas;
+  /** @description Base cost for reading from register */
+  readRegisterBase: NearGas;
+  /** @description Cost for reading byte from register */
+  readRegisterByte: NearGas;
+  /** @description Cost of getting ripemd160 base */
+  ripemd160Base: NearGas;
+  /** @description Cost of getting ripemd160 per message block */
+  ripemd160Block: NearGas;
+  /** @description Cost of getting sha256 base */
+  sha256Base: NearGas;
+  /** @description Cost of getting sha256 per byte */
+  sha256Byte: NearGas;
+  /** @description Storage trie check for key existence cost base */
+  storageHasKeyBase: NearGas;
+  /** @description Storage trie check for key existence per key byte */
+  storageHasKeyByte: NearGas;
+  /** @description Create trie range iterator cost per byte of from key. */
+  storageIterCreateFromByte: NearGas;
+  /** @description Create trie prefix iterator cost base */
+  storageIterCreatePrefixBase: NearGas;
+  /** @description Create trie prefix iterator cost per byte. */
+  storageIterCreatePrefixByte: NearGas;
+  /** @description Create trie range iterator cost base */
+  storageIterCreateRangeBase: NearGas;
+  /** @description Create trie range iterator cost per byte of to key. */
+  storageIterCreateToByte: NearGas;
+  /** @description Trie iterator per key base cost */
+  storageIterNextBase: NearGas;
+  /** @description Trie iterator next key byte cost */
+  storageIterNextKeyByte: NearGas;
+  /** @description Trie iterator next key byte cost */
+  storageIterNextValueByte: NearGas;
+  /** @description Storage trie read key overhead base cost, when doing large reads */
+  storageLargeReadOverheadBase: NearGas;
+  /** @description Storage trie read key overhead  per-byte cost, when doing large reads */
+  storageLargeReadOverheadByte: NearGas;
+  /** @description Storage trie read key base cost */
+  storageReadBase: NearGas;
+  /** @description Storage trie read key per byte cost */
+  storageReadKeyByte: NearGas;
+  /** @description Storage trie read value cost per byte cost */
+  storageReadValueByte: NearGas;
+  /** @description Remove key from trie base cost */
+  storageRemoveBase: NearGas;
+  /** @description Remove key from trie per byte cost */
+  storageRemoveKeyByte: NearGas;
+  /** @description Remove key from trie ret value byte cost */
+  storageRemoveRetValueByte: NearGas;
+  /** @description Storage trie write key base cost */
+  storageWriteBase: NearGas;
+  /** @description Storage trie write cost per byte of evicted value. */
+  storageWriteEvictedByte: NearGas;
+  /** @description Storage trie write key per byte cost */
+  storageWriteKeyByte: NearGas;
+  /** @description Storage trie write value per byte cost */
+  storageWriteValueByte: NearGas;
+  /** @description Cost per reading trie node from DB */
+  touchingTrieNode: NearGas;
+  /** @description Base cost of decoding utf16. It's used for `log_utf16`. */
+  utf16DecodingBase: NearGas;
+  /** @description Cost per byte of decoding utf16. It's used for `log_utf16`. */
+  utf16DecodingByte: NearGas;
+  /** @description Base cost of decoding utf8. It's used for `log_utf8` and `panic_utf8`. */
+  utf8DecodingBase: NearGas;
+  /** @description Cost per byte of decoding utf8. It's used for `log_utf8` and `panic_utf8`. */
+  utf8DecodingByte: NearGas;
+  /** @description Cost of calling `validator_stake`. */
+  validatorStakeBase: NearGas;
+  /** @description Cost of calling `validator_total_stake`. */
+  validatorTotalStakeBase: NearGas;
+  /** @description Base cost for guest memory write */
+  writeMemoryBase: NearGas;
+  /** @description Cost for guest memory write per byte */
+  writeMemoryByte: NearGas;
+  /** @description Base cost for writing into register */
+  writeRegisterBase: NearGas;
+  /** @description Cost for writing byte into register */
+  writeRegisterByte: NearGas;
+  /** @description Base cost for creating a yield promise. */
+  yieldCreateBase: NearGas;
+  /** @description Per byte cost of arguments and method name. */
+  yieldCreateByte: NearGas;
+  /** @description Base cost for resuming a yield receipt. */
+  yieldResumeBase: NearGas;
+  /** @description Per byte cost of resume payload. */
+  yieldResumeByte: NearGas;
 };
 export type ExternalStorageConfig = {
   /**
@@ -1315,22 +1065,13 @@ export type ExternalStorageLocation =
       };
     };
 export type Fee = {
-  /**
-   * Format: uint64
-   * @description Fee for executing the object.
-   */
-  execution: number;
-  /**
-   * Format: uint64
-   * @description Fee for sending an object potentially across the shards.
-   */
-  sendNotSir: number;
-  /**
-   * Format: uint64
-   * @description Fee for sending an object from the sender to itself, guaranteeing that it does not leave
-   *     the shard.
-   */
-  sendSir: number;
+  /** @description Fee for executing the object. */
+  execution: NearGas;
+  /** @description Fee for sending an object potentially across the shards. */
+  sendNotSir: NearGas;
+  /** @description Fee for sending an object from the sender to itself, guaranteeing that it does not leave
+   *     the shard. */
+  sendSir: NearGas;
 };
 export type FinalExecutionOutcomeView = {
   /** @description The execution outcome of receipts. */
@@ -1376,8 +1117,7 @@ export type FunctionArgs = string;
 export type FunctionCallAction = {
   args: string;
   deposit: string;
-  /** Format: uint64 */
-  gas: number;
+  gas: NearGas;
   methodName: string;
 };
 export type FunctionCallError =
@@ -1493,11 +1233,8 @@ export type GenesisConfig = {
   epochLength: number;
   /** @description Fishermen stake threshold. */
   fishermenThreshold: string;
-  /**
-   * Format: uint64
-   * @description Initial gas limit.
-   */
-  gasLimit: number;
+  /** @description Initial gas limit. */
+  gasLimit: NearGas;
   /** @description Gas price adjustment rate */
   gasPriceAdjustmentRate: number[];
   /**
@@ -2454,11 +2191,8 @@ export type LimitConfig = {
    * @description If present, stores max number of functions in one contract
    */
   maxFunctionsNumberPerContract?: number | null;
-  /**
-   * Format: uint64
-   * @description Max amount of gas that can be used, excluding gas attached to promises.
-   */
-  maxGasBurnt: number;
+  /** @description Max amount of gas that can be used, excluding gas attached to promises. */
+  maxGasBurnt: NearGas;
   /**
    * Format: uint64
    * @description Max length of any method name (without terminating character).
@@ -2547,11 +2281,8 @@ export type LimitConfig = {
    * @description Maximum total length in bytes of all log messages.
    */
   maxTotalLogLength: number;
-  /**
-   * Format: uint64
-   * @description Max total prepaid gas for all function call actions per receipt.
-   */
-  maxTotalPrepaidGas: number;
+  /** @description Max total prepaid gas for all function call actions per receipt. */
+  maxTotalPrepaidGas: NearGas;
   /**
    * Format: uint64
    * @description Max transaction size
@@ -2597,6 +2328,7 @@ export type MissingTrieValueContext =
   | 'TrieMemoryPartialStorage'
   | 'TrieStorage';
 export type MutableConfigValue = string;
+export type NearGas = number;
 export type NetworkInfoView = {
   connectedPeers: PeerInfoView[];
   knownProducers: KnownProducerView[];
@@ -2886,13 +2618,10 @@ export type RpcClientConfigResponse = {
   maxBlockProductionDelay: number[];
   /** @description Maximum duration before skipping given height. */
   maxBlockWaitDelay: number[];
-  /**
-   * Format: uint64
-   * @description Max burnt gas per view method.  If present, overrides value stored in
+  /** @description Max burnt gas per view method.  If present, overrides value stored in
    *     genesis file.  The value only affects the RPCs without influencing the
-   *     protocol thus changing it per-node doesn’t affect the blockchain.
-   */
-  maxGasBurntView?: number | null;
+   *     protocol thus changing it per-node doesn’t affect the blockchain. */
+  maxGasBurntView?: NearGas | null;
   /** @description Minimum duration before producing block. */
   minBlockProductionDelay: number[];
   /**
@@ -3179,11 +2908,8 @@ export type RpcProtocolConfigResponse = {
   epochLength: number;
   /** @description Fishermen stake threshold. */
   fishermenThreshold: string;
-  /**
-   * Format: uint64
-   * @description Initial gas limit.
-   */
-  gasLimit: number;
+  /** @description Initial gas limit. */
+  gasLimit: NearGas;
   /** @description Gas price adjustment rate */
   gasPriceAdjustmentRate: number[];
   /**

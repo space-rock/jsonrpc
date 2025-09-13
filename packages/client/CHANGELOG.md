@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.0](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.6...jsonrpc-client-v0.4.0) (2025-09-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* pascal case for all types and schemas ([#47](https://github.com/space-rock/jsonrpc/issues/47))
+
+### Features
+
+* pascal case for all types and schemas ([#47](https://github.com/space-rock/jsonrpc/issues/47)) ([d84722d](https://github.com/space-rock/jsonrpc/commit/d84722d1911eb936569b9c9556fc509feac5f1f1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @space-rock/jsonrpc-types bumped to 0.4.0
+
 ## [0.3.6](https://github.com/space-rock/jsonrpc/compare/jsonrpc-client-v0.3.5...jsonrpc-client-v0.3.6) (2025-09-13)
 
 

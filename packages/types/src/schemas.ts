@@ -1355,7 +1355,7 @@ export const InvalidTxErrorSchema: v.GenericSchema<t.InvalidTxError> = v.lazy(
     ]),
 );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_changesSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_changes> =
+export const JsonRpcRequestForExperimentalChangesSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalChanges> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1365,7 +1365,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_changesSchema: v.GenericSchema<t.Js
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_changes_in_blockSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_changes_in_block> =
+export const JsonRpcRequestForExperimentalChangesInBlockSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalChangesInBlock> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1375,7 +1375,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_changes_in_blockSchema: v.GenericSc
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_congestion_levelSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_congestion_level> =
+export const JsonRpcRequestForExperimentalCongestionLevelSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalCongestionLevel> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1385,7 +1385,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_congestion_levelSchema: v.GenericSc
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_genesis_configSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_genesis_config> =
+export const JsonRpcRequestForExperimentalGenesisConfigSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalGenesisConfig> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1395,7 +1395,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_genesis_configSchema: v.GenericSche
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proofSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof> =
+export const JsonRpcRequestForExperimentalLightClientBlockProofSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalLightClientBlockProof> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1405,7 +1405,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proofSchema: v.G
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_light_client_proofSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_light_client_proof> =
+export const JsonRpcRequestForExperimentalLightClientProofSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalLightClientProof> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1415,7 +1415,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_light_client_proofSchema: v.Generic
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_maintenance_windowsSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows> =
+export const JsonRpcRequestForExperimentalMaintenanceWindowsSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalMaintenanceWindows> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1425,7 +1425,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_maintenance_windowsSchema: v.Generi
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_protocol_configSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_protocol_config> =
+export const JsonRpcRequestForExperimentalProtocolConfigSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalProtocolConfig> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1435,7 +1435,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_protocol_configSchema: v.GenericSch
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_receiptSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_receipt> =
+export const JsonRpcRequestForExperimentalReceiptSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalReceipt> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1445,7 +1445,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_receiptSchema: v.GenericSchema<t.Js
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_split_storage_infoSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_split_storage_info> =
+export const JsonRpcRequestForExperimentalSplitStorageInfoSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalSplitStorageInfo> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1455,7 +1455,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_split_storage_infoSchema: v.Generic
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_tx_status> =
+export const JsonRpcRequestForExperimentalTxStatusSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalTxStatus> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1465,7 +1465,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema: v.GenericSchema<t.
     }),
   );
 
-export const JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema: v.GenericSchema<t.JsonRpcRequest_for_EXPERIMENTAL_validators_ordered> =
+export const JsonRpcRequestForExperimentalValidatorsOrderedSchema: v.GenericSchema<t.JsonRpcRequestForExperimentalValidatorsOrdered> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1475,7 +1475,7 @@ export const JsonRpcRequest_for_EXPERIMENTAL_validators_orderedSchema: v.Generic
     }),
   );
 
-export const JsonRpcRequest_for_blockSchema: v.GenericSchema<t.JsonRpcRequest_for_block> =
+export const JsonRpcRequestForBlockSchema: v.GenericSchema<t.JsonRpcRequestForBlock> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1485,7 +1485,7 @@ export const JsonRpcRequest_for_blockSchema: v.GenericSchema<t.JsonRpcRequest_fo
     }),
   );
 
-export const JsonRpcRequest_for_block_effectsSchema: v.GenericSchema<t.JsonRpcRequest_for_block_effects> =
+export const JsonRpcRequestForBlockEffectsSchema: v.GenericSchema<t.JsonRpcRequestForBlockEffects> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1495,7 +1495,7 @@ export const JsonRpcRequest_for_block_effectsSchema: v.GenericSchema<t.JsonRpcRe
     }),
   );
 
-export const JsonRpcRequest_for_broadcast_tx_asyncSchema: v.GenericSchema<t.JsonRpcRequest_for_broadcast_tx_async> =
+export const JsonRpcRequestForBroadcastTxAsyncSchema: v.GenericSchema<t.JsonRpcRequestForBroadcastTxAsync> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1505,7 +1505,7 @@ export const JsonRpcRequest_for_broadcast_tx_asyncSchema: v.GenericSchema<t.Json
     }),
   );
 
-export const JsonRpcRequest_for_broadcast_tx_commitSchema: v.GenericSchema<t.JsonRpcRequest_for_broadcast_tx_commit> =
+export const JsonRpcRequestForBroadcastTxCommitSchema: v.GenericSchema<t.JsonRpcRequestForBroadcastTxCommit> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1515,7 +1515,7 @@ export const JsonRpcRequest_for_broadcast_tx_commitSchema: v.GenericSchema<t.Jso
     }),
   );
 
-export const JsonRpcRequest_for_changesSchema: v.GenericSchema<t.JsonRpcRequest_for_changes> =
+export const JsonRpcRequestForChangesSchema: v.GenericSchema<t.JsonRpcRequestForChanges> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1525,7 +1525,7 @@ export const JsonRpcRequest_for_changesSchema: v.GenericSchema<t.JsonRpcRequest_
     }),
   );
 
-export const JsonRpcRequest_for_chunkSchema: v.GenericSchema<t.JsonRpcRequest_for_chunk> =
+export const JsonRpcRequestForChunkSchema: v.GenericSchema<t.JsonRpcRequestForChunk> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1535,7 +1535,7 @@ export const JsonRpcRequest_for_chunkSchema: v.GenericSchema<t.JsonRpcRequest_fo
     }),
   );
 
-export const JsonRpcRequest_for_client_configSchema: v.GenericSchema<t.JsonRpcRequest_for_client_config> =
+export const JsonRpcRequestForClientConfigSchema: v.GenericSchema<t.JsonRpcRequestForClientConfig> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1545,7 +1545,7 @@ export const JsonRpcRequest_for_client_configSchema: v.GenericSchema<t.JsonRpcRe
     }),
   );
 
-export const JsonRpcRequest_for_gas_priceSchema: v.GenericSchema<t.JsonRpcRequest_for_gas_price> =
+export const JsonRpcRequestForGasPriceSchema: v.GenericSchema<t.JsonRpcRequestForGasPrice> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1555,7 +1555,7 @@ export const JsonRpcRequest_for_gas_priceSchema: v.GenericSchema<t.JsonRpcReques
     }),
   );
 
-export const JsonRpcRequest_for_genesis_configSchema: v.GenericSchema<t.JsonRpcRequest_for_genesis_config> =
+export const JsonRpcRequestForGenesisConfigSchema: v.GenericSchema<t.JsonRpcRequestForGenesisConfig> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1565,7 +1565,7 @@ export const JsonRpcRequest_for_genesis_configSchema: v.GenericSchema<t.JsonRpcR
     }),
   );
 
-export const JsonRpcRequest_for_healthSchema: v.GenericSchema<t.JsonRpcRequest_for_health> =
+export const JsonRpcRequestForHealthSchema: v.GenericSchema<t.JsonRpcRequestForHealth> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1575,7 +1575,7 @@ export const JsonRpcRequest_for_healthSchema: v.GenericSchema<t.JsonRpcRequest_f
     }),
   );
 
-export const JsonRpcRequest_for_light_client_proofSchema: v.GenericSchema<t.JsonRpcRequest_for_light_client_proof> =
+export const JsonRpcRequestForLightClientProofSchema: v.GenericSchema<t.JsonRpcRequestForLightClientProof> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1585,7 +1585,7 @@ export const JsonRpcRequest_for_light_client_proofSchema: v.GenericSchema<t.Json
     }),
   );
 
-export const JsonRpcRequest_for_maintenance_windowsSchema: v.GenericSchema<t.JsonRpcRequest_for_maintenance_windows> =
+export const JsonRpcRequestForMaintenanceWindowsSchema: v.GenericSchema<t.JsonRpcRequestForMaintenanceWindows> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1595,7 +1595,7 @@ export const JsonRpcRequest_for_maintenance_windowsSchema: v.GenericSchema<t.Jso
     }),
   );
 
-export const JsonRpcRequest_for_network_infoSchema: v.GenericSchema<t.JsonRpcRequest_for_network_info> =
+export const JsonRpcRequestForNetworkInfoSchema: v.GenericSchema<t.JsonRpcRequestForNetworkInfo> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1605,7 +1605,7 @@ export const JsonRpcRequest_for_network_infoSchema: v.GenericSchema<t.JsonRpcReq
     }),
   );
 
-export const JsonRpcRequest_for_next_light_client_blockSchema: v.GenericSchema<t.JsonRpcRequest_for_next_light_client_block> =
+export const JsonRpcRequestForNextLightClientBlockSchema: v.GenericSchema<t.JsonRpcRequestForNextLightClientBlock> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1615,7 +1615,7 @@ export const JsonRpcRequest_for_next_light_client_blockSchema: v.GenericSchema<t
     }),
   );
 
-export const JsonRpcRequest_for_querySchema: v.GenericSchema<t.JsonRpcRequest_for_query> =
+export const JsonRpcRequestForQuerySchema: v.GenericSchema<t.JsonRpcRequestForQuery> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1625,7 +1625,7 @@ export const JsonRpcRequest_for_querySchema: v.GenericSchema<t.JsonRpcRequest_fo
     }),
   );
 
-export const JsonRpcRequest_for_send_txSchema: v.GenericSchema<t.JsonRpcRequest_for_send_tx> =
+export const JsonRpcRequestForSendTxSchema: v.GenericSchema<t.JsonRpcRequestForSendTx> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1635,7 +1635,7 @@ export const JsonRpcRequest_for_send_txSchema: v.GenericSchema<t.JsonRpcRequest_
     }),
   );
 
-export const JsonRpcRequest_for_statusSchema: v.GenericSchema<t.JsonRpcRequest_for_status> =
+export const JsonRpcRequestForStatusSchema: v.GenericSchema<t.JsonRpcRequestForStatus> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1645,7 +1645,7 @@ export const JsonRpcRequest_for_statusSchema: v.GenericSchema<t.JsonRpcRequest_f
     }),
   );
 
-export const JsonRpcRequest_for_txSchema: v.GenericSchema<t.JsonRpcRequest_for_tx> =
+export const JsonRpcRequestForTxSchema: v.GenericSchema<t.JsonRpcRequestForTx> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1655,7 +1655,7 @@ export const JsonRpcRequest_for_txSchema: v.GenericSchema<t.JsonRpcRequest_for_t
     }),
   );
 
-export const JsonRpcRequest_for_validatorsSchema: v.GenericSchema<t.JsonRpcRequest_for_validators> =
+export const JsonRpcRequestForValidatorsSchema: v.GenericSchema<t.JsonRpcRequestForValidators> =
   v.lazy(() =>
     v.object({
       id: v.string(),
@@ -1665,7 +1665,7 @@ export const JsonRpcRequest_for_validatorsSchema: v.GenericSchema<t.JsonRpcReque
     }),
   );
 
-export const JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcError> =
+export const JsonRpcResponseForArrayOfRangeOfUint64AndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForArrayOfRangeOfUint64AndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1674,7 +1674,7 @@ export const JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema: v.
       }),
       v.union([
         v.object({
-          result: v.array(Range_of_uint64Schema),
+          result: v.array(RangeOfUint64Schema),
         }),
         v.object({
           error: RpcErrorSchema,
@@ -1683,7 +1683,7 @@ export const JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcErrorSchema: v.
     ]),
   );
 
-export const JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcError> =
+export const JsonRpcResponseForArrayOfValidatorStakeViewAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForArrayOfValidatorStakeViewAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1701,7 +1701,7 @@ export const JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcErrorSchema:
     ]),
   );
 
-export const JsonRpcResponse_for_CryptoHash_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_CryptoHash_and_RpcError> =
+export const JsonRpcResponseForCryptoHashAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForCryptoHashAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1719,7 +1719,7 @@ export const JsonRpcResponse_for_CryptoHash_and_RpcErrorSchema: v.GenericSchema<
     ]),
   );
 
-export const JsonRpcResponse_for_GenesisConfig_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_GenesisConfig_and_RpcError> =
+export const JsonRpcResponseForGenesisConfigAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForGenesisConfigAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1737,7 +1737,7 @@ export const JsonRpcResponse_for_GenesisConfig_and_RpcErrorSchema: v.GenericSche
     ]),
   );
 
-export const JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcError> =
+export const JsonRpcResponseForNullableRpcHealthResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForNullableRpcHealthResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1755,7 +1755,7 @@ export const JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcErrorSchema: 
     ]),
   );
 
-export const JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcBlockResponse_and_RpcError> =
+export const JsonRpcResponseForRpcBlockResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcBlockResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1773,7 +1773,7 @@ export const JsonRpcResponse_for_RpcBlockResponse_and_RpcErrorSchema: v.GenericS
     ]),
   );
 
-export const JsonRpcResponse_for_RpcChunkResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcChunkResponse_and_RpcError> =
+export const JsonRpcResponseForRpcChunkResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcChunkResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1791,7 +1791,7 @@ export const JsonRpcResponse_for_RpcChunkResponse_and_RpcErrorSchema: v.GenericS
     ]),
   );
 
-export const JsonRpcResponse_for_RpcClientConfigResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcClientConfigResponse_and_RpcError> =
+export const JsonRpcResponseForRpcClientConfigResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcClientConfigResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1809,7 +1809,7 @@ export const JsonRpcResponse_for_RpcClientConfigResponse_and_RpcErrorSchema: v.G
     ]),
   );
 
-export const JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcError> =
+export const JsonRpcResponseForRpcCongestionLevelResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcCongestionLevelResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1827,7 +1827,7 @@ export const JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcErrorSchema: 
     ]),
   );
 
-export const JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcGasPriceResponse_and_RpcError> =
+export const JsonRpcResponseForRpcGasPriceResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcGasPriceResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1845,7 +1845,7 @@ export const JsonRpcResponse_for_RpcGasPriceResponse_and_RpcErrorSchema: v.Gener
     ]),
   );
 
-export const JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcError> =
+export const JsonRpcResponseForRpcLightClientBlockProofResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcLightClientBlockProofResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1863,7 +1863,7 @@ export const JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcErrorSc
     ]),
   );
 
-export const JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcError> =
+export const JsonRpcResponseForRpcLightClientExecutionProofResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcLightClientExecutionProofResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1881,7 +1881,7 @@ export const JsonRpcResponse_for_RpcLightClientExecutionProofResponse_and_RpcErr
     ]),
   );
 
-export const JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcError> =
+export const JsonRpcResponseForRpcLightClientNextBlockResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcLightClientNextBlockResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1899,7 +1899,7 @@ export const JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcErrorSch
     ]),
   );
 
-export const JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcError> =
+export const JsonRpcResponseForRpcNetworkInfoResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcNetworkInfoResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1917,7 +1917,7 @@ export const JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcErrorSchema: v.Ge
     ]),
   );
 
-export const JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcError> =
+export const JsonRpcResponseForRpcProtocolConfigResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcProtocolConfigResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1935,7 +1935,7 @@ export const JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcErrorSchema: v
     ]),
   );
 
-export const JsonRpcResponse_for_RpcQueryResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcQueryResponse_and_RpcError> =
+export const JsonRpcResponseForRpcQueryResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcQueryResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1953,7 +1953,7 @@ export const JsonRpcResponse_for_RpcQueryResponse_and_RpcErrorSchema: v.GenericS
     ]),
   );
 
-export const JsonRpcResponse_for_RpcReceiptResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcReceiptResponse_and_RpcError> =
+export const JsonRpcResponseForRpcReceiptResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcReceiptResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1971,7 +1971,7 @@ export const JsonRpcResponse_for_RpcReceiptResponse_and_RpcErrorSchema: v.Generi
     ]),
   );
 
-export const JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcError> =
+export const JsonRpcResponseForRpcSplitStorageInfoResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcSplitStorageInfoResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -1989,7 +1989,7 @@ export const JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcErrorSchema:
     ]),
   );
 
-export const JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcError> =
+export const JsonRpcResponseForRpcStateChangesInBlockByTypeResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcStateChangesInBlockByTypeResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -2007,7 +2007,7 @@ export const JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcErr
     ]),
   );
 
-export const JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcError> =
+export const JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcStateChangesInBlockResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -2025,7 +2025,7 @@ export const JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcErrorSche
     ]),
   );
 
-export const JsonRpcResponse_for_RpcStatusResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcStatusResponse_and_RpcError> =
+export const JsonRpcResponseForRpcStatusResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcStatusResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -2043,7 +2043,7 @@ export const JsonRpcResponse_for_RpcStatusResponse_and_RpcErrorSchema: v.Generic
     ]),
   );
 
-export const JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcTransactionResponse_and_RpcError> =
+export const JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcTransactionResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -2061,7 +2061,7 @@ export const JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema: v.Ge
     ]),
   );
 
-export const JsonRpcResponse_for_RpcValidatorResponse_and_RpcErrorSchema: v.GenericSchema<t.JsonRpcResponse_for_RpcValidatorResponse_and_RpcError> =
+export const JsonRpcResponseForRpcValidatorResponseAndRpcErrorSchema: v.GenericSchema<t.JsonRpcResponseForRpcValidatorResponseAndRpcError> =
   v.lazy(() =>
     v.intersect([
       v.object({
@@ -2284,7 +2284,7 @@ export const PublicKeySchema: v.GenericSchema<t.PublicKey> = v.lazy(() =>
   v.string(),
 );
 
-export const Range_of_uint64Schema: v.GenericSchema<t.Range_of_uint64> = v.lazy(
+export const RangeOfUint64Schema: v.GenericSchema<t.RangeOfUint64> = v.lazy(
   () =>
     v.object({
       end: v.number(),

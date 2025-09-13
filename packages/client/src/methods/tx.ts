@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_txSchema,
-  JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  JsonRpcRequestForTxSchema,
+  JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function tx(
   return client.call(
     'tx',
     params,
-    JsonRpcRequest_for_txSchema,
-    JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+    JsonRpcRequestForTxSchema,
+    JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema,
     options,
   );
 }

@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema,
-  JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  JsonRpcRequestForExperimentalTxStatusSchema,
+  JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function EXPERIMENTALTxStatus(
   return client.call(
     'EXPERIMENTAL_tx_status',
     params,
-    JsonRpcRequest_for_EXPERIMENTAL_tx_statusSchema,
-    JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+    JsonRpcRequestForExperimentalTxStatusSchema,
+    JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema,
     options,
   );
 }

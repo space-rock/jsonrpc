@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_broadcast_tx_commitSchema,
-  JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+  JsonRpcRequestForBroadcastTxCommitSchema,
+  JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function broadcastTxCommit(
   return client.call(
     'broadcast_tx_commit',
     params,
-    JsonRpcRequest_for_broadcast_tx_commitSchema,
-    JsonRpcResponse_for_RpcTransactionResponse_and_RpcErrorSchema,
+    JsonRpcRequestForBroadcastTxCommitSchema,
+    JsonRpcResponseForRpcTransactionResponseAndRpcErrorSchema,
     options,
   );
 }

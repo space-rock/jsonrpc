@@ -1,30 +1,17 @@
-# @space-rock/jsonrpc
+![SpaceRock JsonRpc](./jsonrpc.svg)
 
-<div align="center">
-  <h3>
-    <strong>Type-safe, high-performance JSON-RPC client for NEAR Protocol</strong>
-  </h3>
-  <p>
-    <a href="https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml">
-      <img src="https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml/badge.svg" alt="CI/CD" />
-    </a>
-    <a href="https://codecov.io/github/space-rock/jsonrpc">
-      <img src="https://codecov.io/gh/space-rock/jsonrpc/branch/main/graph/badge.svg?token=SHQZTQA89C" alt="Coverage" />
-    </a>
-    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-client">
-      <img src="https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg" alt="Client npm version" />
-    </a>
-    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-client">
-      <img src="https://img.shields.io/npm/dm/@space-rock/jsonrpc-client.svg" alt="Client npm downloads" />
-    </a>
-    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-types">
-      <img src="https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg" alt="Types npm version" />
-    </a>
-    <a href="https://www.npmjs.com/package/@space-rock/jsonrpc-types">
-      <img src="https://img.shields.io/npm/dm/@space-rock/jsonrpc-types.svg" alt="Types npm downloads" />
-    </a>
-  </p>
-</div>
+<p align="center">
+  <strong>Type-safe, high-performance JSON-RPC client for NEAR Protocol</strong>
+</p>
+
+<p align="center">
+  [![CI/CD](https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/space-rock/jsonrpc/actions/workflows/ci-cd.yml)
+  [![Coverage](https://codecov.io/gh/space-rock/jsonrpc/branch/main/graph/badge.svg?token=SHQZTQA89C)](https://codecov.io/github/space-rock/jsonrpc)
+  [![Client npm version](https://img.shields.io/npm/v/@space-rock/jsonrpc-client.svg)](https://www.npmjs.com/package/@space-rock/jsonrpc-client)
+  [![Client npm downloads](https://img.shields.io/npm/dm/@space-rock/jsonrpc-client.svg)](https://www.npmjs.com/package/@space-rock/jsonrpc-client)
+  [![Types npm version](https://img.shields.io/npm/v/@space-rock/jsonrpc-types.svg)](https://www.npmjs.com/package/@space-rock/jsonrpc-types)
+  [![Types npm downloads](https://img.shields.io/npm/dm/@space-rock/jsonrpc-types.svg)](https://www.npmjs.com/package/@space-rock/jsonrpc-types)
+</p>
 
 ## 🚀 Features
 

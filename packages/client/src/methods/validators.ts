@@ -1,7 +1,7 @@
 import type { ApiParams, ApiResponse } from '@space-rock/jsonrpc-types';
 import {
-  JsonRpcRequest_for_validatorsSchema,
-  JsonRpcResponse_for_RpcValidatorResponse_and_RpcErrorSchema,
+  JsonRpcRequestForValidatorsSchema,
+  JsonRpcResponseForRpcValidatorResponseAndRpcErrorSchema,
 } from '@space-rock/jsonrpc-types';
 import type { RequestOptions, RpcClient } from '../client';
 
@@ -13,8 +13,8 @@ export async function validators(
   return client.call(
     'validators',
     params,
-    JsonRpcRequest_for_validatorsSchema,
-    JsonRpcResponse_for_RpcValidatorResponse_and_RpcErrorSchema,
+    JsonRpcRequestForValidatorsSchema,
+    JsonRpcResponseForRpcValidatorResponseAndRpcErrorSchema,
     options,
   );
 }

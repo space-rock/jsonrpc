@@ -566,6 +566,30 @@ export const ChunkHeaderViewSchema: v.GenericSchema<t.ChunkHeaderView> = v.lazy(
     }),
 );
 
+export const CloudArchivalReaderConfigSchema: v.GenericSchema<t.CloudArchivalReaderConfig> =
+  v.lazy(() =>
+    v.object({
+      cloudStorage: CloudStorageConfigSchema,
+    }),
+  );
+
+export const CloudArchivalWriterConfigSchema: v.GenericSchema<t.CloudArchivalWriterConfig> =
+  v.lazy(() =>
+    v.object({
+      archiveBlockData: v.boolean(),
+      cloudStorage: CloudStorageConfigSchema,
+      pollingInterval: DurationAsStdSchemaProviderSchema,
+    }),
+  );
+
+export const CloudStorageConfigSchema: v.GenericSchema<t.CloudStorageConfig> =
+  v.lazy(() =>
+    v.object({
+      credentialsFile: v.optional(v.union([v.string(), v.null()])),
+      storage: ExternalStorageLocationSchema,
+    }),
+  );
+
 export const CompilationErrorSchema: v.GenericSchema<t.CompilationError> =
   v.lazy(() =>
     v.union([
@@ -2447,6 +2471,12 @@ export const RpcClientConfigResponseSchema: v.GenericSchema<t.RpcClientConfigRes
       chunkValidationThreads: v.number(),
       chunkWaitMult: v.array(v.number()),
       clientBackgroundMigrationThreads: v.number(),
+      cloudArchivalReader: v.optional(
+        v.union([CloudArchivalReaderConfigSchema, v.null()]),
+      ),
+      cloudArchivalWriter: v.optional(
+        v.union([CloudArchivalWriterConfigSchema, v.null()]),
+      ),
       doomslugStepPeriod: v.array(v.number()),
       enableMultilineLogging: v.boolean(),
       enableStatisticsExport: v.boolean(),
@@ -3572,6 +3602,7 @@ export const UseGlobalContractActionSchema: v.GenericSchema<t.UseGlobalContractA
 
 export const VMConfigViewSchema: v.GenericSchema<t.VMConfigView> = v.lazy(() =>
   v.object({
+    deterministicAccountIds: v.boolean(),
     discardCustomSections: v.boolean(),
     ethImplicitAccounts: v.boolean(),
     extCosts: ExtCostsConfigViewSchema,

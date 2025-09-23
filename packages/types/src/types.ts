@@ -2708,6 +2708,8 @@ export type RpcClientConfigResponse = {
   saveTrieChanges: boolean;
   /** @description Whether to persist transaction outcomes to disk or not. */
   saveTxOutcomes: boolean;
+  /** @description Whether to persist partial chunk parts for untracked shards or not. */
+  saveUntrackedPartialChunksParts: boolean;
   /** @description Skip waiting for sync (for testing or single node testnet). */
   skipSyncWait: boolean;
   /**

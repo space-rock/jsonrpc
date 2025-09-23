@@ -2507,6 +2507,7 @@ export const RpcClientConfigResponseSchema: v.GenericSchema<t.RpcClientConfigRes
       saveLatestWitnesses: v.boolean(),
       saveTrieChanges: v.boolean(),
       saveTxOutcomes: v.boolean(),
+      saveUntrackedPartialChunksParts: v.boolean(),
       skipSyncWait: v.boolean(),
       stateRequestServerThreads: v.number(),
       stateRequestThrottlePeriod: v.array(v.number()),

@@ -991,8 +991,15 @@
               "FunctionCall": {
                 "properties": {
                   "allowance": {
-                    "nullable": true,
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/NearToken"
+                      },
+                      {
+                        "enum": [null],
+                        "nullable": true
+                      }
+                    ]
                   },
                   "method_names": {
                     "items": {
@@ -1088,7 +1095,9 @@
         "type": "object"
       },
       "AccountId": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "description": "NEAR Account Identifier.\n\nThis is a unique, syntactically valid, human-readable account identifier on the NEAR network.\n\n[See the crate-level docs for information about validation.](index.html#account-id-rules)\n\nAlso see [Error kind precedence](AccountId#error-kind-precedence).\n\n## Examples\n\n```\nuse near_account_id::AccountId;\n\nlet alice: AccountId = \"alice.near\".parse().unwrap();\n\nassert!(\"ƒelicia.near\".parse::<AccountId>().is_err()); // (ƒ is not f)\n```",
+        "title": "AccountId",
         "type": "string"
       },
       "AccountIdValidityRulesVersion": {
@@ -1104,7 +1113,7 @@
             "$ref": "#/components/schemas/AccountId"
           },
           "amount": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "public_key": {
             "$ref": "#/components/schemas/PublicKey"
@@ -1117,7 +1126,7 @@
         "description": "A view of the account",
         "properties": {
           "amount": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "code_hash": {
             "$ref": "#/components/schemas/CryptoHash"
@@ -1145,7 +1154,7 @@
             ]
           },
           "locked": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "storage_paid_at": {
             "default": 0,
@@ -1480,8 +1489,12 @@
                     "description": "An account which needs balance"
                   },
                   "amount": {
-                    "description": "Balance required to complete an action.",
-                    "type": "string"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/NearToken"
+                      }
+                    ],
+                    "description": "Balance required to complete an action."
                   }
                 },
                 "required": ["account_id", "amount"],
@@ -1518,13 +1531,13 @@
                     "$ref": "#/components/schemas/AccountId"
                   },
                   "balance": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "locked": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "stake": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   }
                 },
                 "required": ["account_id", "stake", "locked", "balance"],
@@ -1543,10 +1556,10 @@
                     "$ref": "#/components/schemas/AccountId"
                   },
                   "minimum_stake": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "stake": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   }
                 },
                 "required": ["account_id", "stake", "minimum_stake"],
@@ -1751,7 +1764,7 @@
                     "$ref": "#/components/schemas/FunctionArgs"
                   },
                   "deposit": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "gas": {
                     "$ref": "#/components/schemas/NearGas"
@@ -1773,7 +1786,7 @@
               "Transfer": {
                 "properties": {
                   "deposit": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   }
                 },
                 "required": ["deposit"],
@@ -1792,7 +1805,7 @@
                     "$ref": "#/components/schemas/PublicKey"
                   },
                   "stake": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   }
                 },
                 "required": ["stake", "public_key"],
@@ -1936,6 +1949,31 @@
               }
             },
             "required": ["UseGlobalContractByAccountId"],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "DeterministicStateInit": {
+                "properties": {
+                  "code": {
+                    "$ref": "#/components/schemas/GlobalContractIdentifierView"
+                  },
+                  "data": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object"
+                  },
+                  "deposit": {
+                    "$ref": "#/components/schemas/NearToken"
+                  }
+                },
+                "required": ["code", "data", "deposit"],
+                "type": "object"
+              }
+            },
+            "required": ["DeterministicStateInit"],
             "type": "object"
           }
         ]
@@ -2181,6 +2219,71 @@
               }
             },
             "required": ["UnsupportedProtocolFeature"],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "InvalidDeterministicStateInitReceiver": {
+                "properties": {
+                  "derived_id": {
+                    "$ref": "#/components/schemas/AccountId"
+                  },
+                  "receiver_id": {
+                    "$ref": "#/components/schemas/AccountId"
+                  }
+                },
+                "required": ["receiver_id", "derived_id"],
+                "type": "object"
+              }
+            },
+            "required": ["InvalidDeterministicStateInitReceiver"],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "DeterministicStateInitKeyLengthExceeded": {
+                "properties": {
+                  "length": {
+                    "format": "uint64",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "limit": {
+                    "format": "uint64",
+                    "minimum": 0,
+                    "type": "integer"
+                  }
+                },
+                "required": ["length", "limit"],
+                "type": "object"
+              }
+            },
+            "required": ["DeterministicStateInitKeyLengthExceeded"],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "DeterministicStateInitValueLengthExceeded": {
+                "properties": {
+                  "length": {
+                    "format": "uint64",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "limit": {
+                    "format": "uint64",
+                    "minimum": 0,
+                    "type": "integer"
+                  }
+                },
+                "required": ["length", "limit"],
+                "type": "object"
+              }
+            },
+            "required": ["DeterministicStateInitValueLengthExceeded"],
             "type": "object"
           }
         ]
@@ -2439,7 +2542,7 @@
             ]
           },
           "gas_price": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "hash": {
             "$ref": "#/components/schemas/CryptoHash"
@@ -2490,8 +2593,13 @@
             "$ref": "#/components/schemas/CryptoHash"
           },
           "rent_paid": {
-            "description": "TODO(2271): deprecated.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "default": "0",
+            "description": "TODO(2271): deprecated."
           },
           "signature": {
             "allOf": [
@@ -2511,7 +2619,7 @@
             "type": "string"
           },
           "total_supply": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "validator_proposals": {
             "items": {
@@ -2520,8 +2628,13 @@
             "type": "array"
           },
           "validator_reward": {
-            "description": "TODO(2271): deprecated.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "default": "0",
+            "description": "TODO(2271): deprecated."
           }
         },
         "required": [
@@ -2543,8 +2656,6 @@
           "validator_proposals",
           "chunk_mask",
           "gas_price",
-          "rent_paid",
-          "validator_reward",
           "total_supply",
           "challenges_result",
           "last_final_block",
@@ -2674,7 +2785,7 @@
         "description": "Contains main info about the chunk.",
         "properties": {
           "balance_burnt": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "bandwidth_requests": {
             "anyOf": [
@@ -2738,8 +2849,13 @@
             "$ref": "#/components/schemas/CryptoHash"
           },
           "rent_paid": {
-            "description": "TODO(2271): deprecated.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "default": "0",
+            "description": "TODO(2271): deprecated."
           },
           "shard_id": {
             "$ref": "#/components/schemas/ShardId"
@@ -2757,8 +2873,13 @@
             "type": "array"
           },
           "validator_reward": {
-            "description": "TODO(2271): deprecated.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "default": "0",
+            "description": "TODO(2271): deprecated."
           }
         },
         "required": [
@@ -2773,8 +2894,6 @@
           "shard_id",
           "gas_used",
           "gas_limit",
-          "rent_paid",
-          "validator_reward",
           "balance_burnt",
           "outgoing_receipts_root",
           "tx_root",
@@ -3168,7 +3287,7 @@
             "type": "array"
           },
           "stake": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           }
         },
         "required": [
@@ -3358,6 +3477,47 @@
         ],
         "type": "object"
       },
+      "DeterministicAccountStateInit": {
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "V1": {
+                "$ref": "#/components/schemas/DeterministicAccountStateInitV1"
+              }
+            },
+            "required": ["V1"],
+            "type": "object"
+          }
+        ]
+      },
+      "DeterministicAccountStateInitV1": {
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/GlobalContractIdentifier"
+          },
+          "data": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "required": ["code", "data"],
+        "type": "object"
+      },
+      "DeterministicStateInitAction": {
+        "properties": {
+          "deposit": {
+            "$ref": "#/components/schemas/NearToken"
+          },
+          "state_init": {
+            "$ref": "#/components/schemas/DeterministicAccountStateInit"
+          }
+        },
+        "required": ["state_init", "deposit"],
+        "type": "object"
+      },
       "Direction": {
         "enum": ["Left", "Right"],
         "type": "string"
@@ -3524,8 +3684,12 @@
             "description": "Execution status. Contains the result in case of successful execution."
           },
           "tokens_burnt": {
-            "description": "The amount of tokens burnt corresponding to the burnt gas amount.\nThis value doesn't always equal to the `gas_burnt` multiplied by the gas price, because\nthe prepaid gas price might be lower than the actual gas price and it creates a deficit.\n`tokens_burnt` also contains the penalty subtracted from refunds, while\n`gas_burnt` only contains the gas that we actually burn for the execution.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "The amount of tokens burnt corresponding to the burnt gas amount.\nThis value doesn't always equal to the `gas_burnt` multiplied by the gas price, because\nthe prepaid gas price might be lower than the actual gas price and it creates a deficit.\n`tokens_burnt` also contains the penalty subtracted from refunds, while\n`gas_burnt` only contains the gas that we actually burn for the execution."
           }
         },
         "required": [
@@ -4330,6 +4494,7 @@
         "type": "object"
       },
       "ExternalStorageLocation": {
+        "description": "Supported external storage backends and their minimal config.",
         "oneOf": [
           {
             "additionalProperties": false,
@@ -4337,7 +4502,7 @@
               "S3": {
                 "properties": {
                   "bucket": {
-                    "description": "Location of state dumps on S3.",
+                    "description": "Location on S3.",
                     "type": "string"
                   },
                   "region": {
@@ -4354,6 +4519,7 @@
           },
           {
             "additionalProperties": false,
+            "description": "Local filesystem root for storing data.",
             "properties": {
               "Filesystem": {
                 "properties": {
@@ -4370,6 +4536,7 @@
           },
           {
             "additionalProperties": false,
+            "description": "Google Cloud Storage bucket name.",
             "properties": {
               "GCS": {
                 "properties": {
@@ -4563,7 +4730,7 @@
             "type": "string"
           },
           "deposit": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "gas": {
             "$ref": "#/components/schemas/NearGas"
@@ -4659,9 +4826,16 @@
         "description": "Grants limited permission to make transactions with FunctionCallActions\nThe permission can limit the allowed balance to be spent on the prepaid gas.\nIt also restrict the account ID of the receiver for this function call.\nIt also can restrict the method name for the allowed function calls.",
         "properties": {
           "allowance": {
-            "description": "Allowance is a balance limit to use by this access key to pay for function call gas and\ntransaction fees. When this access key is used, both account balance and the allowance is\ndecreased by the same value.\n`None` means unlimited allowance.\nNOTE: To change or increase the allowance, the old access key needs to be deleted and a new\naccess key should be created.",
-            "nullable": true,
-            "type": "string"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              },
+              {
+                "enum": [null],
+                "nullable": true
+              }
+            ],
+            "description": "Allowance is a balance limit to use by this access key to pay for function call gas and\ntransaction fees. When this access key is used, both account balance and the allowance is\ndecreased by the same value.\n`None` means unlimited allowance.\nNOTE: To change or increase the allowance, the old access key needs to be deleted and a new\naccess key should be created."
           },
           "method_names": {
             "description": "A list of method names that can be used. The access key only allows transactions with the\nfunction call of one of the given method names.\nEmpty list means any method name can be used.",
@@ -4720,9 +4894,7 @@
       "GasKeyView": {
         "properties": {
           "balance": {
-            "format": "uint128",
-            "minimum": 0,
-            "type": "integer"
+            "$ref": "#/components/schemas/NearToken"
           },
           "num_nonces": {
             "format": "uint32",
@@ -4791,8 +4963,12 @@
             "type": "integer"
           },
           "fishermen_threshold": {
-            "description": "Fishermen stake threshold.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Fishermen stake threshold."
           },
           "gas_limit": {
             "allOf": [
@@ -4824,7 +5000,7 @@
             "type": "string"
           },
           "max_gas_price": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           },
           "max_inflation_rate": {
             "description": "Maximum inflation on the total supply every epoch.",
@@ -4845,8 +5021,12 @@
             "type": "integer"
           },
           "min_gas_price": {
-            "description": "Minimum gas price. It is also the initial gas price.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Minimum gas price. It is also the initial gas price."
           },
           "minimum_stake_divisor": {
             "default": 10,
@@ -5005,8 +5185,12 @@
             "type": "integer"
           },
           "total_supply": {
-            "description": "Total supply of tokens at genesis.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Total supply of tokens at genesis."
           },
           "transaction_validity_period": {
             "description": "Number of blocks for which a given transaction is valid",
@@ -5094,6 +5278,16 @@
             },
             "required": ["AccountId"],
             "type": "object"
+          }
+        ]
+      },
+      "GlobalContractIdentifierView": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/CryptoHash"
+          },
+          {
+            "$ref": "#/components/schemas/AccountId"
           }
         ]
       },
@@ -5643,10 +5837,10 @@
                     "$ref": "#/components/schemas/AccountId"
                   },
                   "allowance": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "cost": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "public_key": {
                     "$ref": "#/components/schemas/PublicKey"
@@ -5791,10 +5985,10 @@
               "NotEnoughBalance": {
                 "properties": {
                   "balance": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "cost": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "signer_id": {
                     "$ref": "#/components/schemas/AccountId"
@@ -5814,8 +6008,12 @@
               "LackBalanceForState": {
                 "properties": {
                   "amount": {
-                    "description": "Required balance to cover the state.",
-                    "type": "string"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/NearToken"
+                      }
+                    ],
+                    "description": "Required balance to cover the state."
                   },
                   "signer_id": {
                     "allOf": [
@@ -7668,6 +7866,9 @@
         "minimum": 0,
         "type": "integer"
       },
+      "NearToken": {
+        "type": "string"
+      },
       "NetworkInfoView": {
         "properties": {
           "connected_peers": {
@@ -7737,7 +7938,7 @@
             "type": "array"
           },
           "stake": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           }
         },
         "required": ["account_id", "public_key", "stake", "shards"],
@@ -7748,7 +7949,7 @@
         "oneOf": [
           {
             "additionalProperties": false,
-            "description": "Create an (sub)account using a transaction `receiver_id` as an ID for\na new account ID must pass validation rules described here\n<http://nomicon.io/Primitives/Account.html>.",
+            "description": "Create an (sub)account using a transaction `receiver_id` as an ID for\na new account ID must pass validation rules described here\n<https://nomicon.io/DataStructures/Account>.",
             "properties": {
               "CreateAccount": {
                 "$ref": "#/components/schemas/CreateAccountAction"
@@ -7846,6 +8047,16 @@
               }
             },
             "required": ["UseGlobalContract"],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "DeterministicStateInit": {
+                "$ref": "#/components/schemas/DeterministicStateInitAction"
+              }
+            },
+            "required": ["DeterministicStateInit"],
             "type": "object"
           }
         ]
@@ -8055,7 +8266,7 @@
                     "type": "array"
                   },
                   "gas_price": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "input_data_ids": {
                     "items": {
@@ -9133,7 +9344,7 @@
       "RpcGasPriceResponse": {
         "properties": {
           "gas_price": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           }
         },
         "required": ["gas_price"],
@@ -9484,8 +9695,12 @@
             "type": "integer"
           },
           "fishermen_threshold": {
-            "description": "Fishermen stake threshold.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Fishermen stake threshold."
           },
           "gas_limit": {
             "allOf": [
@@ -9517,8 +9732,12 @@
             "type": "string"
           },
           "max_gas_price": {
-            "description": "Maximum gas price.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Maximum gas price."
           },
           "max_inflation_rate": {
             "description": "Maximum inflation on the total supply every epoch.",
@@ -9538,8 +9757,12 @@
             "type": "integer"
           },
           "min_gas_price": {
-            "description": "Minimum gas price. It is also the initial gas price.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Minimum gas price. It is also the initial gas price."
           },
           "minimum_stake_divisor": {
             "description": "The minimum stake required for staking is last seat price divided by this number.",
@@ -11626,8 +11849,12 @@
             "description": "The configuration for congestion control."
           },
           "storage_amount_per_byte": {
-            "description": "Amount of yN per byte required to have on the account.  See\n<https://nomicon.io/Economics/Economic#state-stake> for details.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Amount of yN per byte required to have on the account.  See\n<https://nomicon.io/Economics/Economic#state-stake> for details."
           },
           "transaction_costs": {
             "allOf": [
@@ -11995,8 +12222,12 @@
             "description": "Validator key which will be used to sign transactions on behalf of signer_id"
           },
           "stake": {
-            "description": "Amount of tokens to stake.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NearToken"
+              }
+            ],
+            "description": "Amount of tokens to stake."
           }
         },
         "required": ["stake", "public_key"],
@@ -12200,7 +12431,7 @@
                     "$ref": "#/components/schemas/AccountId"
                   },
                   "amount": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "code_hash": {
                     "$ref": "#/components/schemas/CryptoHash"
@@ -12228,7 +12459,7 @@
                     ]
                   },
                   "locked": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "storage_paid_at": {
                     "default": 0,
@@ -12854,7 +13085,7 @@
       "TransferAction": {
         "properties": {
           "deposit": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           }
         },
         "required": ["deposit"],
@@ -12979,6 +13210,18 @@
             ],
             "description": "Describes limits for VM and Runtime.\n\nTODO: Consider changing this to `VMLimitConfigView` to avoid dependency\non runtime."
           },
+          "linear_op_base_cost": {
+            "description": "Base gas cost of a linear operation",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "linear_op_unit_cost": {
+            "description": "Unit gas cost of a linear operation",
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
           "reftypes_bulk_memory": {
             "description": "See [VMConfig::reftypes_bulk_memory](crate::vm::Config::reftypes_bulk_memory).",
             "type": "boolean"
@@ -13014,6 +13257,8 @@
           "ext_costs",
           "grow_mem_cost",
           "regular_op_cost",
+          "linear_op_base_cost",
+          "linear_op_unit_cost",
           "vm_kind",
           "discard_custom_sections",
           "saturating_float_to_int",
@@ -13048,11 +13293,6 @@
           {
             "description": "NearVM.",
             "enum": ["NearVm"],
-            "type": "string"
-          },
-          {
-            "description": "NearVM. Exists temporarily while bulk memory and reftypes are getting enabled.",
-            "enum": ["NearVm2"],
             "type": "string"
           }
         ]
@@ -13134,10 +13374,10 @@
               "NotEnoughStake": {
                 "properties": {
                   "stake_u128": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   },
                   "threshold_u128": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/NearToken"
                   }
                 },
                 "required": ["stake_u128", "threshold_u128"],
@@ -13242,7 +13482,7 @@
             "$ref": "#/components/schemas/PublicKey"
           },
           "stake": {
-            "type": "string"
+            "$ref": "#/components/schemas/NearToken"
           }
         },
         "required": ["account_id", "public_key", "stake"],

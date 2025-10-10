@@ -37,7 +37,7 @@ export type AccessKeyPermissionView =
   | 'FullAccess'
   | {
       FunctionCall: {
-        allowance?: string | null;
+        allowance?: NearToken | null;
         methodNames: string[];
         receiverId: string;
       };
@@ -74,15 +74,15 @@ export type AccountId = string;
 export type AccountIdValidityRulesVersion = number;
 export type AccountInfo = {
   accountId: AccountId;
-  amount: string;
+  amount: NearToken;
   publicKey: PublicKey;
 };
 export type AccountView = {
-  amount: string;
+  amount: NearToken;
   codeHash: CryptoHash;
   globalContractAccountId?: AccountId | null;
   globalContractHash?: CryptoHash | null;
-  locked: string;
+  locked: NearToken;
   /**
    * Format: uint64
    * @description TODO(2271): deprecated.
@@ -184,7 +184,7 @@ export type ActionErrorKind =
         /** @description An account which needs balance */
         accountId: AccountId;
         /** @description Balance required to complete an action. */
-        amount: string;
+        amount: NearToken;
       };
     }
   | {
@@ -195,16 +195,16 @@ export type ActionErrorKind =
   | {
       TriesToStake: {
         accountId: AccountId;
-        balance: string;
-        locked: string;
-        stake: string;
+        balance: NearToken;
+        locked: NearToken;
+        stake: NearToken;
       };
     }
   | {
       InsufficientStake: {
         accountId: AccountId;
-        minimumStake: string;
-        stake: string;
+        minimumStake: NearToken;
+        stake: NearToken;
       };
     }
   | {
@@ -266,20 +266,20 @@ export type ActionView =
   | {
       FunctionCall: {
         args: FunctionArgs;
-        deposit: string;
+        deposit: NearToken;
         gas: NearGas;
         methodName: string;
       };
     }
   | {
       Transfer: {
-        deposit: string;
+        deposit: NearToken;
       };
     }
   | {
       Stake: {
         publicKey: PublicKey;
-        stake: string;
+        stake: NearToken;
       };
     }
   | {
@@ -324,6 +324,15 @@ export type ActionView =
   | {
       UseGlobalContractByAccountId: {
         accountId: AccountId;
+      };
+    }
+  | {
+      DeterministicStateInit: {
+        code: GlobalContractIdentifierView;
+        data: {
+          [key: string]: string;
+        };
+        deposit: NearToken;
       };
     };
 export type ActionsValidationError =
@@ -401,6 +410,28 @@ export type ActionsValidationError =
         /** Format: uint32 */
         version: number;
       };
+    }
+  | {
+      InvalidDeterministicStateInitReceiver: {
+        derivedId: AccountId;
+        receiverId: AccountId;
+      };
+    }
+  | {
+      DeterministicStateInitKeyLengthExceeded: {
+        /** Format: uint64 */
+        length: number;
+        /** Format: uint64 */
+        limit: number;
+      };
+    }
+  | {
+      DeterministicStateInitValueLengthExceeded: {
+        /** Format: uint64 */
+        length: number;
+        /** Format: uint64 */
+        limit: number;
+      };
     };
 export type AddKeyAction = {
   /** @description An access key with the permission */
@@ -463,7 +494,7 @@ export type BlockHeaderView = {
   chunksIncluded: number;
   epochId: CryptoHash;
   epochSyncDataHash?: CryptoHash | null;
-  gasPrice: string;
+  gasPrice: NearToken;
   hash: CryptoHash;
   /** Format: uint64 */
   height: number;
@@ -480,8 +511,11 @@ export type BlockHeaderView = {
   prevHeight?: number | null;
   prevStateRoot: CryptoHash;
   randomValue: CryptoHash;
-  /** @description TODO(2271): deprecated. */
-  rentPaid: string;
+  /**
+   * @description TODO(2271): deprecated.
+   * @default 0
+   */
+  rentPaid: NearToken;
   /** @description Signature of the block producer. */
   signature: Signature;
   /**
@@ -490,10 +524,13 @@ export type BlockHeaderView = {
    */
   timestamp: number;
   timestampNanosec: string;
-  totalSupply: string;
+  totalSupply: NearToken;
   validatorProposals: ValidatorStakeView[];
-  /** @description TODO(2271): deprecated. */
-  validatorReward: string;
+  /**
+   * @description TODO(2271): deprecated.
+   * @default 0
+   */
+  validatorReward: NearToken;
 };
 export type BlockId = number | CryptoHash;
 export type BlockStatusView = {
@@ -517,7 +554,7 @@ export type ChunkDistributionUris = {
   set: string;
 };
 export type ChunkHeaderView = {
-  balanceBurnt: string;
+  balanceBurnt: NearToken;
   bandwidthRequests?: BandwidthRequests | null;
   chunkHash: CryptoHash;
   congestionInfo?: CongestionInfoView | null;
@@ -534,14 +571,20 @@ export type ChunkHeaderView = {
   outgoingReceiptsRoot: CryptoHash;
   prevBlockHash: CryptoHash;
   prevStateRoot: CryptoHash;
-  /** @description TODO(2271): deprecated. */
-  rentPaid: string;
+  /**
+   * @description TODO(2271): deprecated.
+   * @default 0
+   */
+  rentPaid: NearToken;
   shardId: ShardId;
   signature: Signature;
   txRoot: CryptoHash;
   validatorProposals: ValidatorStakeView[];
-  /** @description TODO(2271): deprecated. */
-  validatorReward: string;
+  /**
+   * @description TODO(2271): deprecated.
+   * @default 0
+   */
+  validatorReward: NearToken;
 };
 export type CloudArchivalReaderConfig = {
   /** @description Configures the external storage used by the archival node. */
@@ -722,7 +765,7 @@ export type CurrentEpochValidatorInfo = {
    * @default []
    */
   shardsEndorsed: ShardId[];
-  stake: string;
+  stake: NearToken;
 };
 export type DataReceiptCreationConfigView = {
   /** @description Base cost of creating a data receipt.
@@ -792,6 +835,19 @@ export type DetailedDebugStatus = {
   currentHeaderHeadStatus: BlockStatusView;
   networkInfo: NetworkInfoView;
   syncStatus: string;
+};
+export type DeterministicAccountStateInit = {
+  V1: DeterministicAccountStateInitV1;
+};
+export type DeterministicAccountStateInitV1 = {
+  code: GlobalContractIdentifier;
+  data: {
+    [key: string]: string;
+  };
+};
+export type DeterministicStateInitAction = {
+  deposit: NearToken;
+  stateInit: DeterministicAccountStateInit;
 };
 export type Direction = 'Left' | 'Right';
 export type DumpConfig = {
@@ -872,7 +928,7 @@ export type ExecutionOutcomeView = {
    *     the prepaid gas price might be lower than the actual gas price and it creates a deficit.
    *     `tokens_burnt` also contains the penalty subtracted from refunds, while
    *     `gas_burnt` only contains the gas that we actually burn for the execution. */
-  tokensBurnt: string;
+  tokensBurnt: NearToken;
 };
 export type ExecutionOutcomeWithIdView = {
   blockHash: CryptoHash;
@@ -1075,7 +1131,7 @@ export type ExternalStorageConfig = {
 export type ExternalStorageLocation =
   | {
       S3: {
-        /** @description Location of state dumps on S3. */
+        /** @description Location on S3. */
         bucket: string;
         /** @description Data may only be available in certain locations. */
         region: string;
@@ -1143,7 +1199,7 @@ export type Finality = 'optimistic' | 'near-final' | 'final';
 export type FunctionArgs = string;
 export type FunctionCallAction = {
   args: string;
-  deposit: string;
+  deposit: NearToken;
   gas: NearGas;
   methodName: string;
 };
@@ -1176,7 +1232,7 @@ export type FunctionCallPermission = {
    *     `None` means unlimited allowance.
    *     NOTE: To change or increase the allowance, the old access key needs to be deleted and a new
    *     access key should be created. */
-  allowance?: string | null;
+  allowance?: NearToken | null;
   /** @description A list of method names that can be used. The access key only allows transactions with the
    *     function call of one of the given method names.
    *     Empty list means any method name can be used. */
@@ -1215,8 +1271,7 @@ export type GCConfig = {
   gcStepPeriod: DurationAsStdSchemaProvider;
 };
 export type GasKeyView = {
-  /** Format: uint128 */
-  balance: number;
+  balance: NearToken;
   /** Format: uint32 */
   numNonces: number;
   permission: AccessKeyPermissionView;
@@ -1259,7 +1314,7 @@ export type GenesisConfig = {
    */
   epochLength: number;
   /** @description Fishermen stake threshold. */
-  fishermenThreshold: string;
+  fishermenThreshold: NearToken;
   /** @description Initial gas limit. */
   gasLimit: NearGas;
   /** @description Gas price adjustment rate */
@@ -1274,7 +1329,7 @@ export type GenesisConfig = {
    * @description Official time of blockchain start.
    */
   genesisTime: string;
-  maxGasPrice: string;
+  maxGasPrice: NearToken;
   /** @description Maximum inflation on the total supply every epoch. */
   maxInflationRate: number[];
   /**
@@ -1284,7 +1339,7 @@ export type GenesisConfig = {
    */
   maxKickoutStakePerc: number;
   /** @description Minimum gas price. It is also the initial gas price. */
-  minGasPrice: string;
+  minGasPrice: NearToken;
   /**
    * Format: uint64
    * @description The minimum stake required for staking is last seat price divided by this number.
@@ -1405,7 +1460,7 @@ export type GenesisConfig = {
    */
   targetValidatorMandatesPerShard: number;
   /** @description Total supply of tokens at genesis. */
-  totalSupply: string;
+  totalSupply: NearToken;
   /**
    * Format: uint64
    * @description Number of blocks for which a given transaction is valid
@@ -1430,6 +1485,7 @@ export type GlobalContractIdentifier =
   | {
       AccountId: AccountId;
     };
+export type GlobalContractIdentifierView = CryptoHash | AccountId;
 export type HostError =
   | 'BadUTF16'
   | 'BadUTF8'
@@ -1594,8 +1650,8 @@ export type InvalidAccessKeyError =
   | {
       NotEnoughAllowance: {
         accountId: AccountId;
-        allowance: string;
-        cost: string;
+        allowance: NearToken;
+        cost: NearToken;
         publicKey: PublicKey;
       };
     }
@@ -1638,15 +1694,15 @@ export type InvalidTxError =
   | 'InvalidSignature'
   | {
       NotEnoughBalance: {
-        balance: string;
-        cost: string;
+        balance: NearToken;
+        cost: NearToken;
         signerId: AccountId;
       };
     }
   | {
       LackBalanceForState: {
         /** @description Required balance to cover the state. */
-        amount: string;
+        amount: NearToken;
         /** @description An account which doesn't have enough balance to cover storage. */
         signerId: AccountId;
       };
@@ -2355,6 +2411,7 @@ export type MissingTrieValueContext =
   | 'TrieStorage';
 export type MutableConfigValue = string;
 export type NearGas = number;
+export type NearToken = string;
 export type NetworkInfoView = {
   connectedPeers: PeerInfoView[];
   knownProducers: KnownProducerView[];
@@ -2370,7 +2427,7 @@ export type NextEpochValidatorInfo = {
   accountId: AccountId;
   publicKey: PublicKey;
   shards: ShardId[];
-  stake: string;
+  stake: NearToken;
 };
 export type NonDelegateAction =
   | {
@@ -2402,6 +2459,9 @@ export type NonDelegateAction =
     }
   | {
       UseGlobalContract: UseGlobalContractAction;
+    }
+  | {
+      DeterministicStateInit: DeterministicStateInitAction;
     };
 export type PeerId = PublicKey;
 export type PeerInfoView = {
@@ -2455,7 +2515,7 @@ export type ReceiptEnumView =
   | {
       Action: {
         actions: ActionView[];
-        gasPrice: string;
+        gasPrice: NearToken;
         inputDataIds: CryptoHash[];
         /** @default false */
         isPromiseYield: boolean;
@@ -2827,7 +2887,7 @@ export type RpcGasPriceRequest = {
   blockId?: BlockId | null;
 };
 export type RpcGasPriceResponse = {
-  gasPrice: string;
+  gasPrice: NearToken;
 };
 export type RpcHealthRequest = null;
 export type RpcHealthResponse = null;
@@ -2940,7 +3000,7 @@ export type RpcProtocolConfigResponse = {
    */
   epochLength: number;
   /** @description Fishermen stake threshold. */
-  fishermenThreshold: string;
+  fishermenThreshold: NearToken;
   /** @description Initial gas limit. */
   gasLimit: NearGas;
   /** @description Gas price adjustment rate */
@@ -2956,7 +3016,7 @@ export type RpcProtocolConfigResponse = {
    */
   genesisTime: string;
   /** @description Maximum gas price. */
-  maxGasPrice: string;
+  maxGasPrice: NearToken;
   /** @description Maximum inflation on the total supply every epoch. */
   maxInflationRate: number[];
   /**
@@ -2965,7 +3025,7 @@ export type RpcProtocolConfigResponse = {
    */
   maxKickoutStakePerc: number;
   /** @description Minimum gas price. It is also the initial gas price. */
-  minGasPrice: string;
+  minGasPrice: NearToken;
   /**
    * Format: uint64
    * @description The minimum stake required for staking is last seat price divided by this number.
@@ -3333,7 +3393,7 @@ export type RuntimeConfigView = {
   congestionControlConfig: CongestionControlConfigView;
   /** @description Amount of yN per byte required to have on the account.  See
    *     <https://nomicon.io/Economics/Economic#state-stake> for details. */
-  storageAmountPerByte: string;
+  storageAmountPerByte: NearToken;
   /** @description Costs of different actions that need to be performed when sending and
    *     processing transaction and receipts. */
   transactionCosts: RuntimeFeesConfigView;
@@ -3455,7 +3515,7 @@ export type StakeAction = {
   /** @description Validator key which will be used to sign transactions on behalf of signer_id */
   publicKey: PublicKey;
   /** @description Amount of tokens to stake. */
-  stake: string;
+  stake: NearToken;
 };
 export type StateChangeCauseView =
   | {
@@ -3535,11 +3595,11 @@ export type StateChangeWithCauseView = {
       /** @description A view of the account */
       change: {
         accountId: AccountId;
-        amount: string;
+        amount: NearToken;
         codeHash: CryptoHash;
         globalContractAccountId?: AccountId | null;
         globalContractHash?: CryptoHash | null;
-        locked: string;
+        locked: NearToken;
         /**
          * Format: uint64
          * @description TODO(2271): deprecated.
@@ -3753,7 +3813,7 @@ export type TrackedShardsConfig =
       Accounts: AccountId[];
     };
 export type TransferAction = {
-  deposit: string;
+  deposit: NearToken;
 };
 export type TxExecutionError =
   | {
@@ -3797,6 +3857,16 @@ export type VMConfigView = {
    *     TODO: Consider changing this to `VMLimitConfigView` to avoid dependency
    *     on runtime. */
   limitConfig: LimitConfig;
+  /**
+   * Format: uint64
+   * @description Base gas cost of a linear operation
+   */
+  linearOpBaseCost: number;
+  /**
+   * Format: uint64
+   * @description Unit gas cost of a linear operation
+   */
+  linearOpUnitCost: number;
   /** @description See [VMConfig::reftypes_bulk_memory](crate::vm::Config::reftypes_bulk_memory). */
   reftypesBulkMemory: boolean;
   /**
@@ -3811,7 +3881,7 @@ export type VMConfigView = {
   /** @description See [VMConfig::vm_kind](crate::vm::Config::vm_kind). */
   vmKind: VMKind;
 };
-export type VMKind = 'Wasmer0' | 'Wasmtime' | 'Wasmer2' | 'NearVm' | 'NearVm2';
+export type VMKind = 'Wasmer0' | 'Wasmtime' | 'Wasmer2' | 'NearVm';
 export type ValidatorInfo = {
   accountId: AccountId;
 };
@@ -3836,8 +3906,8 @@ export type ValidatorKickoutReason =
   | 'Unstaked'
   | {
       NotEnoughStake: {
-        stakeU128: string;
-        thresholdU128: string;
+        stakeU128: NearToken;
+        thresholdU128: NearToken;
       };
     }
   | 'DidNotGetASeat'
@@ -3868,7 +3938,7 @@ export type ValidatorStakeView = {
 export type ValidatorStakeViewV1 = {
   accountId: AccountId;
   publicKey: PublicKey;
-  stake: string;
+  stake: NearToken;
 };
 export type Version = {
   build: string;

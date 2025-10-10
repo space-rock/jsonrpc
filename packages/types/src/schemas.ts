@@ -52,7 +52,7 @@ export const AccessKeyPermissionViewSchema: v.GenericSchema<t.AccessKeyPermissio
       v.literal('FullAccess'),
       v.object({
         FunctionCall: v.object({
-          allowance: v.optional(v.union([v.string(), v.null()])),
+          allowance: v.optional(v.union([NearTokenSchema, v.null()])),
           methodNames: v.array(v.string()),
           receiverId: v.string(),
         }),
@@ -96,18 +96,18 @@ export const AccountIdValidityRulesVersionSchema: v.GenericSchema<t.AccountIdVal
 export const AccountInfoSchema: v.GenericSchema<t.AccountInfo> = v.lazy(() =>
   v.object({
     accountId: AccountIdSchema,
-    amount: v.string(),
+    amount: NearTokenSchema,
     publicKey: PublicKeySchema,
   }),
 );
 
 export const AccountViewSchema: v.GenericSchema<t.AccountView> = v.lazy(() =>
   v.object({
-    amount: v.string(),
+    amount: NearTokenSchema,
     codeHash: CryptoHashSchema,
     globalContractAccountId: v.optional(v.union([AccountIdSchema, v.null()])),
     globalContractHash: v.optional(v.union([CryptoHashSchema, v.null()])),
-    locked: v.string(),
+    locked: NearTokenSchema,
     storagePaidAt: v.number(),
     storageUsage: v.number(),
   }),
@@ -197,7 +197,7 @@ export const ActionErrorKindSchema: v.GenericSchema<t.ActionErrorKind> = v.lazy(
       v.object({
         LackBalanceForState: v.object({
           accountId: AccountIdSchema,
-          amount: v.string(),
+          amount: NearTokenSchema,
         }),
       }),
       v.object({
@@ -208,16 +208,16 @@ export const ActionErrorKindSchema: v.GenericSchema<t.ActionErrorKind> = v.lazy(
       v.object({
         TriesToStake: v.object({
           accountId: AccountIdSchema,
-          balance: v.string(),
-          locked: v.string(),
-          stake: v.string(),
+          balance: NearTokenSchema,
+          locked: NearTokenSchema,
+          stake: NearTokenSchema,
         }),
       }),
       v.object({
         InsufficientStake: v.object({
           accountId: AccountIdSchema,
-          minimumStake: v.string(),
-          stake: v.string(),
+          minimumStake: NearTokenSchema,
+          stake: NearTokenSchema,
         }),
       }),
       v.object({
@@ -278,20 +278,20 @@ export const ActionViewSchema: v.GenericSchema<t.ActionView> = v.lazy(() =>
     v.object({
       FunctionCall: v.object({
         args: FunctionArgsSchema,
-        deposit: v.string(),
+        deposit: NearTokenSchema,
         gas: NearGasSchema,
         methodName: v.string(),
       }),
     }),
     v.object({
       Transfer: v.object({
-        deposit: v.string(),
+        deposit: NearTokenSchema,
       }),
     }),
     v.object({
       Stake: v.object({
         publicKey: PublicKeySchema,
-        stake: v.string(),
+        stake: NearTokenSchema,
       }),
     }),
     v.object({
@@ -334,6 +334,13 @@ export const ActionViewSchema: v.GenericSchema<t.ActionView> = v.lazy(() =>
     v.object({
       UseGlobalContractByAccountId: v.object({
         accountId: AccountIdSchema,
+      }),
+    }),
+    v.object({
+      DeterministicStateInit: v.object({
+        code: GlobalContractIdentifierViewSchema,
+        data: v.object({}),
+        deposit: NearTokenSchema,
       }),
     }),
   ]),
@@ -402,6 +409,24 @@ export const ActionsValidationErrorSchema: v.GenericSchema<t.ActionsValidationEr
         UnsupportedProtocolFeature: v.object({
           protocolFeature: v.string(),
           version: v.number(),
+        }),
+      }),
+      v.object({
+        InvalidDeterministicStateInitReceiver: v.object({
+          derivedId: AccountIdSchema,
+          receiverId: AccountIdSchema,
+        }),
+      }),
+      v.object({
+        DeterministicStateInitKeyLengthExceeded: v.object({
+          length: v.number(),
+          limit: v.number(),
+        }),
+      }),
+      v.object({
+        DeterministicStateInitValueLengthExceeded: v.object({
+          length: v.number(),
+          limit: v.number(),
         }),
       }),
     ]),
@@ -477,7 +502,7 @@ export const BlockHeaderViewSchema: v.GenericSchema<t.BlockHeaderView> = v.lazy(
       chunksIncluded: v.number(),
       epochId: CryptoHashSchema,
       epochSyncDataHash: v.optional(v.union([CryptoHashSchema, v.null()])),
-      gasPrice: v.string(),
+      gasPrice: NearTokenSchema,
       hash: CryptoHashSchema,
       height: v.number(),
       lastDsFinalBlock: CryptoHashSchema,
@@ -490,13 +515,13 @@ export const BlockHeaderViewSchema: v.GenericSchema<t.BlockHeaderView> = v.lazy(
       prevHeight: v.optional(v.union([v.number(), v.null()])),
       prevStateRoot: CryptoHashSchema,
       randomValue: CryptoHashSchema,
-      rentPaid: v.string(),
+      rentPaid: NearTokenSchema,
       signature: SignatureSchema,
       timestamp: v.number(),
       timestampNanosec: v.string(),
-      totalSupply: v.string(),
+      totalSupply: NearTokenSchema,
       validatorProposals: v.array(ValidatorStakeViewSchema),
-      validatorReward: v.string(),
+      validatorReward: NearTokenSchema,
     }),
 );
 
@@ -541,7 +566,7 @@ export const ChunkDistributionUrisSchema: v.GenericSchema<t.ChunkDistributionUri
 export const ChunkHeaderViewSchema: v.GenericSchema<t.ChunkHeaderView> = v.lazy(
   () =>
     v.object({
-      balanceBurnt: v.string(),
+      balanceBurnt: NearTokenSchema,
       bandwidthRequests: v.optional(
         v.union([BandwidthRequestsSchema, v.null()]),
       ),
@@ -557,12 +582,12 @@ export const ChunkHeaderViewSchema: v.GenericSchema<t.ChunkHeaderView> = v.lazy(
       outgoingReceiptsRoot: CryptoHashSchema,
       prevBlockHash: CryptoHashSchema,
       prevStateRoot: CryptoHashSchema,
-      rentPaid: v.string(),
+      rentPaid: NearTokenSchema,
       shardId: ShardIdSchema,
       signature: SignatureSchema,
       txRoot: CryptoHashSchema,
       validatorProposals: v.array(ValidatorStakeViewSchema),
-      validatorReward: v.string(),
+      validatorReward: NearTokenSchema,
     }),
 );
 
@@ -678,7 +703,7 @@ export const CurrentEpochValidatorInfoSchema: v.GenericSchema<t.CurrentEpochVali
       publicKey: PublicKeySchema,
       shards: v.array(ShardIdSchema),
       shardsEndorsed: v.array(ShardIdSchema),
-      stake: v.string(),
+      stake: NearTokenSchema,
     }),
   );
 
@@ -751,6 +776,29 @@ export const DetailedDebugStatusSchema: v.GenericSchema<t.DetailedDebugStatus> =
     }),
   );
 
+export const DeterministicAccountStateInitSchema: v.GenericSchema<t.DeterministicAccountStateInit> =
+  v.lazy(() =>
+    v.object({
+      V1: DeterministicAccountStateInitV1Schema,
+    }),
+  );
+
+export const DeterministicAccountStateInitV1Schema: v.GenericSchema<t.DeterministicAccountStateInitV1> =
+  v.lazy(() =>
+    v.object({
+      code: GlobalContractIdentifierSchema,
+      data: v.object({}),
+    }),
+  );
+
+export const DeterministicStateInitActionSchema: v.GenericSchema<t.DeterministicStateInitAction> =
+  v.lazy(() =>
+    v.object({
+      deposit: NearTokenSchema,
+      stateInit: DeterministicAccountStateInitSchema,
+    }),
+  );
+
 export const DirectionSchema: v.GenericSchema<t.Direction> = v.lazy(() =>
   v.union([v.literal('Left'), v.literal('Right')]),
 );
@@ -807,7 +855,7 @@ export const ExecutionOutcomeViewSchema: v.GenericSchema<t.ExecutionOutcomeView>
       metadata: ExecutionMetadataViewSchema,
       receiptIds: v.array(CryptoHashSchema),
       status: ExecutionStatusViewSchema,
-      tokensBurnt: v.string(),
+      tokensBurnt: NearTokenSchema,
     }),
   );
 
@@ -1021,7 +1069,7 @@ export const FunctionCallActionSchema: v.GenericSchema<t.FunctionCallAction> =
   v.lazy(() =>
     v.object({
       args: v.string(),
-      deposit: v.string(),
+      deposit: NearTokenSchema,
       gas: NearGasSchema,
       methodName: v.string(),
     }),
@@ -1057,7 +1105,7 @@ export const FunctionCallErrorSchema: v.GenericSchema<t.FunctionCallError> =
 export const FunctionCallPermissionSchema: v.GenericSchema<t.FunctionCallPermission> =
   v.lazy(() =>
     v.object({
-      allowance: v.optional(v.union([v.string(), v.null()])),
+      allowance: v.optional(v.union([NearTokenSchema, v.null()])),
       methodNames: v.array(v.string()),
       receiverId: v.string(),
     }),
@@ -1074,7 +1122,7 @@ export const GCConfigSchema: v.GenericSchema<t.GCConfig> = v.lazy(() =>
 
 export const GasKeyViewSchema: v.GenericSchema<t.GasKeyView> = v.lazy(() =>
   v.object({
-    balance: v.number(),
+    balance: NearTokenSchema,
     numNonces: v.number(),
     permission: AccessKeyPermissionViewSchema,
   }),
@@ -1091,15 +1139,15 @@ export const GenesisConfigSchema: v.GenericSchema<t.GenesisConfig> = v.lazy(
       chunkValidatorOnlyKickoutThreshold: v.number(),
       dynamicResharding: v.boolean(),
       epochLength: v.number(),
-      fishermenThreshold: v.string(),
+      fishermenThreshold: NearTokenSchema,
       gasLimit: NearGasSchema,
       gasPriceAdjustmentRate: v.array(v.number()),
       genesisHeight: v.number(),
       genesisTime: v.string(),
-      maxGasPrice: v.string(),
+      maxGasPrice: NearTokenSchema,
       maxInflationRate: v.array(v.number()),
       maxKickoutStakePerc: v.number(),
-      minGasPrice: v.string(),
+      minGasPrice: NearTokenSchema,
       minimumStakeDivisor: v.number(),
       minimumStakeRatio: v.array(v.number()),
       minimumValidatorsPerShard: v.number(),
@@ -1118,7 +1166,7 @@ export const GenesisConfigSchema: v.GenericSchema<t.GenesisConfig> = v.lazy(
       shardLayout: ShardLayoutSchema,
       shuffleShardAssignmentForChunkProducers: v.boolean(),
       targetValidatorMandatesPerShard: v.number(),
-      totalSupply: v.string(),
+      totalSupply: NearTokenSchema,
       transactionValidityPeriod: v.number(),
       useProductionConfig: v.boolean(),
       validators: v.array(AccountInfoSchema),
@@ -1142,6 +1190,9 @@ export const GlobalContractIdentifierSchema: v.GenericSchema<t.GlobalContractIde
       }),
     ]),
   );
+
+export const GlobalContractIdentifierViewSchema: v.GenericSchema<t.GlobalContractIdentifierView> =
+  v.lazy(() => v.union([CryptoHashSchema, AccountIdSchema]));
 
 export const HostErrorSchema: v.GenericSchema<t.HostError> = v.lazy(() =>
   v.union([
@@ -1292,8 +1343,8 @@ export const InvalidAccessKeyErrorSchema: v.GenericSchema<t.InvalidAccessKeyErro
       v.object({
         NotEnoughAllowance: v.object({
           accountId: AccountIdSchema,
-          allowance: v.string(),
-          cost: v.string(),
+          allowance: NearTokenSchema,
+          cost: NearTokenSchema,
           publicKey: PublicKeySchema,
         }),
       }),
@@ -1337,14 +1388,14 @@ export const InvalidTxErrorSchema: v.GenericSchema<t.InvalidTxError> = v.lazy(
       v.literal('InvalidSignature'),
       v.object({
         NotEnoughBalance: v.object({
-          balance: v.string(),
-          cost: v.string(),
+          balance: NearTokenSchema,
+          cost: NearTokenSchema,
           signerId: AccountIdSchema,
         }),
       }),
       v.object({
         LackBalanceForState: v.object({
-          amount: v.string(),
+          amount: NearTokenSchema,
           signerId: AccountIdSchema,
         }),
       }),
@@ -2202,6 +2253,10 @@ export const NearGasSchema: v.GenericSchema<t.NearGas> = v.lazy(() =>
   v.number(),
 );
 
+export const NearTokenSchema: v.GenericSchema<t.NearToken> = v.lazy(() =>
+  v.string(),
+);
+
 export const NetworkInfoViewSchema: v.GenericSchema<t.NetworkInfoView> = v.lazy(
   () =>
     v.object({
@@ -2221,7 +2276,7 @@ export const NextEpochValidatorInfoSchema: v.GenericSchema<t.NextEpochValidatorI
       accountId: AccountIdSchema,
       publicKey: PublicKeySchema,
       shards: v.array(ShardIdSchema),
-      stake: v.string(),
+      stake: NearTokenSchema,
     }),
   );
 
@@ -2257,6 +2312,9 @@ export const NonDelegateActionSchema: v.GenericSchema<t.NonDelegateAction> =
       }),
       v.object({
         UseGlobalContract: UseGlobalContractActionSchema,
+      }),
+      v.object({
+        DeterministicStateInit: DeterministicStateInitActionSchema,
       }),
     ]),
   );
@@ -2322,7 +2380,7 @@ export const ReceiptEnumViewSchema: v.GenericSchema<t.ReceiptEnumView> = v.lazy(
       v.object({
         Action: v.object({
           actions: v.array(ActionViewSchema),
-          gasPrice: v.string(),
+          gasPrice: NearTokenSchema,
           inputDataIds: v.array(CryptoHashSchema),
           isPromiseYield: v.boolean(),
           outputDataReceivers: v.array(DataReceiverViewSchema),
@@ -2589,7 +2647,7 @@ export const RpcGasPriceRequestSchema: v.GenericSchema<t.RpcGasPriceRequest> =
 export const RpcGasPriceResponseSchema: v.GenericSchema<t.RpcGasPriceResponse> =
   v.lazy(() =>
     v.object({
-      gasPrice: v.string(),
+      gasPrice: NearTokenSchema,
     }),
   );
 
@@ -2733,15 +2791,15 @@ export const RpcProtocolConfigResponseSchema: v.GenericSchema<t.RpcProtocolConfi
       chunkValidatorOnlyKickoutThreshold: v.number(),
       dynamicResharding: v.boolean(),
       epochLength: v.number(),
-      fishermenThreshold: v.string(),
+      fishermenThreshold: NearTokenSchema,
       gasLimit: NearGasSchema,
       gasPriceAdjustmentRate: v.array(v.number()),
       genesisHeight: v.number(),
       genesisTime: v.string(),
-      maxGasPrice: v.string(),
+      maxGasPrice: NearTokenSchema,
       maxInflationRate: v.array(v.number()),
       maxKickoutStakePerc: v.number(),
-      minGasPrice: v.string(),
+      minGasPrice: NearTokenSchema,
       minimumStakeDivisor: v.number(),
       minimumStakeRatio: v.array(v.number()),
       minimumValidatorsPerShard: v.number(),
@@ -3152,7 +3210,7 @@ export const RuntimeConfigViewSchema: v.GenericSchema<t.RuntimeConfigView> =
     v.object({
       accountCreationConfig: AccountCreationConfigViewSchema,
       congestionControlConfig: CongestionControlConfigViewSchema,
-      storageAmountPerByte: v.string(),
+      storageAmountPerByte: NearTokenSchema,
       transactionCosts: RuntimeFeesConfigViewSchema,
       wasmConfig: VMConfigViewSchema,
       witnessConfig: WitnessConfigViewSchema,
@@ -3269,7 +3327,7 @@ export const SlashedValidatorSchema: v.GenericSchema<t.SlashedValidator> =
 export const StakeActionSchema: v.GenericSchema<t.StakeAction> = v.lazy(() =>
   v.object({
     publicKey: PublicKeySchema,
-    stake: v.string(),
+    stake: NearTokenSchema,
   }),
 );
 
@@ -3349,7 +3407,7 @@ export const StateChangeWithCauseViewSchema: v.GenericSchema<t.StateChangeWithCa
         v.object({
           change: v.object({
             accountId: AccountIdSchema,
-            amount: v.string(),
+            amount: NearTokenSchema,
             codeHash: CryptoHashSchema,
             globalContractAccountId: v.optional(
               v.union([AccountIdSchema, v.null()]),
@@ -3357,7 +3415,7 @@ export const StateChangeWithCauseViewSchema: v.GenericSchema<t.StateChangeWithCa
             globalContractHash: v.optional(
               v.union([CryptoHashSchema, v.null()]),
             ),
-            locked: v.string(),
+            locked: NearTokenSchema,
             storagePaidAt: v.number(),
             storageUsage: v.number(),
           }),
@@ -3566,7 +3624,7 @@ export const TrackedShardsConfigSchema: v.GenericSchema<t.TrackedShardsConfig> =
 export const TransferActionSchema: v.GenericSchema<t.TransferAction> = v.lazy(
   () =>
     v.object({
-      deposit: v.string(),
+      deposit: NearTokenSchema,
     }),
 );
 
@@ -3612,6 +3670,8 @@ export const VMConfigViewSchema: v.GenericSchema<t.VMConfigView> = v.lazy(() =>
     growMemCost: v.number(),
     implicitAccountCreation: v.boolean(),
     limitConfig: LimitConfigSchema,
+    linearOpBaseCost: v.number(),
+    linearOpUnitCost: v.number(),
     reftypesBulkMemory: v.boolean(),
     regularOpCost: v.number(),
     saturatingFloatToInt: v.boolean(),
@@ -3626,7 +3686,6 @@ export const VMKindSchema: v.GenericSchema<t.VMKind> = v.lazy(() =>
     v.literal('Wasmtime'),
     v.literal('Wasmer2'),
     v.literal('NearVm'),
-    v.literal('NearVm2'),
   ]),
 );
 
@@ -3656,8 +3715,8 @@ export const ValidatorKickoutReasonSchema: v.GenericSchema<t.ValidatorKickoutRea
       v.literal('Unstaked'),
       v.object({
         NotEnoughStake: v.object({
-          stakeU128: v.string(),
-          thresholdU128: v.string(),
+          stakeU128: NearTokenSchema,
+          thresholdU128: NearTokenSchema,
         }),
       }),
       v.literal('DidNotGetASeat'),
@@ -3699,7 +3758,7 @@ export const ValidatorStakeViewV1Schema: v.GenericSchema<t.ValidatorStakeViewV1>
     v.object({
       accountId: AccountIdSchema,
       publicKey: PublicKeySchema,
-      stake: v.string(),
+      stake: NearTokenSchema,
     }),
   );
 
